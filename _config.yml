@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 title: blank # the website title (if blank, full name will be used instead)
-first_name: 
+first_name:
 middle_name: Amrit
 last_name: Singh
 email: you@example.com
@@ -53,7 +53,7 @@ search_enabled: true
 socials_in_search: true
 bib_search: true
 
-# Dimensions
+# Dimensionss
 max_width: 930px
 
 # TODO: add layout settings (single page vs. multi-page)
