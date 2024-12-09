@@ -13,7 +13,7 @@ profile:
     <!-- <p>123 your address street</p> -->
     <p>New York, New York</p>
 
-news: true # includes a list of news items
+news: false # includes a list of news items
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
