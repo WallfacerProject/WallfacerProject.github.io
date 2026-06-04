@@ -18,19 +18,18 @@ For my first technical post, I'll share a problem from classical mechanics that 
 <div style="text-align: center; margin: 20px 0;">
 <script type="text/tikz">
 \begin{tikzpicture}[xscale=0.55, yscale=2.5]
+  \centering
   \draw[->] (-9.5,0) -- (9.5,0) node[right] {$x$};
   \draw[->] (0,-0.35) -- (0,1.25) node[above] {$y$};
-  \draw[thin] (0.1,1) -- (-0.1,1) node[left, font=\small] {$1$};
   \draw[thick, domain=-9.3:-0.12, samples=150, smooth] plot (\x, {sin(\x r)/\x});
   \draw[thick, domain=0.12:9.3, samples=150, smooth] plot (\x, {sin(\x r)/\x});
-  \node[circle, fill, minimum size=4pt, inner sep=0pt, transform shape=false] at (0,1) {};
   \pgfmathsetmacro\px{1.5}
   \pgfmathsetmacro\py{sin(\px r)/\px}
   \draw[dashed, thin] (\px,0) -- (\px,\py);
-  \draw[thin] (\px,0.04) -- (\px,-0.04) node[below, font=\small, transform shape=false] {$a$};
+  \draw[thin] (\px,0.04) -- (\px,-0.04) node[below, font=\big, transform shape=false] {$a$};
   \node[circle, fill, minimum size=8pt, inner sep=0pt, transform shape=false] at (\px,\py) {};
-  \node[above right, font=\small, transform shape=false] at (\px,\py) {$m$};
-  \node[font=\small, transform shape=false] at (6.5,0.65) {$y(x)=\frac{\sin x}{x}$};
+  \node[above right, font=\big, transform shape=false] at (\px,\py) {$m$};
+  \node[font=\big, transform shape=false] at (6.5,0.65) {$y(x)=\frac{\sin x}{x}$};
 \end{tikzpicture}
 </script>
 </div>
@@ -73,7 +72,7 @@ Let's do some dimensional analysis. On the left hand side, we have the term $\fr
 Friction is proportional to the normal force, where the proportionality constant is the friction coefficient, i.e., $F_{\mu} = \mu N$. So now the task is to determine $N$. To do this, we need to recall the topic of uniform circular motion: when an object is constrained to move on a circular path at constant speed. Let's pretend for a moment that our particle is undergoing uniform circular motion. Then, a free body diagram would reveal the relationship \begin{equation} \label{normal} N - (mg)\_{\perp} = \frac{m\|\vec{v}\|^2}{r}, \end{equation} 
 where $(mg)\_{\perp}$ is the component of gravity perpendicular to the circular path and pointing away from the center of the circle and $r$ is the radius. Some simple trigonometry reveals that $(mg)\_{\perp} = mg\cos(\theta)$, where $\theta$ is the angle the particle makes with the horizontal. I again apologize for the lack of illustration here but I'm hoping that you might recall or be able to quickly rederive this trigonometric fact. It is exactly the same angle $\theta$ you would find in a standard inclined plane problem. Another trigonometric fact we need is that $\tan(\theta)$ is exactly equal to $\frac{\mathrm{d}y}{\mathrm{d}x}$. This holds for any reasonable $y(x)$, not just a circular arc. Therefore, after writing $\cos(\theta)$ in terms of $\tan(\theta)$, we have
 \begin{equation} \cos(\theta) = \frac{1}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}. \end{equation} That takes care of $(mg)\_{\perp}$, and we would have everything we need to find the normal force if the particle was moving along a circular trajectory with radius $r$. However, we want an expression for the normal force (and therefore friction) to hold for a more general $y(x)$, not just one that traces out a circular arc. For a more general $y(x)$, we can treat the curve locally as part of a circular arc. In other words, if we zoom in enough, the particle appears to be traversing along a circle and from one point to the next along $y(x)$, it is traversing along circles of different radii. As an extreme example, even if the particle were traveling in a straight line, we could still treat it as traversing on a circular arc; one with radius equal to infinity. Hopefully, this makes some sense intuitively but is there a way to properly quantify the radius associated with each point of $y(x)$? The answer is yes (or else we would be in trouble and I would have to end this post here)! Borrowing from differential geometry, the radius we want is \begin{equation} r = \frac{(1 + (\frac{\mathrm{d}y}{\mathrm{d}x})^2)^{\frac{3}{2}}}{\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}. \end{equation} More precisely, this is known as the "radius of curvature." And with that, we have everything we need to find the normal force. Rearranging \eqref{normal} and plugging in what we just found, we have
-\begin{align} N = m\frac{g + \dot{x}^2\left|\frac{\mathrm{d}^2y}{\mathrm{d}x^2}\right|}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}.\end{align} A subtlety we need to account for is the sign on friction. We need to ensure that friction is always opposing the particle motion. If the particle is moving to the right, friction should be to the left and vice versa. To account for this, we tack on a factor of $\mathrm{sgn}(\dot{x})$ to $N$.
+\begin{align} N = m\frac{g + \dot{x}^2\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}.\end{align} A subtlety we need to account for is the sign on friction. We need to ensure that friction is always opposing the particle motion. If the particle is moving to the right, friction should be to the left and vice versa. To account for this, we tack on a factor of $\mathrm{sgn}(\dot{x})$ to $N$.
 
 
 <!-- The direction in which friction opposes the motion of the particle depends on both $y(x)$ and $\vec{v}$. Why is that? Consider the inclined plane $y(x) = x$ from earlier and now let's assume it has kinetic friction coefficient $\mu$ (earlier when we considered the inclined plane we were using the frictionless assumption). After setting it down at the origin, we would expect the particle to start traveling down and to the left while friction would point up and to the right, in order to oppose this motion. However, what if we first gave the particle a hard initial push <em>up</em> the incline? As it is traveling up and to the right, the friction would be pointing down and to the left. <span style="color: red;">You can try thought experiments with different curves and particle velocities to convince yourself that it makes sense to tack on a factor of $\mathrm{sgn}(\vec{v}\cdot y\_{||})$ to $F_{\mu}$ to ensure that friction always opposes the particle velocity, where $\mathrm{sgn}(\cdot)$ is the signum function, $y\_{||} \in \mathbb{R}^2$ is the tangent vector of $y(x)$, and $\cdot$ denotes the dot product </span>. Explicitly, $y\_{||} = \[1 ~~\frac{\mathrm{d}y}{\mathrm{d}x}]^{\mathrm{T}}$, where $^\mathrm{T}$ denotes transpose. -->
