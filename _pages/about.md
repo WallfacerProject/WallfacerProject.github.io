@@ -6,7 +6,7 @@ subtitle: PhD student at New York University <!-- <a href='#'>Affiliations</a>. 
 
 profile:
   align: left
-  image: 10.jpg
+  image: everything_everywhere.png
   image_circular: false # crops the image to make it circular
   more_info: >
     <!-- <p>555 your office number</p> -->
