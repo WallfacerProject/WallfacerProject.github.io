@@ -6,7 +6,6 @@ description: A classical mechanics problem
 tags: physics
 categories: 
 related_posts: false
-tikzjax: true
 ---
 <!-- <d-footnote> -->
 For my first technical post, I'll share a problem from classical mechanics that I thought of while sitting in a lecture one day. I caught the physics bug while taking AP Physics 1 (classical mechanics) in junior year of high school, so I thought this would be an appropriate way to start.
@@ -15,24 +14,6 @@ For my first technical post, I'll share a problem from classical mechanics that 
     A point mass $m$ travels along the smooth function $y(x): \mathbb{R} \to \mathbb{R}$, which has kinetic coefficient of friction $\mu$. Find the equation of motion for this particle.
 </div>
 
-<div style="text-align: center; margin: 20px 0;">
-<script type="text/tikz">
-\begin{tikzpicture}[xscale=0.55, yscale=2.5]
-  \centering
-  \draw[->] (-9.5,0) -- (9.5,0) node[right] {$x$};
-  \draw[->] (0,-0.35) -- (0,1.25) node[above] {$y$};
-  \draw[thick, domain=-9.3:-0.12, samples=150, smooth] plot (\x, {sin(\x r)/\x});
-  \draw[thick, domain=0.12:9.3, samples=150, smooth] plot (\x, {sin(\x r)/\x});
-  \pgfmathsetmacro\px{1.5}
-  \pgfmathsetmacro\py{sin(\px r)/\px}
-  \draw[dashed, thin] (\px,0) -- (\px,\py);
-  \draw[thin] (\px,0.04) -- (\px,-0.04) node[below, font=\big, transform shape=false] {$a$};
-  \node[circle, fill, minimum size=8pt, inner sep=0pt, transform shape=false] at (\px,\py) {};
-  \node[above right, font=\big, transform shape=false] at (\px,\py) {$m$};
-  \node[font=\big, transform shape=false] at (6.5,0.65) {$y(x)=\frac{\sin x}{x}$};
-\end{tikzpicture}
-</script>
-</div>
 
 <p class="red-text">
 I apologize for the lack of illustration here but I'll do my best to further describe the situation. (I'm very much still learning the theme I'm using for this website; the production value will hopefully get better as time goes on.) I'm imagining a point mass using this curve $y(x)$ as a slide. For instance, take $y(x) = \sin(x) / x$. Then we could imagine placing the particle at, say, the point $(a, \sin(a)/a)$, releasing it, then observing its subsequent motion. Our goal is to find the governing differential equation of this motion. Note that I am assuming the static coefficient of friction is zero.
