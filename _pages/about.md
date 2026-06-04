@@ -2,7 +2,7 @@
 layout: about
 title: About
 permalink: /
-subtitle: PhD student at New York University <!-- <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc. -->
+subtitle: PhD Candidate at New York University <!-- <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc. -->
 
 profile:
   align: left
@@ -18,7 +18,7 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-Welcome to my website! My name is pronounced "UM-rith Sing." I'm a 5th year electrical engineering PhD student advised by Professor Thomas Marzetta at the NYU WIRELESS research center. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking the physics of wave propagation into account.
+Welcome to my website! My name is pronounced "UM-rith Sing." I'm a final year electrical engineering PhD candidate advised by Professor Thomas Marzetta at the NYU WIRELESS research center. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking the physics of wave propagation into account.
 
 
 {% comment %}
