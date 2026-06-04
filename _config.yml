@@ -288,6 +288,7 @@ sass:
 
 jekyll-minifier:
   exclude: ["robots.txt", "assets/js/search/*.js", "assets/libs/**/*"]
+  compress_javascript: false
   uglifier_args:
     harmony: true
 
