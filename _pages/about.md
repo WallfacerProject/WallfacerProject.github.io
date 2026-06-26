@@ -18,8 +18,9 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-Welcome to my website! My name is pronounced "UM-rith Sing." I'm a final year electrical engineering PhD candidate advised by Professor Thomas Marzetta at the NYU WIRELESS research center. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking into account the physics of communication.
+Welcome to my website! My name is pronounced "UM-rith Sing." I'm a final year electrical engineering PhD candidate at NYU WIRELESS advised by Professor Thomas Marzetta. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking into account the physics of communication.
 
+I'm from San Jose, California. In my free time, I like trying new restaurants and cocktail bars. Do send your recommendations my way. I also enjoy chess, resistance training, basketball, poker, card magic, and photography. 
 
 {% comment %}
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.

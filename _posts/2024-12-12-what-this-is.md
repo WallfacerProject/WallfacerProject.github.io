@@ -39,4 +39,4 @@ of a proof they then dress it up with epsilons and deltas [...] As we like to sa
 
 Having said that, I will strive to not be egregiously hand-wavy either. For any steps that I am not completely comfortable with, I will be honest and point those out as they arise instead of pretending hand-waviness makes sense. Consider those occurrences as invitations to enlighten me.
 
-Anyway, as I said at the start, I want to be able to talk about a variety of topics here. So even if I begin with a bunch of physics and math, do not be surprised by any rants against American media and car centricity. 
+Anyway, as I said at the start, I want to be able to talk about a variety of topics here. So even if I begin with a bunch of physics and math, do not be surprised by movie recs, rants on American media and car centricity, showerthoughts, etc.. 
