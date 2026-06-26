@@ -1,9 +1,9 @@
 ---
-layout: post
+layout: distill
 title: My Favorite Derivation of the Cauchy-Schwarz Inequality
-date: 2024-12-11 05:40:16
+date: 2026-6-26 05:40:16
 description: 
-tags: 
+tags: math
 categories: 
 related_posts: false
 ---
@@ -24,3 +24,5 @@ Let $\mathbf{v,w} \in V$, an inner product space. Consider the quadratic polynom
         p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
     \end{align}
     Since $p(t) \geq 0$, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality.
+
+    I found this derivation in an excellent book on this and other inequalities titled <em>The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities</em> by John Michael Steele.
