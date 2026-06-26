@@ -117,6 +117,14 @@ html[data-theme="dark"] {
   .repo-img-dark {
     display: block;
   }
+
+  mjx-container {
+    color: var(--global-text-color);
+  }
+
+  .katex {
+    color: var(--global-text-color);
+  }
 }
 
 html[data-theme-setting="dark"] {
