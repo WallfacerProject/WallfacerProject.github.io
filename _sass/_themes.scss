@@ -118,12 +118,14 @@ html[data-theme="dark"] {
     display: block;
   }
 
-  mjx-container {
-    color: var(--global-text-color);
+  mjx-container,
+  mjx-container * {
+    color: var(--global-text-color) !important;
   }
 
-  .katex {
-    color: var(--global-text-color);
+  .katex,
+  .katex * {
+    color: var(--global-text-color) !important;
   }
 }
 
