@@ -11,6 +11,19 @@ $(document).ready(function () {
       .shadowRoot.querySelector("style")
       .sheet.insertRule(".panel {border-color: var(--global-divider-color) !important;}");
   });
+  // Override styles of inline math (d-math shadow DOM hardcodes rgba(0,0,0,0.8)).
+  document.querySelectorAll("d-math").forEach(function (math) {
+    if (math.shadowRoot) {
+      var style = math.shadowRoot.querySelector("style");
+      if (style) {
+        style.sheet.insertRule(".katex, .katex * { color: inherit !important; }");
+      } else {
+        var newStyle = document.createElement("style");
+        newStyle.textContent = ".katex, .katex * { color: inherit !important; }";
+        math.shadowRoot.insertBefore(newStyle, math.shadowRoot.firstChild);
+      }
+    }
+  });
   // Override styles of the citations.
   document.querySelectorAll("d-cite").forEach(function (cite) {
     cite.shadowRoot.querySelector("div > span").setAttribute("style", "color: var(--global-theme-color);");
