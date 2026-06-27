@@ -28,7 +28,8 @@ d-article {
   h5,
   h6,
   li,
-  table {
+  table,
+  d-math {
     color: var(--global-text-color) !important;
   }
   h1,
