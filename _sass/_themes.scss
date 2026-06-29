@@ -121,10 +121,21 @@ html[data-theme="dark"] {
   mjx-container,
   mjx-container * {
     color: var(--global-text-color) !important;
+    fill: var(--global-text-color) !important;
   }
 
   .katex,
   .katex * {
+    color: var(--global-text-color) !important;
+  }
+
+  .katex svg path,
+  .katex svg rect {
+    fill: var(--global-text-color) !important;
+  }
+
+  d-math,
+  d-math * {
     color: var(--global-text-color) !important;
   }
 }

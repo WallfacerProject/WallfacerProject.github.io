@@ -4,6 +4,6 @@ module.exports = {
   output: "_site/assets/css/",
   skippedContentGlobs: ["_site/assets/**/*.html"],
   safelist: {
-    greedy: [/^mjx-/, /^katex/],
+    greedy: [/mjx/, /katex/, /d-math/],
   },
 };
