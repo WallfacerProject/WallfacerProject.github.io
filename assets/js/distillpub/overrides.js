@@ -1,3 +1,25 @@
+// Wrap DMath.katexLoadedCallback to fix dark mode colors after KaTeX renders.
+// Must run before d-front-matter is parsed (which triggers DMath.addKatex),
+// so this is placed at the top level, not inside $(document).ready.
+if (window.DMath) {
+  var _originalKatexCallback = DMath.katexLoadedCallback;
+  DMath.katexLoadedCallback = function () {
+    _originalKatexCallback.call(DMath);
+    _applyKatexDarkMode();
+  };
+}
+
+function _applyKatexDarkMode() {
+  var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  document.querySelectorAll(".katex").forEach(function (el) {
+    if (isDark) {
+      el.style.setProperty("color", "var(--global-text-color)", "important");
+    } else {
+      el.style.removeProperty("color");
+    }
+  });
+}
+
 $(document).ready(function () {
   // Override styles of the footnotes.
   document.querySelectorAll("d-footnote").forEach(function (footnote) {
@@ -37,5 +59,11 @@ $(document).ready(function () {
       .querySelector("d-hover-box")
       .shadowRoot.querySelector("style")
       .sheet.insertRule(".panel {border-color: var(--global-divider-color) !important;}");
+  });
+
+  // Re-apply KaTeX dark mode colors when the user toggles the theme.
+  new MutationObserver(_applyKatexDarkMode).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
   });
 });
