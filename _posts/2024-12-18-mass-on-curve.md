@@ -8,7 +8,7 @@ categories:
 related_posts: false
 ---
 <!-- <d-footnote> -->
-For my first technical post, I'll share a problem from classical mechanics that I thought of while sitting in a lecture one day. I caught the physics bug while taking AP Physics 1 (classical mechanics) in junior year of high school, so I thought this would be an appropriate way to start.
+For my first technical post, I'll share a classical mechanics problem that I thought of while sitting in a lecture one day. I caught the physics bug while taking AP Physics 1 (classical mechanics) in junior year of high school, so I thought this would be an appropriate way to start.
 
 <div style="border: 2px solid black; padding: 10px; width: 700px; margin: 20px auto; text-align: center;">
     A point mass $m$ travels along the smooth function $y(x): \mathbb{R} \to \mathbb{R}$, which has kinetic coefficient of friction $\mu$. Find the equation of motion for this particle.
