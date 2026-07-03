@@ -22,9 +22,10 @@ related_posts: false
 
 Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$
 
-\begin{equation*}
+\begin{equation}
 p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
-\end{equation*}
+\tag*{}
+\end{equation}
 
 Since $p(t) \geq 0$, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality.
 
