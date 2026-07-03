@@ -1,23 +1,25 @@
-// Wrap DMath.katexLoadedCallback to fix dark mode colors after KaTeX renders.
-// Must run before d-front-matter is parsed (which triggers DMath.addKatex),
-// so this is placed at the top level, not inside $(document).ready.
+function _patchDistillMathColors() {
+  document.querySelectorAll(".katex").forEach(function (el) {
+    el.style.setProperty("color", "var(--global-text-color)", "important");
+  });
+
+  document.querySelectorAll("d-math").forEach(function (math) {
+    if (!math.shadowRoot || math.shadowRoot.querySelector("style[data-al-folio-math-color]")) return;
+
+    var style = document.createElement("style");
+    style.setAttribute("data-al-folio-math-color", "");
+    style.textContent = ".katex, .katex * { color: inherit !important; }";
+    math.shadowRoot.appendChild(style);
+  });
+}
+
 if (window.DMath) {
   var _originalKatexCallback = DMath.katexLoadedCallback;
   DMath.katexLoadedCallback = function () {
     _originalKatexCallback.call(DMath);
-    _applyKatexDarkMode();
+    _patchDistillMathColors();
+    window.setTimeout(_patchDistillMathColors, 0);
   };
-}
-
-function _applyKatexDarkMode() {
-  var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  document.querySelectorAll(".katex").forEach(function (el) {
-    if (isDark) {
-      el.style.setProperty("color", "var(--global-text-color)", "important");
-    } else {
-      el.style.removeProperty("color");
-    }
-  });
 }
 
 $(document).ready(function () {
@@ -33,19 +35,7 @@ $(document).ready(function () {
       .shadowRoot.querySelector("style")
       .sheet.insertRule(".panel {border-color: var(--global-divider-color) !important;}");
   });
-  // Override styles of inline math (d-math shadow DOM hardcodes rgba(0,0,0,0.8)).
-  document.querySelectorAll("d-math").forEach(function (math) {
-    if (math.shadowRoot) {
-      var style = math.shadowRoot.querySelector("style");
-      if (style) {
-        style.sheet.insertRule(".katex, .katex * { color: inherit !important; }");
-      } else {
-        var newStyle = document.createElement("style");
-        newStyle.textContent = ".katex, .katex * { color: inherit !important; }";
-        math.shadowRoot.insertBefore(newStyle, math.shadowRoot.firstChild);
-      }
-    }
-  });
+  _patchDistillMathColors();
   // Override styles of the citations.
   document.querySelectorAll("d-cite").forEach(function (cite) {
     cite.shadowRoot.querySelector("div > span").setAttribute("style", "color: var(--global-theme-color);");
@@ -61,9 +51,8 @@ $(document).ready(function () {
       .sheet.insertRule(".panel {border-color: var(--global-divider-color) !important;}");
   });
 
-  // Re-apply KaTeX dark mode colors when the user toggles the theme.
-  new MutationObserver(_applyKatexDarkMode).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
+  new MutationObserver(_patchDistillMathColors).observe(document.body, {
+    childList: true,
+    subtree: true,
   });
 });
