@@ -20,9 +20,10 @@ related_posts: false
   }
 </style>
 
-Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$\begin{equation}
-        p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
-    \end{equation}
-    Since $p(t) \geq 0$, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality.
+Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$
+$$
+p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
+$$
+Since $p(t) \geq 0$, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality.
 
 I found this derivation in an excellent book on this and other inequalities titled <em>The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities</em> by John Michael Steele.

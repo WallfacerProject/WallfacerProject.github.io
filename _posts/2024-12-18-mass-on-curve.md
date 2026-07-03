@@ -10,7 +10,7 @@ related_posts: false
 <!-- <d-footnote> -->
 For my first technical post, I'll share a classical mechanics problem that I thought of while sitting in a lecture one day. I caught the physics bug while taking AP Physics 1 (classical mechanics) in junior year of high school, so I thought this would be an appropriate way to start.
 
-<div style="border: 2px solid black; padding: 10px; width: 700px; margin: 20px auto; text-align: center;">
+<div style="border: 2px solid black; padding: 10px; width: 100%; max-width: 700px; margin: 20px auto; text-align: center; box-sizing: border-box; overflow-x: auto;">
     A point mass $m$ travels along the smooth function $y(x): \mathbb{R} \to \mathbb{R}$, which has kinetic coefficient of friction $\mu$. Find the equation of motion for this particle.
 </div>
 
@@ -34,7 +34,7 @@ where $v_x$ is the velocity in the $x$-direction and $v_y$ is the velocity in th
 
 Meanwhile, the potential energy is $mgy$. Therefore, the Lagrangian is \begin{equation} \label{lagrangian} L = \frac{1}{2}m\dot{x}^2\left[1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2\right] - mgy.\end{equation} Now we compute the different terms in the Euler-Lagrange equation: \begin{align} \frac{\partial L}{\partial \dot{x}} &= m \dot{x}\left[1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2 \right] \newline \implies \frac{\mathrm{d}}{\mathrm{d}t}\frac{\partial L}{\partial \dot{x}} &= m \ddot{x}\left[1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2 \right] + 2m\dot{x}^2 \frac{\mathrm{d}y}{\mathrm{d}x} \frac{\mathrm{d}^2y}{\mathrm{d}x^2}\end{align} and \begin{equation} \frac{\partial L}{\partial x} = m \dot{x}^2 \frac{\mathrm{d}y}{\mathrm{d}x} \frac{\mathrm{d}^2y}{\mathrm{d}x^2} - mg \frac{\mathrm{d}y}{\mathrm{d}x}. \end{equation} Plugging into \eqref{EL} and rearranging, we have 
 
-<div style="border: 2px solid black; padding: 10px; width: 400px; margin: 20px auto; text-align: center;">
+<div style="border: 2px solid black; padding: 10px; width: 100%; max-width: 400px; margin: 20px auto; text-align: center; box-sizing: border-box; overflow-x: auto;">
 \begin{equation} \ddot{x} = - \frac{\mathrm{d}y}{\mathrm{d}x} \frac{g + \dot{x}^2\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}. \label{frictionless} \end{equation}
 </div>
 <p class="red-text">
@@ -60,7 +60,7 @@ where $(mg)\_{\perp}$ is the component of gravity perpendicular to the circular 
 
 We now have everything we need to plug into \eqref{modified2}, which yields \begin{align} m\ddot{x}\left[1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2\right] + m\dot{x}^2\frac{\mathrm{d}y}{\mathrm{d}x}\frac{\mathrm{d}^2y}{\mathrm{d}x^2} + mg\frac{\mathrm{d}y}{\mathrm{d}x} &= -\mu N \mathrm{sgn}(\dot{x})\sqrt{1+\left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2} \newline &= -\mu m \mathrm{sgn}(\dot{x})\left(g + \dot{x}^2\frac{\mathrm{d}^2y}{\mathrm{d}x^2}\right).\end{align} 
 After rearranging, we have 
-<div style="border: 2px solid black; padding: 10px; width: 590px; margin: 20px auto; text-align: center;">
+<div style="border: 2px solid black; padding: 10px; width: 100%; max-width: 590px; margin: 20px auto; text-align: center; box-sizing: border-box; overflow-x: auto;">
 \begin{equation}
 \ddot{x}
 =

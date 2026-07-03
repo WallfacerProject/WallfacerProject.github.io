@@ -34,6 +34,11 @@ d-article {
   d-math {
     color: var(--global-text-color) !important;
   }
+  d-math[block] {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
   h1,
   h2,
   hr,
