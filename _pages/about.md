@@ -2,7 +2,7 @@
 layout: about
 title: About
 permalink: /
-subtitle: PhD Candidate at New York University <!-- <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc. -->
+# subtitle: I enjoy problem solving and a good hang. <!-- <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc. -->
 
 profile:
   align: left
@@ -18,9 +18,13 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-Welcome to my website! My name is pronounced "UM-rith Sing." I'm a final year electrical engineering PhD candidate at NYU WIRELESS advised by Professor Thomas Marzetta. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking into account the physics of communication.
+Hi, I'm Amrit Singh (pronounced "UM-rith Sing"). I completed my Ph.D. in electrical and computer engineering Ph.D. at New York University in August 2026, where I was advised by Professor Thomas Marzetta. My research is in [electromagnetic information theory](http://arxiv.org/pdf/2212.02882), which aims to study information theory while taking into account the physics of communication.
 
-I'm from San Jose, California. In my free time, I like trying new restaurants and cocktail bars. Do send your recommendations my way. I also enjoy chess, lifting, basketball, poker, card magic, and photography. 
+I'm from San Jose, California. I earned my B.S. in Electrical Engineering from
+Santa Clara University in June 2020 and an M.S. degree in Electrical and Computer
+Engineering from New York University in May 2023. 
+
+Outside of research, I enjoy trying new restaurants and cocktail bars. Do send your recommendations my way. Among other things, I also enjoy chess, lifting, basketball, poker, card magic, and photography. 
 
 {% comment %}
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.

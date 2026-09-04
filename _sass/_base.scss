@@ -2,6 +2,13 @@
  * Styles for the base elements of the theme.
  ******************************************************************************/
 
+// The fixed navbar (~75px tall, ~57px once scrolled) would otherwise hide the top
+// of anchor targets (section headings, MathJax equation-reference links) on in-page
+// jumps. Reserve space at the top so targets land just below it.
+html {
+  scroll-padding-top: 100px;
+}
+
 // Typography
 
 p,
