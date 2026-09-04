@@ -1,7 +1,8 @@
 ---
 layout: post
 title: What this is and what this isn't
-date: 2024-12-12 05:40:16
+date: 2026-9-1 05:40:16
+# date: 2024-12-12 05:40:16
 description: About this blog
 tags: 
 categories: 

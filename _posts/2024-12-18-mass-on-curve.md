@@ -1,7 +1,8 @@
 ---
 layout: distill
 title: Point Mass on a Curve
-date: 2024-12-18 05:40:16
+date: 2026-9-3 05:40:16
+#date: 2024-12-18 05:40:16
 description: A classical mechanics problem
 tags: physics
 categories: 
