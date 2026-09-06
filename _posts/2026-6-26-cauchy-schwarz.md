@@ -21,7 +21,7 @@ related_posts: false
   }
 </style>
 
-Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$
+Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial $p(t)$ defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$:
 
 \begin{equation}
 p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
