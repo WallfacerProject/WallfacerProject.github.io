@@ -90,38 +90,7 @@ Let's do some dimensional analysis. On the left-hand side of \eqref{modified2}, 
 <div class="row justify-content-center">
     <div class="col-12 d-flex justify-content-center">
       <div class="tikzfig">
-        <!--
-          Free-body diagram, pre-rendered from TikZ to a static SVG. We ship the
-          rendered SVG rather than a live <script type="text/tikz"> block so that
-          mobile Safari does not have to run the TikZJax WebAssembly TeX engine,
-          which exhausted memory and crashed the page on iOS. Only the lightweight
-          Computer Modern webfonts (fonts.css, linked just above) are needed for
-          the labels. To regenerate: paste the source below into a TikZJax page,
-          let it render, and copy the resulting <svg> back here.
-
-          \begin{tikzpicture}[scale=4.5, line join=round]
-            \definecolor{curveteal}{RGB}{72,209,204}
-            \draw[curveteal, very thick, domain=-0.92:1.02, samples=60] plot (\x, {0.625*\x - 0.34*\x*\x});
-            \node[right] at (1.06,0.24) {$y(x)$};
-            \draw[black, very thick, dashed] (-1.12,-0.70) -- (1.16,0.725);
-            \node at (0.50,0.47) {\small \mbox{tangent}};
-            \draw[dashed] (0,0) -- (1.12,0);
-            \draw (0.62,0) arc (0:32:0.62);
-            \node at (0.28,0.08) {$\theta$};
-            \draw[->, thick] (0,0) -- (0,-1.0);
-            \node[below] at (0,-1.04) {$mg$};
-            \draw[->, very thick, orange] (0,0) -- (0.449,-0.719);
-            \draw[gray, dashed] (0,-1.0) -- (0.449,-0.719);
-            \draw[gray, dashed] (0,-1.0) -- (-0.449,-0.281);
-            \draw[->, very thick, orange] (0,0) -- (-0.449,-0.281);
-            \node[right, orange] at (0.48,-0.72) {\small $mg\cos\theta$};
-            \node[orange] at (-0.60,-0.20) {\small $mg\sin\theta$};
-            \draw[->, thick, blue] (0,0) -- (-0.503,0.806);
-            \node[blue] at (-0.60,0.88) {$N$};
-            \fill[red] (0,0) circle (2pt);
-            \node at (-0.19,0.05) {$m$};
-          \end{tikzpicture}
-        -->
+        <!-- Free-body diagram: static SVG pre-rendered from assets/img/mass-on-curve/free_body_diagram.tikz, shipped static so mobile Safari need not run the TikZJax WASM engine. -->
         <svg xmlns="http://www.w3.org/2000/svg" width="305.34103pt" height="265.69693pt" viewBox="-72 -72 305.34103 265.69693" style="overflow: visible; max-width: 100%; height: auto; display: block; margin: 0 auto;">
 <g transform="translate(71.7311553955078,47.15307617187499)">
 <g stroke-miterlimit="10" transform="scale(1,-1)"><g stroke="#000" fill="#000">
