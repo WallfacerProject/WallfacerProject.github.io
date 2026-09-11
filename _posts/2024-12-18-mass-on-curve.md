@@ -7,7 +7,6 @@ description: A classical mechanics problem
 tags: physics
 categories: 
 related_posts: false
-tikzjax: true
 toc:
   - name: "Equation of motion derivation: frictionless case"
   - name: Adding friction
@@ -87,10 +86,19 @@ are the generalized force and dissipation function, respectively. This is the mo
 
 Let's do some dimensional analysis. On the left-hand side of \eqref{modified2}, we have the term $\frac{\partial L}{\partial x}$. As stated earlier, the Lagrangian has units of joules. Therefore, this term has units of joules per meter, or newtons. That implies the right-hand side must also have units of newtons and they must be contained in the $c$ term, since $\sqrt{1 + (\frac{\mathrm{d}y}{\mathrm{d}x})^2}$ is unitless. This is the third and final fast one I will pull: $c$ is the force of friction. Of course, friction had to show up somewhere and $c$ has units of force so it feels morally correct to put them together but it is reasonable to question why $c$ is <em>exactly</em> equal to friction. It could have been some dimensionless constant times the force of friction, where that constant is not equal to one. Yet, that is not the case. At this point, I have to confess my ignorance. Please enlighten me if you have an explanation for this. Allow me to set $c = F_{\mu_k}$ to denote this relationship and move onward.
 
+<link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
 <div class="row justify-content-center">
     <div class="col-12 d-flex justify-content-center">
       <div class="tikzfig">
-        <script type="text/tikz">
+        <!--
+          Free-body diagram, pre-rendered from TikZ to a static SVG. We ship the
+          rendered SVG rather than a live <script type="text/tikz"> block so that
+          mobile Safari does not have to run the TikZJax WebAssembly TeX engine,
+          which exhausted memory and crashed the page on iOS. Only the lightweight
+          Computer Modern webfonts (fonts.css, linked just above) are needed for
+          the labels. To regenerate: paste the source below into a TikZJax page,
+          let it render, and copy the resulting <svg> back here.
+
           \begin{tikzpicture}[scale=4.5, line join=round]
             \definecolor{curveteal}{RGB}{72,209,204}
             \draw[curveteal, very thick, domain=-0.92:1.02, samples=60] plot (\x, {0.625*\x - 0.34*\x*\x});
@@ -113,7 +121,159 @@ Let's do some dimensional analysis. On the left-hand side of \eqref{modified2}, 
             \fill[red] (0,0) circle (2pt);
             \node at (-0.19,0.05) {$m$};
           \end{tikzpicture}
-        </script>
+        -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="305.34103pt" height="265.69693pt" viewBox="-72 -72 305.34103 265.69693" style="overflow: visible; max-width: 100%; height: auto; display: block; margin: 0 auto;">
+<g transform="translate(71.7311553955078,47.15307617187499)">
+<g stroke-miterlimit="10" transform="scale(1,-1)"><g stroke="#000" fill="#000">
+ <g stroke-width="0.4">
+ <g stroke-linejoin="round">
+ <g stroke="#48d1cc" fill="#48d1cc">
+ <g stroke-width="1.2">
+ <path d=" M -117.7941 -110.4658 L -113.58586 -105.24744 L -109.37755 -100.12685 L -105.1693 -95.09999 L -100.96106 -90.16692 L -96.7528 -85.32565 L -92.54457 -80.58011 L -88.33626 -75.93028 L -84.128 -71.37233 L -79.91977 -66.90817 L -75.71152 -62.53967 L -71.5032 -58.26303 L -67.29497 -54.08212 L -63.08672 -49.995 L -58.87848 -46.00168 L -54.67023 -42.10406 L -50.46191 -38.29826 L -46.25368 -34.5862 L -42.04543 -30.96991 L -37.83719 -27.44742 L -33.62894 -24.01872 L -29.42062 -20.68375 L -25.21239 -17.44258 L -21.00414 -14.29712 L -16.7959 -11.24539 L -12.58765 -8.28561 L -8.37933 -5.42148 L -4.1711 -2.65114 L 0.03708 0.02142 L 4.24532 2.60616 L 8.45363 5.09326 L 12.66188 7.48848 L 16.87012 9.788 L 21.07837 11.99562 L 25.2866 14.1076 L 29.49492 16.12381 L 33.70317 18.0482 L 37.9114 19.8788 L 42.11966 21.61566 L 46.3279 23.25482 L 50.53621 24.80411 L 54.74446 26.2576 L 58.9527 27.61736 L 63.16095 28.88339 L 67.36919 30.05365 L 71.5775 31.1321 L 75.78575 32.11482 L 79.99399 33.00375 L 84.20224 33.79889 L 88.41055 34.50221 L 92.61879 35.10783 L 96.82704 35.62166 L 101.03528 36.03975 L 105.24353 36.36604 L 109.45184 36.59656 L 113.66008 36.73334 L 117.86833 36.77632 L 122.07657 36.7275 L 126.28482 36.57898 L 130.49313 36.34064  " fill="none"></path>
+ </g>
+ </g>
+ <g transform="translate(139.25223,28.22964)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi10;" font-size="10">y</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="80.32608413696288" style="font-family: cmr10;" font-size="10">(</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="84.21498680114745" style="font-family: cmmi10;" font-size="10">x</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="89.93027114868163" style="font-family: cmr10;" font-size="10">)</text>
+</g> </g>
+ </g></g>
+ <g stroke="#000" fill="#000">
+ <g stroke-width="1.2">
+ <g stroke-dasharray="3.0,3.0" stroke-dashoffset="0.0">
+ <path d=" M -143.40117 -89.6257 L 148.52376 92.8278  " fill="none"></path>
+ </g>
+ </g>
+ </g>
+ <g transform="translate(48.7288,58.28482)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmr9;" font-size="9">tangen</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="102.04694843292233" style="font-family: cmr9;" font-size="9">t</text>
+</g> </g>
+ </g></g>
+ <g stroke-dasharray="3.0,3.0" stroke-dashoffset="0.0">
+ <path d=" M 0.0 0.0 L 143.40117 0.0  " fill="none"></path>
+ </g>
+ <path d=" M 79.38246 0.0 C 79.38246 14.8733 75.20111 29.45349 67.32053 42.06654  " fill="none"></path>
+ <g transform="translate(33.36412,6.77095)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi10;" font-size="10">θ</text>
+</g> </g>
+ </g></g>
+ <g stroke-width="0.8">
+ <path d=" M 0.0 0.0 L 0.0 -127.23735  " fill="none"></path>
+ <g transform="matrix(0.0,-1.0,1.0,0.0,0.0,-127.63734)">
+ <g stroke-dasharray="none" stroke-dashoffset="0.0">
+ <g stroke-linecap="round">
+ <g stroke-linejoin="round">
+ <path d=" M -2.56 3.12257 C -2.0923 1.24901 -1.05006 0.3643 0.0 0.0 C -1.05006 -0.3643 -2.0923 -1.24901 -2.56 -3.12257  " fill="none"></path>
+ </g>
+ </g>
+ </g>
+  </g>
+ </g>
+ <g transform="translate(-6.9543,-140.99644)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi10;" font-size="10">mg</text>
+</g> </g>
+ </g></g>
+ <g stroke-width="1.2">
+ <g stroke="#ff8000" fill="#ff8000">
+ <path d=" M 0.0 0.0 L 56.85378 -91.04028  " fill="none"></path>
+ <g transform="matrix(0.5297,-0.84818,0.84818,0.5297,57.17159,-91.54918)">
+ <g stroke-dasharray="none" stroke-dashoffset="0.0">
+ <g stroke-linecap="round">
+ <g stroke-linejoin="round">
+ <path d=" M -3.04 3.84514 C -2.4846 1.53802 -1.24696 0.4486 0.0 0.0 C -1.24696 -0.4486 -2.4846 -1.53802 -3.04 -3.84514  " fill="none"></path>
+ </g>
+ </g>
+ </g>
+  </g>
+ </g>
+ </g>
+ <g stroke="#808080" fill="#808080">
+ <g stroke-dasharray="3.0,3.0" stroke-dashoffset="0.0">
+ <path d=" M 0.0 -128.03734 L 57.4894 -92.05807  " fill="none"></path>
+ </g>
+ </g>
+ <g stroke="#808080" fill="#808080">
+ <g stroke-dasharray="3.0,3.0" stroke-dashoffset="0.0">
+ <path d=" M 0.0 -128.03734 L -57.4894 -35.97919  " fill="none"></path>
+ </g>
+ </g>
+ <g stroke-width="1.2">
+ <g stroke="#ff8000" fill="#ff8000">
+ <path d=" M 0.0 0.0 L -56.47223 -35.3426  " fill="none"></path>
+ <g transform="matrix(-0.84766,-0.5305,0.5305,-0.84766,-56.9808,-35.66089)">
+ <g stroke-dasharray="none" stroke-dashoffset="0.0">
+ <g stroke-linecap="round">
+ <g stroke-linejoin="round">
+ <path d=" M -3.04 3.84514 C -2.4846 1.53802 -1.24696 0.4486 0.0 0.0 C -1.24696 -0.4486 -2.4846 -1.53802 -3.04 -3.84514  " fill="none"></path>
+ </g>
+ </g>
+ </g>
+  </g>
+ </g>
+ </g>
+ <g stroke="#ff8000" fill="#ff8000">
+ <g stroke="#ff8000" fill="#ff8000">
+ </g>
+ <g transform="translate(64.99028,-94.43703)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#ff8000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi9;" font-size="9">mg</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="89.48902893066405" style="font-family: cmr9;" font-size="9">cos</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="103.41532897949216" style="font-family: cmmi9;" font-size="9">θ</text>
+</g> </g>
+ </g></g>
+ </g>
+ <g stroke="#ff8000" fill="#ff8000">
+ <g stroke="#ff8000" fill="#ff8000">
+ </g>
+ <g transform="translate(-92.77806,-27.85707)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#ff8000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi9;" font-size="9">mg</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="89.48902893066405" style="font-family: cmr9;" font-size="9">sin</text>
+<text alignment-baseline="baseline" y="47.15307617187499" x="102.38755798339841" style="font-family: cmmi9;" font-size="9">θ</text>
+</g> </g>
+ </g></g>
+ </g>
+ <g stroke-width="0.8">
+ <g stroke="#00f" fill="#00f">
+ <path d=" M 0.0 0.0 L -63.97998 102.51936  " fill="none"></path>
+ <g transform="matrix(-0.52942,0.84834,-0.84834,-0.52942,-64.19173,102.85867)">
+ <g stroke-dasharray="none" stroke-dashoffset="0.0">
+ <g stroke-linecap="round">
+ <g stroke-linejoin="round">
+ <path d=" M -2.56 3.12257 C -2.0923 1.24901 -1.05006 0.3643 0.0 0.0 C -1.05006 -0.3643 -2.0923 -1.24901 -2.56 -3.12257  " fill="none"></path>
+ </g>
+ </g>
+ </g>
+  </g>
+ </g>
+ </g>
+ <g stroke="#00f" fill="#00f">
+ <g stroke="#00f" fill="#00f">
+ </g>
+ <g transform="translate(-81.38562,109.25679)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#00f">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi10;" font-size="10">N</text>
+</g> </g>
+ </g></g>
+ </g>
+ <g stroke="#f00" fill="#f00">
+ <path d=" M 0.0 0.0 M 9.0 0.0 C 9.0 4.97063 4.97063 9.0 0.0 9.0 C -4.97063 9.0 -9.0 4.97063 -9.0 0.0 C -9.0 -4.97063 -4.97063 -9.0 0.0 -9.0 C 4.97063 -9.0 9.0 -4.97063 9.0 0.0 Z M 0.0 0.0  " stroke="none"></path>
+ </g>
+ <g transform="translate(-28.71742,4.24944)">
+ <g stroke="none" transform="scale(-1.00375,1.00375)translate(75.06448364257811,47.15307617187499)scale(-1,-1)"><g fill="#000">
+ <g stroke="none"> <text alignment-baseline="baseline" y="47.15307617187499" x="75.06448364257811" style="font-family: cmmi10;" font-size="10">m</text>
+</g> </g>
+ </g></g>
+ </g>
+ </g>
+ </g>
+ </g></g></svg>
       </div>
     </div>
 </div>
