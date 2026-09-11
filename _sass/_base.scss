@@ -162,6 +162,39 @@ ul.task-list input[type="checkbox"] {
   text-align: center;
 }
 
+// Numbered display equations: MathJax puts an inline `min-width` on the
+// container that is wide enough for the equation *plus* a tag gutter on each
+// side. On a phone that min-width exceeds the text column, and the excess is
+// silently clipped -- by `d-article { overflow-x: hidden }` on distill posts,
+// and by the viewport edge everywhere else -- so the equation number and the
+// right-hand end of the equation disappear with no way to reach them.
+//
+// Drop the forced min-width and let the container scroll instead, so a wide
+// equation stays fully reachable. Equations that already fit are unaffected:
+// without the min-width the container is simply as wide as its column.
+//
+// Scoped to the same breakpoint the distill stylesheet already uses for its
+// own `d-math[block]` overflow rule. Above it, a wide equation spills into the
+// page margin but stays inside the viewport, so it is still readable and the
+// desktop layout is left exactly as it is.
+@media (max-width: 768px) {
+  mjx-container[jax="CHTML"][display="true"] {
+    min-width: 0 !important;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    // MathJax's hidden MathML copy is absolutely positioned at full size, so
+    // once the container scrolls it inflates the scrollable area vertically.
+    // Collapse its box; screen readers still read its contents.
+    mjx-assistive-mml {
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+    }
+  }
+}
+
 // Caption
 
 .caption {
@@ -611,15 +644,6 @@ footer.sticky-bottom {
         background-color: var(--global-theme-color);
       }
     }
-  }
-}
-
-// Distill
-
-.distill {
-  a:hover {
-    border-bottom-color: var(--global-theme-color);
-    text-decoration: none;
   }
 }
 

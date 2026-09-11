@@ -7,6 +7,7 @@ description: A classical mechanics problem
 tags: physics
 categories: 
 related_posts: false
+tikzjax: true
 toc:
   - name: "Equation of motion derivation: frictionless case"
   - name: Adding friction
@@ -47,9 +48,9 @@ To make the solution method a little more digestible, let's begin with the frict
 
 Why do we care about this action thing? Well, whatever mechanism that created the universe that we live in decided that between the points $x(t_0) = x_0$ and $x(t_1) = x_1$, the particle will follow the trajectory $x(t)$ for which the action $S$ is stationary, i.e., $\delta S = 0$. Despite having known this for about 8 years now, I still find this principle a bit magical. The principle of least action is equivalent to Newton's second law, but then you might say it is also not obvious why the second law should be in the form that it is. (Why is it so simple? Why is it a second order differential equation? Why not third order? Fourth? It could have been an integro-differential equation. It could have been nonlinear. The possibilities are endless.) Again, it appears that these are simply the rules of the game that have been laid out, and what's left for us to do is to play by them, however magical they may seem. We don't ask why the bishop moves diagonally or why the knight jumps in the shape of an "L"; we play chess! 
 
-In classical mechanics, the Lagrangian takes a simple form<d-footnote>To stress the point, let me clearly state that this Lagrangian is specifically for classical mechanics. If we were dealing with electromagnetism for example, the Lagrangian would be something else (albeit similar).</d-footnote>: it is the kinetic energy of the particle minus its potential energy. Plugging this in, we have \begin{equation} S[x(t)] = \int_{t_0}^{t_1} \frac{1}{2} m \|\vec{v}\|^2 - mgy ~\mathrm{d}t\end{equation} where we have switched from $q(t)$ to $x(t)$ to show that the generalized coordinate we're using is the position along the $x$-axis in Cartesian coordinates, $\vec{v} \in \mathbb{R}^2$ is the particle velocity<d-footnote>Therefore $|\vec{v}|$ is speed.</d-footnote>, $g$ is the acceleration due to gravity at sea level, and $y$ is the height of the particle as defined in the problem statement. In the interest of cleaner notation, we have suppressed the dependence of $v$ and $y$ on $x(t)$, but this dependence should be obvious from context. From this post onward, you can safely assume we are working with metric units unless I lose my mind and switch to something else, in which case I will point it out. Knowing that we're using metric units, you can see that the Lagrangian has units of joules and that the action has units of joule-seconds. To minimize the action, we use variational calculus. I can make a post on that if requested. 
+In classical mechanics, the Lagrangian takes a simple form<d-footnote>To stress the point, let me clearly state that this Lagrangian is specifically for classical mechanics. If we were dealing with electromagnetism for example, the Lagrangian would be something else (albeit similar).</d-footnote>: it is the kinetic energy of the particle minus its potential energy. Plugging this in, we have \begin{equation} S[x(t)] = \int_{t_0}^{t_1} \frac{1}{2} m \|\vec{v}\|^2 - mgy ~\mathrm{d}t\end{equation} where we have switched from $q(t)$ to $x(t)$ to show that the generalized coordinate we're using is the position along the $x$-axis in Cartesian coordinates, $\vec{v} \in \mathbb{R}^2$ is the particle velocity<d-footnote>Therefore $|\vec{v}|$ is speed.</d-footnote>, $g$ is the acceleration due to gravity at sea level, and $y$ is the height of the particle as defined in the problem statement. In the interest of cleaner notation, we have suppressed the dependence of $v$ and $y$ on $x(t)$, but this dependence should be obvious from context. From this post onward, you can safely assume we are working with metric units unless I lose my mind and switch to something else, in which case I will point it out. Knowing that we're using metric units, you can see that the Lagrangian has units of joules and that the action has units of joule-seconds. To find the path for which the action is stationary, we use variational calculus. I can make a post on that if requested. 
 
-Variational calculus tells us that the minimizing $x(t)$ should satisfy the Euler-Lagrange equation, \begin{equation} \label{EL} \frac{\mathrm{d}}{\mathrm{d}t}\frac{\partial L}{\partial \dot{x}} - \frac{\partial L}{\partial x} = 0. \end{equation} As stated, the Lagrangian for our problem is simply the kinetic energy minus the potential energy. The kinetic energy is \begin{align} \frac{1}{2} m \|\vec{v}\|^2 &= \frac{1}{2} m (v_x^2 + v_y^2), \end{align} 
+Variational calculus tells us that the $x(t)$ for which $S$ is stationary should satisfy the Euler-Lagrange equation, \begin{equation} \label{EL} \frac{\mathrm{d}}{\mathrm{d}t}\frac{\partial L}{\partial \dot{x}} - \frac{\partial L}{\partial x} = 0. \end{equation} As stated, the Lagrangian for our problem is simply the kinetic energy minus the potential energy. The kinetic energy is \begin{align} \frac{1}{2} m \|\vec{v}\|^2 &= \frac{1}{2} m (v_x^2 + v_y^2), \end{align} 
 where $v_x$ is the velocity in the $x$-direction and $v_y$ is the velocity in the $y$-direction. Since $x(t)$ is the $x$-coordinate of the position of the particle, $v_x$ is simply $\dot{x}(t)$. Similarly, $v_y$ is $\dot{y}(t)$, which we can write in terms of $\dot{x}(t)$ by using the chain rule, yielding $\dot{y}(t) = \frac{\mathrm{d}y}{\mathrm{d}x}\dot{x}(t)$. Therefore, \begin{align} \vec{v} &= \dot{x}\begin{bmatrix}
            1 \newline \frac{\mathrm{d}y}{\mathrm{d}x}
          \end{bmatrix} \newline \implies \|\vec{v}\|^2 &= \dot{x}^2\left[1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2\right]
@@ -73,7 +74,7 @@ Awesome! We now have a compact description of how a particle would traverse the 
 <div class="caption">
     <span>A point mass sliding on the frictionless parabola $y = x^2$, released from rest at $x = -2$. With no energy lost, it oscillates forever.</span>
 </div>
-Only for a very simple curve $y(x)$ could we ever hope to get a closed-form solution for $x(t)$. For $y(x) = x$, $\dot{x}(0) = 0$, $x(0) = 0$, we obtain $x(t) = -gt^2/4$ (and therefore $y(t) = -gt^2/4$). Let's do a couple of sanity checks. For one, these expressions have the correct units of meters, since $g$ has units of meters per seconds squared and $t^2$ has units of seconds squared, giving meters once multiplied together. Also, as $t$ increases, notice that $x(t)$ and $y(t)$ become increasingly negative. That's exactly what we should expect if we place the particle at the origin on the curve $y(x) = x$. It should slide down and to the left, which is exactly what our expressions for $x(t)$ and $y(t)$ are telling us. The velocity of the particle is also becoming increasingly negative in both components which is also to be expected since the particle is under the influence of gravity. One interesting feature of \eqref{frictionless} is that it is independent of the particle's mass.
+Only for a very simple curve $y(x)$ could we ever hope to get a closed-form solution for $x(t)$. For $y(x) = x$, $\dot{x}(0) = 0$, $x(0) = 0$, we obtain $x(t) = -gt^2/4$ (and therefore $y(t) = -gt^2/4$). Let's do a couple of sanity checks. For one, these expressions have the correct units of meters, since $g$ has units of meters per seconds squared and $t^2$ has units of seconds squared, giving meters once multiplied together. Also, as $t$ increases, notice that $x(t)$ and $y(t)$ become increasingly negative. That's exactly what we should expect if we place the particle at the origin on the curve $y(x) = x$. It should slide down and to the left,<d-footnote>Provided the static friction is low enough to permit the particle to start moving from rest, of course.</d-footnote> which is exactly what our expressions for $x(t)$ and $y(t)$ are telling us. The velocity of the particle is also becoming increasingly negative in both components which is also to be expected since the particle is under the influence of gravity. One interesting feature of \eqref{frictionless} is that it is independent of the particle's mass.
 
 ## Adding friction
 
@@ -86,9 +87,44 @@ are the generalized force and dissipation function, respectively. This is the mo
 
 Let's do some dimensional analysis. On the left-hand side of \eqref{modified2}, we have the term $\frac{\partial L}{\partial x}$. As stated earlier, the Lagrangian has units of joules. Therefore, this term has units of joules per meter, or newtons. That implies the right-hand side must also have units of newtons and they must be contained in the $c$ term, since $\sqrt{1 + (\frac{\mathrm{d}y}{\mathrm{d}x})^2}$ is unitless. This is the third and final fast one I will pull: $c$ is the force of friction. Of course, friction had to show up somewhere and $c$ has units of force so it feels morally correct to put them together but it is reasonable to question why $c$ is <em>exactly</em> equal to friction. It could have been some dimensionless constant times the force of friction, where that constant is not equal to one. Yet, that is not the case. At this point, I have to confess my ignorance. Please enlighten me if you have an explanation for this. Allow me to set $c = F_{\mu_k}$ to denote this relationship and move onward.
 
-Friction is proportional to the normal force, where the proportionality constant is the friction coefficient, i.e., $F_{\mu_k} = \mu_k N$. So now the task is to determine $N$. To do this, we need to recall the topic of uniform circular motion: when an object is constrained to move on a circular path at constant speed. Let's pretend for a moment that our particle is undergoing uniform circular motion. Then, a free body diagram would reveal the relationship \begin{equation} \label{normal} N - (mg)\_{\perp} = \frac{m\|\vec{v}\|^2}{r}, \end{equation} 
-where $(mg)\_{\perp}$ is the component of gravity perpendicular to the circular path and pointing away from the center of the circle and $r$ is the radius. Some simple trigonometry reveals that $(mg)\_{\perp} = mg\cos(\theta)$, where $\theta$ is the angle the particle makes with the horizontal. I again apologize for the lack of illustration here but I'm hoping that you might recall or be able to quickly rederive this trigonometric fact. It is exactly the same angle $\theta$ you would find in a standard inclined plane problem. Another trigonometric fact we need is that $\tan(\theta)$ is exactly equal to $\frac{\mathrm{d}y}{\mathrm{d}x}$. This holds for any reasonable $y(x)$, not just a circular arc. Therefore, after writing $\cos(\theta)$ in terms of $\tan(\theta)$, we have
-\begin{equation} \cos(\theta) = \frac{1}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}. \end{equation} That takes care of $(mg)\_{\perp}$, and we would have everything we need to find the normal force if the particle was moving along a circular trajectory with radius $r$. However, we want an expression for the normal force (and therefore friction) to hold for a more general $y(x)$, not just one that traces out a circular arc. For a more general $y(x)$, we can treat the curve locally as part of a circular arc. In other words, if we zoom in enough, the particle appears to be traversing along a circle and from one point to the next along $y(x)$, it is traversing along circles of different radii. As an extreme example, even if the particle were traveling in a straight line, we could still treat it as traversing on a circular arc; one with radius equal to infinity. Hopefully, this makes some sense intuitively but is there a way to properly quantify the radius associated with each point of $y(x)$? The answer is yes (or else we would be in trouble and I would have to end this post here)! Borrowing from differential geometry, the signed radius of curvature we want is \begin{equation} r = \frac{(1 + (\frac{\mathrm{d}y}{\mathrm{d}x})^2)^{\frac{3}{2}}}{\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}. \end{equation} And with that, we have everything we need to find the normal force. Rearranging \eqref{normal} and plugging in what we just found, we have
+<div class="row justify-content-center">
+    <div class="col-12 d-flex justify-content-center">
+      <div class="tikzfig">
+        <script type="text/tikz">
+          \begin{tikzpicture}[scale=4.5, line join=round]
+            \definecolor{curveteal}{RGB}{72,209,204}
+            \draw[curveteal, very thick, domain=-0.92:1.02, samples=60] plot (\x, {0.625*\x - 0.34*\x*\x});
+            \node[right] at (1.06,0.24) {$y(x)$};
+            \draw[black, very thick, dashed] (-1.12,-0.70) -- (1.16,0.725);
+            \node at (0.50,0.47) {\small \mbox{tangent}};
+            \draw[dashed] (0,0) -- (1.12,0);
+            \draw (0.62,0) arc (0:32:0.62);
+            \node at (0.28,0.08) {$\theta$};
+            \draw[->, thick] (0,0) -- (0,-1.0);
+            \node[below] at (0,-1.04) {$mg$};
+            \draw[->, very thick, orange] (0,0) -- (0.449,-0.719);
+            \draw[gray, dashed] (0,-1.0) -- (0.449,-0.719);
+            \draw[gray, dashed] (0,-1.0) -- (-0.449,-0.281);
+            \draw[->, very thick, orange] (0,0) -- (-0.449,-0.281);
+            \node[right, orange] at (0.48,-0.72) {\small $mg\cos\theta$};
+            \node[orange] at (-0.60,-0.20) {\small $mg\sin\theta$};
+            \draw[->, thick, blue] (0,0) -- (-0.503,0.806);
+            \node[blue] at (-0.60,0.88) {$N$};
+            \fill[red] (0,0) circle (2pt);
+            \node at (-0.19,0.05) {$m$};
+          \end{tikzpicture}
+        </script>
+      </div>
+    </div>
+</div>
+<style>.tikzfig { max-width: 100%; margin: 0 auto; background: #fff; border-radius: 8px; padding: 12px; box-sizing: border-box; box-shadow: 0 2px 6px rgba(0,0,0,0.15); } .tikzfig * { max-width: 100%; } .tikzfig svg { display: block; height: auto; }</style>
+<div class="caption">
+    <span>Free-body diagram at the mass. The track's local tangent (the incline) meets the horizontal at angle $\theta$, so the weight $mg$ resolves into $mg\cos\theta$ perpendicular to the track and $mg\sin\theta$ along it. The normal force $N$ is perpendicular to the surface.</span>
+</div>
+
+Friction is proportional to the normal force, where the proportionality constant is the friction coefficient, i.e., $F_{\mu_k} = \mu_k N$. So now the task is to determine $N$. To do this, we need to recall the topic of uniform circular motion: when an object is constrained to move on a circular path at constant speed. Let's pretend for a moment that our particle is undergoing uniform circular motion. Then, building on the free body diagram above, we find the relationship \begin{equation} \label{normal} N - (mg)\_{\perp} = \frac{m\|\vec{v}\|^2}{r}, \end{equation}
+where $(mg)\_{\perp}$ is the component of gravity perpendicular to the circular path and pointing away from the center of the circle and $r$ is the radius. Some simple trigonometry reveals that $(mg)\_{\perp} = mg\cos(\theta)$, where $\theta$ is the angle the particle makes with the horizontal. It is exactly the same angle $\theta$ you would find in a standard inclined plane problem. Another trigonometric fact we need is that $\tan(\theta)$ is exactly equal to $\frac{\mathrm{d}y}{\mathrm{d}x}$. This holds for any reasonable $y(x)$, not just a circular arc. Therefore, after writing $\cos(\theta)$ in terms of $\tan(\theta)$, we have
+\begin{equation} \cos(\theta) = \frac{1}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}. \end{equation} That takes care of $(mg)\_{\perp}$, and we would have everything we need to find the normal force if the particle was moving along a circular trajectory with radius $r$. However, we want an expression for the normal force (and therefore friction) to hold for a more general $y(x)$, not just one that traces out a circular arc. For a more general $y(x)$, we can treat the curve locally as part of a circular arc. In other words, if we zoom in enough, the particle appears to be traversing along a circle and from one point to the next along $y(x)$, it is traversing along circles of different radii. As an extreme example, even if the particle were traveling in a straight line, we could still treat it as traversing on a circular arc; one with infinite radius. Hopefully, this makes some sense intuitively but is there a way to properly quantify the radius associated with each point of $y(x)$? The answer is yes (or else we would be in trouble and I would have to end this post here)! Borrowing from differential geometry, the signed radius of curvature we want is \begin{equation} r = \frac{(1 + (\frac{\mathrm{d}y}{\mathrm{d}x})^2)^{\frac{3}{2}}}{\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}. \end{equation} The sign here is important. The numerator is always positive, so $r$ inherits the sign of $\frac{\mathrm{d}^2y}{\mathrm{d}x^2}$: it is positive in a concave-up valley (where the center of the osculating circle sits above the track) and negative on a concave-down hilltop (where the center sits below). Keeping this sign is what lets a single expression for the normal force describe both cases correctly&mdash;on a hilltop it flips the centripetal term, which is exactly what will let the particle fly off the track later on. And with that, we have everything we need to find the normal force. Rearranging \eqref{normal} and plugging in what we just found, we have
 \begin{align} N = m\frac{g + \dot{x}^2\frac{\mathrm{d}^2y}{\mathrm{d}x^2}}{\sqrt{1 + \left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}.\end{align}
 
 
@@ -113,7 +149,7 @@ Nice! We now have a compact description of the particle motion for the more diff
 
 ## Energy dissipation
 
-It is also useful to check what friction is doing to the particle's mechanical energy. The total mechanical energy is
+It is useful to check what friction is doing to the particle's mechanical energy. The total mechanical energy is
 \begin{equation}
 E = \frac{1}{2}m\dot{x}^2\left[1+\left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2\right] + mgy.
 \end{equation}
@@ -187,7 +223,7 @@ The points where $\left\lvert\frac{\mathrm{d}y}{\mathrm{d}x}\right\rvert \le \mu
 
 ## Numerics
 
-<span>With the physics in hand, let's watch it happen. The animation below puts the same particle on the parabola $y = x^2$, released from rest at the same spot, once without friction and once with. Without friction it swings from side to side forever; with friction it bleeds off energy on every pass and, exactly as we argued, comes to rest a little short of the bottom rather than at it.</span>
+<span>With the physics in hand, let's watch it happen. The animation below puts the same particle on the parabola $y = x^2$, released from rest at the same spot, once without friction and once with. Without friction it swings from side to side forever; with friction it bleeds off energy on every pass and eventually comes to rest.</span>
 
 <div class="row mt-3 justify-content-center">
     <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 720px;">
@@ -195,10 +231,10 @@ The points where $\left\lvert\frac{\mathrm{d}y}{\mathrm{d}x}\right\rvert \le \mu
     </div>
 </div>
 <div class="caption">
-    <span>The same release on $y = x^2$: frictionless (left) versus with friction (right, $\mu_k = \mu_s = 0.2$). The frictionless ball oscillates forever; the frictional one decays and settles just short of the bottom.</span>
+    <span>The same release on $y = x^2$: frictionless (left) versus with friction (right, $\mu_k = \mu_s = 0.2$). The frictionless ball oscillates forever; the frictional one decays and comes to rest.</span>
 </div>
 
-<span>Plotting the $x$-coordinate over time makes the decay explicit. A larger friction coefficient damps the motion faster, and each run comes to rest inside its dead band rather than at the exact bottom.</span>
+<span>Plotting the $x$-coordinate over time makes the decay explicit. A larger friction coefficient damps the motion faster, and each run comes to rest inside its dead band.</span>
 
 <div class="row mt-3 justify-content-center">
     <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 560px;">
@@ -220,7 +256,7 @@ The points where $\left\lvert\frac{\mathrm{d}y}{\mathrm{d}x}\right\rvert \le \mu
 
 So far we've quietly assumed the particle stays glued to the curve. But a slide can only *push*—it can't pull the particle down onto itself. So the normal force must satisfy $N \ge 0$. Recall that we found \begin{equation} N = m\,\frac{g + \dot{x}^2 \frac{\mathrm{d}^2y}{\mathrm{d}x^2}}{\sqrt{1+\left(\frac{\mathrm{d}y}{\mathrm{d}x}\right)^2}}. \end{equation} The mass and the denominator are positive, so the sign of $N$ is just the sign of $g + \dot{x}^2 \frac{\mathrm{d}^2y}{\mathrm{d}x^2}$. On a concave-up stretch ($\frac{\mathrm{d}^2y}{\mathrm{d}x^2} > 0$, the inside of a valley) that is always positive and all is well. But on a concave-down stretch ($\frac{\mathrm{d}^2y}{\mathrm{d}x^2} < 0$, the crest of a hill), a fast-enough particle demands more centripetal force than gravity can provide; $N$ would have to turn negative to keep it down, and since the track cannot pull, the particle leaves the surface and sails off as a projectile. The condition to stay on the track is simply \begin{equation} g + \dot{x}^2 \frac{\mathrm{d}^2y}{\mathrm{d}x^2} \ge 0. \end{equation}
 
-This is the same reason a roller coaster throws you out of your seat over a hill taken too fast, and it becomes a genuine constraint once we go hunting for more interesting curves. Consider a double-well quartic, $y = 0.1x^4 - 0.4x^2$: two valleys with a hill between them. Released from one side with carefully chosen coefficients, the particle rolls over the central hill and settles in the far valley, staying on the track the whole way. Make the hill steeper or drop it from higher, and it is possible that it would fly off at the hill instead.<d-footnote>I checked numerically that the particle shown keeps $g + \dot{x}^2 \frac{\mathrm{d}^2y}{\mathrm{d}x^2} \ge 0$ for its entire trip, so it never actually leaves the track.</d-footnote>
+This is the same reason a roller coaster throws you out of your seat over a hill taken too fast, and it becomes a genuine constraint once we go hunting for more interesting curves. Consider a double-well quartic, $y = 0.1x^4 - 0.4x^2$: two valleys with a hill between them. Released from one side, with the friction, quartic coefficients, and initial height all chosen appropriately, the particle rolls over the central hill and settles in the far valley, staying on the track the whole way. Change those parameters&mdash;dropping it from higher, say&mdash;and it is possible that it would fly off at the hill instead.<d-footnote>I checked numerically that the particle shown keeps $g + \dot{x}^2 \frac{\mathrm{d}^2y}{\mathrm{d}x^2} \ge 0$ for its entire trip, so it never actually leaves the track.</d-footnote>
 
 </div>
 

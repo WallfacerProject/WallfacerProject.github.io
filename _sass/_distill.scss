@@ -64,10 +64,17 @@ d-article {
   table td {
     border-bottom-color: var(--global-divider-color) !important;
   }
+  // The vendored distill template marks body links with a hardcoded
+  // `border-bottom: 1px solid rgba(0, 0, 0, 0.4)` (see assets/js/distillpub/
+  // template.v2.js), which is why distill posts underline links at rest while
+  // every other page on the site underlines only on hover. Drop the border so
+  // distill follows the same convention: colour at rest, underline on hover.
   a {
     color: var(--global-theme-color) !important;
+    border-bottom: none !important;
     &:hover {
       color: var(--global-theme-color) !important;
+      border-bottom: none !important;
     }
   }
   b i {
@@ -122,7 +129,10 @@ d-article {
       a {
         border-bottom: none !important;
         &:hover {
+          // The table of contents marks hover with its own border, so keep the
+          // site-wide hover underline off here to avoid a double line.
           border-bottom: 1px solid var(--global-text-color) !important;
+          text-decoration: none !important;
         }
       }
       h3 {
