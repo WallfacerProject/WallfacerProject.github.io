@@ -1,0 +1,33 @@
+% Source for the free-body diagram in _posts/2024-12-18-mass-on-curve.md.
+% The post ships a pre-rendered static SVG (not a live TikZJax block) so that
+% mobile Safari does not have to run the TikZJax WebAssembly TeX engine, which
+% exhausted memory and crashed the page on iOS.
+%
+% To regenerate the SVG: paste this tikzpicture into a page that loads
+% https://tikzjax.com/v1/tikzjax.js, let it render, then copy the resulting
+% <svg> element back into the post's .tikzfig block. The labels use the
+% Computer Modern webfonts from https://tikzjax.com/v1/fonts.css, which the
+% post links directly, so keep that <link> when you replace the SVG.
+
+\begin{tikzpicture}[scale=4.5, line join=round]
+  \definecolor{curveteal}{RGB}{72,209,204}
+  \draw[curveteal, very thick, domain=-0.92:1.02, samples=60] plot (\x, {0.625*\x - 0.34*\x*\x});
+  \node[right] at (1.06,0.24) {$y(x)$};
+  \draw[black, very thick, dashed] (-1.12,-0.70) -- (1.16,0.725);
+  \node at (0.50,0.47) {\small \mbox{tangent}};
+  \draw[dashed] (0,0) -- (1.12,0);
+  \draw (0.62,0) arc (0:32:0.62);
+  \node at (0.28,0.08) {$\theta$};
+  \draw[->, thick] (0,0) -- (0,-1.0);
+  \node[below] at (0,-1.04) {$mg$};
+  \draw[->, very thick, orange] (0,0) -- (0.449,-0.719);
+  \draw[gray, dashed] (0,-1.0) -- (0.449,-0.719);
+  \draw[gray, dashed] (0,-1.0) -- (-0.449,-0.281);
+  \draw[->, very thick, orange] (0,0) -- (-0.449,-0.281);
+  \node[right, orange] at (0.48,-0.72) {\small $mg\cos\theta$};
+  \node[orange] at (-0.60,-0.20) {\small $mg\sin\theta$};
+  \draw[->, thick, blue] (0,0) -- (-0.503,0.806);
+  \node[blue] at (-0.60,0.88) {$N$};
+  \fill[red] (0,0) circle (2pt);
+  \node at (-0.19,0.05) {$m$};
+\end{tikzpicture}
