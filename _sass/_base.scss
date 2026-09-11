@@ -169,9 +169,8 @@ ul.task-list input[type="checkbox"] {
 // and by the viewport edge everywhere else -- so the equation number and the
 // right-hand end of the equation disappear with no way to reach them.
 //
-// Drop the forced min-width and let the container scroll instead, so a wide
-// equation stays fully reachable. Equations that already fit are unaffected:
-// without the min-width the container is simply as wide as its column.
+// Drop the forced min-width so it cannot widen the mobile grid. A small
+// post-typesetting pass scales equations that still exceed their column.
 //
 // Scoped to the same breakpoint the distill stylesheet already uses for its
 // own `d-math[block]` overflow rule. Above it, a wide equation spills into the
@@ -181,7 +180,7 @@ ul.task-list input[type="checkbox"] {
   mjx-container[jax="CHTML"][display="true"] {
     min-width: 0 !important;
     max-width: 100%;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
 
     // MathJax's hidden MathML copy is absolutely positioned at full size, so
