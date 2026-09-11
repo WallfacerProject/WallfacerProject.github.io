@@ -11,6 +11,29 @@
   d-title {
     padding-top: 66px !important;
   }
+
+  // Distill's mobile grid uses bare `1fr` tracks. WebKit treats their
+  // automatic minimum as the min-content width of wide MathJax descendants,
+  // which expands the prose column beyond the viewport before equation-level
+  // overflow rules apply. Zero the track minimum explicitly on mobile.
+  d-article {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    grid-template-columns:
+      [screen-start] 8px
+      [page-start kicker-start text-start gutter-start middle-start]
+      repeat(8, minmax(0, 1fr))
+      [text-end page-end gutter-end kicker-end middle-end] 8px
+      [screen-end] !important;
+
+    > * {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+  }
 }
 
 d-byline {
