@@ -2,6 +2,17 @@
  * Style overrides for distill blog posts.
  ******************************************************************************/
 
+// The vendored distill template gives d-title a top padding of 2rem below the
+// 768px breakpoint (4rem above it). At the mobile root font size that 2rem is
+// only ~28px, which is less than the ~50px fixed navbar, so the post title
+// slides up under the navbar. Give it enough top padding to clear the navbar,
+// mirroring the comfortable clearance the desktop 4rem value already provides.
+@media (max-width: 767px) {
+  d-title {
+    padding-top: 66px !important;
+  }
+}
+
 d-byline {
   border-top-color: var(--global-divider-color) !important;
 }
