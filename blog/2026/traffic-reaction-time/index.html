@@ -1,0 +1,269 @@
+<!DOCTYPE html> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Traffic, Reaction Time, and Green Lights | Amrit Singh </title> <meta name="author" content="Amrit Singh"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?606e32148bacb89f984ab50d89239d46"> <link rel="canonical" href="https://wallfacerproject.github.io/blog/2026/traffic-reaction-time/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script type="text/javascript">
+      window.MathJax = {
+        tex: {
+          tags: 'ams',
+        },
+      };
+    </script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/mathjax-responsive.js?19ddceaffd209ec4306e36c4e17230ed"></script> <script src="/assets/js/distillpub/template.v2.js"></script> <script src="/assets/js/distillpub/transforms.v2.js"></script> <script src="/assets/js/distillpub/overrides.js?002f233113d395c10a5d1f19ef5f95b8"></script> </head> <body> <d-front-matter> <script async type="text/json">
+      {
+            "title": "Traffic, Reaction Time, and Green Lights",
+            "description": "",
+            "published": "September 11, 2026",
+            "authors": [
+              
+            ],
+            "katex": {
+              "delimiters": [
+                {
+                  "left": "$",
+                  "right": "$",
+                  "display": false
+                },
+                {
+                  "left": "$$",
+                  "right": "$$",
+                  "display": true
+                }
+              ]
+            }
+          }
+    </script> </d-front-matter> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Amrit Singh </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">Blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">Publications </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="post distill"> <d-title> <h1>Traffic, Reaction Time, and Green Lights</h1> <p></p> </d-title> <d-article> <p>Growing up in the Bay Area, I have spent an unfortunate amount of time stuck in traffic. This has shaped my current views on cars, driving, and city planning. I might talk about this further in another post, but for now I will leave you with the trailer for the YouTube channel Not Just Bikes: <a href="https://www.youtube.com/watch?v=OQE_5MFCekg" rel="external nofollow noopener" target="_blank">link</a>. It should go without saying that I do not agree with everything he says, though there is certainly a lot I do agree with.</p> <p>On one of my trips back to San Jose from New York, while sitting at a traffic light, I had the following question:</p> <div style="border: 2px solid black; padding: 10px; width: 100%; max-width: 700px; margin: 20px auto; text-align: center; box-sizing: border-box;"> How does reaction time affect the number of cars that get through during a green light? </div> <p>At some point (while not driving) I got around to formulating this mathematically and got a clean, simple formula, which is what this post is about. Here is the setup to our problem:</p> <ol> <li>We observe one lane of traffic with an indefinite number of cars waiting in line.</li> <li>Each car is identical and of length $L$ meters.</li> <li>The light stays green for $T$ seconds.</li> <li>There is no space between cars.</li> <li>Each driver has a reaction time of $\tau$ seconds. The driver at the front reacts to the light turning green and each subsequent driver reacts to the car in front of them starting to move.</li> <li>Each car moves at constant acceleration $a$ meters/second^2.</li> <li>Let $x_0$ denote the initial position of the first car’s front bumper. We say that car $n$ has made the light if its back bumper reaches $x_0$. Since there are no gaps between cars, this requires the car in the $n$th position to travel a distance of $nL$ meters within the $T$ seconds that the light is green.</li> </ol> <p>We want to derive $N(\tau)$, the number of cars that pass through the intersection as a function of reaction time.</p> <p>Let’s first consider the idealized scenario where each driver has a perfect reaction time, i.e., $\tau = 0$. Then the cars essentially form a train, accelerating synchronously as soon as the light turns green. How many cars will pass through in this case? It will simply be how far the train travels in $T$ seconds at constant acceleration $a$ divided by the length of each car, rounded down to the nearest integer: \begin{equation} N_{\mathrm{train}} = \left\lfloor \frac{a T^2}{2L}\right\rfloor, \end{equation} where we obtained the distance traveled via kinematics. This gives us the upper bound on how many cars will pass through and it will be interesting to compare with the nonzero $\tau$ case which we derive now.</p> <p>Observe that car $n$ gets through if the following condition is met: [total reaction time delay caused by the $(n-1)$ cars in front of car $n$ and its own reaction time delay] + [time $t$ it takes car $n$ to travel distance $nL$] $\leq T$. The first term is simply $(n-1)\tau + \tau = n\tau$. The second term is found via kinematics. We have \begin{align} nL &amp;= \frac{1}{2}a t^2\newline \implies t &amp;= \sqrt{\frac{2nL}{a}}. \end{align} Putting things together, the mathematical condition for the $n$th car to pass through is given by \begin{equation} n\tau + \sqrt{\frac{2nL}{a}} \leq T. \end{equation} Let $m = \sqrt{n}$. Then we have \begin{equation} \tau m^2 + \sqrt{\frac{2L}{a}} m - T \leq 0. \end{equation} We want to find the maximal $m$ that satisfies this inequality because its square will give the continuous threshold for $n$. Denote this maximal $m$ by $M(\tau)$. For $\tau&gt;0$, using the quadratic formula and discarding the negative root gives \begin{align} M(\tau) &amp;= \frac{\sqrt{\frac{2L}{a} +4\tau T} - \sqrt{\frac{2L}{a}}}{2\tau}. \end{align} Squaring $M(\tau)$ gives the continuous throughput threshold. Let \begin{equation} \widetilde{N}(\tau) = M(\tau)^2 = \left(\frac{\sqrt{\frac{2L}{a} +4\tau T} - \sqrt{\frac{2L}{a}}}{2\tau}\right)^2. \end{equation} The actual number of cars must be an integer, so we round this threshold down: \begin{equation} N(\tau) = \left\lfloor \widetilde{N}(\tau) \right\rfloor. \end{equation} As a sanity check, we would want to verify that the expression before rounding reduces to the train result when $\tau \to 0$. By using L’Hôpital’s rule, we do indeed find that \begin{equation} \lim_{\tau\to 0} \widetilde{N}(\tau) = \frac{a T^2}{2L}. \end{equation} Therefore, at exactly $\tau=0$, we recover $N(0)=N_{\mathrm{train}}$ after applying the floor function.</p> <p>As another sanity check, we can observe what happens if we allow the acceleration to increase without bound. We have \begin{equation} \lim_{a\to\infty} \widetilde{N}(\tau) = \frac{T}{\tau}. \end{equation} Thus, in the idealized infinite-acceleration model, the integer throughput is $\left\lfloor T/\tau \right\rfloor$. This makes sense because with infinite acceleration, the only bottleneck for the number of cars getting through would be the length of the green light and each driver’s reaction time.</p> <p>Further, as expected, we have \begin{equation} \lim_{\tau \to \infty} N(\tau) = 0. \end{equation} The limit tells us that the integer throughput eventually vanishes, while the following asymptotic relation describes how quickly the expression before rounding approaches zero: \begin{equation} \widetilde{N}(\tau) \sim \frac{T}{\tau}, \quad \tau \to \infty, \end{equation} where $\sim$ means that the ratio of the left-hand side to the right-hand side approaches one.</p> <p>Let’s visualize our results.</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/cars-through-light-vs-reaction-time.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Number of cars through the light versus driver reaction time for three green-light durations"> </div> </div> <div class="caption"> <span>$N(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$ and $a=2\,\mathrm{m/s^2}$.</span> </div> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/train-advantage-vs-reaction-time.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Train advantage versus driver reaction time for three green-light durations"> </div> </div> <div class="caption"> <span>The train advantage $N_{\mathrm{train}}-N(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$ and $a=2\,\mathrm{m/s^2}$. The corresponding train throughputs are $80$, $180$, and $320$ cars.</span> </div> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/relative-efficiency-vs-reaction-time.png?v=5" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Traffic throughput relative to train throughput versus driver reaction time"> </div> </div> <div class="caption"> <span>The relative efficiency $N(\tau)/N_{\mathrm{train}}$ for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $T=20\,\mathrm{s}$.</span> </div> <p>Only the $T=20\,\mathrm{s}$ curve is shown in the relative efficiency plot because the curves for the other green-light durations have the same overall shape and would make the staircase plot harder to read. Their similarity does not mean that the efficiency is exactly independent of $T$. Dividing by $N_{\mathrm{train}}$ removes much of the change in scale, so the relative efficiency varies less dramatically than the absolute throughput over the range plotted. For sufficiently large $T$, however, the uncapped train throughput grows like $T^2$, while $\widetilde{N}(\tau)$ grows approximately like $T/\tau$ at fixed positive $\tau$. The uncapped relative efficiency must therefore eventually decrease as $T$ increases.</p> <p>Several features stand out. The throughput is particularly sensitive to small reaction times because the delay accumulates down the line: car $n$ loses $n\tau$ seconds. For $T=20\,\mathrm{s}$, increasing the reaction time from zero to one second reduces the number of cars from $80$ to $12$, only $15\%$ of the ideal train throughput. As $\tau$ increases further, the curve flattens because the system is already dominated by reaction delay.</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/throughput-heatmap.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Heat map of traffic throughput across reaction time and green-light duration"> </div> </div> <div class="caption"> <span>The integer-valued throughput across reaction time $\tau$ and green-light duration $T$, with $L=5\,\mathrm{m}$ and $a=2\,\mathrm{m/s^2}$.</span> </div> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/car-space-time-diagram.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Space-time trajectories of cars approaching the crossing line"> </div> </div> <div class="caption"> <span>A space-time diagram for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $T=20\,\mathrm{s}$, and $\tau=1\,\mathrm{s}$. Each curve is a car's rear-bumper position: it stays flat until that driver reacts, then bends upward as the car accelerates. A car passes if its curve reaches $x=x_0$ before the green light ends. Car $12$ is the last to pass, while car $13$ is the first to miss.</span> </div> <p>The heat map shows how longer green lights increase the absolute throughput, while the space-time diagram makes the mechanism behind the reaction-time penalty visible. Each successive car remains stationary longer than the one ahead of it, producing a wave of delayed motion that propagates backward through the line. At fixed positive $\tau$, the continuous threshold eventually grows approximately like $T/\tau$, whereas the train result grows like $T^2$. The resulting gap is dramatic, but its size should not be interpreted as a realistic traffic-engineering prediction: it depends heavily on our assumption that the cars can accelerate indefinitely. Real cars have a maximum speed, so we turn to that extension next.</p> <h2 id="adding-a-maximum-speed">Adding a maximum speed</h2> <p>So far, each car has been allowed to accelerate forever. We now make the model more realistic by introducing a maximum speed $v_{\max}$. Let $t$ denote the time elapsed since a particular car begins moving. The car accelerates from rest at the constant acceleration $a$ until it reaches $v_{\max}$, then continues at that speed. The time required to reach the speed cap is \begin{equation} t_a = \frac{v_{\max}}{a}. \end{equation} The car’s velocity is therefore \begin{equation} v(t) = \begin{cases} at, &amp; 0 \leq t \leq t_a,\newline v_{\max}, &amp; t &gt; t_a. \end{cases} \end{equation} Integrating the velocity gives the distance traveled. Before the car reaches its maximum speed, we recover the usual constant-acceleration result. Afterward, we add the distance traveled during the acceleration phase to the distance traveled while cruising: \begin{align} d(t) &amp;= \begin{cases} \dfrac{1}{2}at^2, &amp; 0 \leq t \leq t_a,\newline \dfrac{1}{2}at_a^2 + v_{\max}(t-t_a), &amp; t &gt; t_a \end{cases}\newline &amp;= \begin{cases} \dfrac{1}{2}at^2, &amp; 0 \leq t \leq \dfrac{v_{\max}}{a},\newline v_{\max}t-\dfrac{v_{\max}^2}{2a}, &amp; t &gt; \dfrac{v_{\max}}{a}. \end{cases} \end{align} Car $n$ begins moving at time $n\tau$, so it has $T-n\tau$ seconds to move before the light changes. Its rear bumper must travel $nL$, giving the condition \begin{equation} d(T-n\tau) \geq nL. \end{equation}</p> <p>To solve this condition analytically, let $t_n$ denote the time that car $n$ must spend moving before its rear bumper reaches $x_0$. In other words, $d(t_n)=nL$. The distance traveled by the time the car first reaches $v_{\max}$ is \begin{equation} d_a = \frac{v_{\max}^2}{2a}. \end{equation} If $nL \leq d_a$, the car reaches $x_0$ while it is still accelerating, so \begin{equation} t_n = \sqrt{\frac{2nL}{a}}. \end{equation} If $nL&gt;d_a$, the car first accelerates for $t_a$ seconds and then travels the remaining distance $nL-d_a$ at $v_{\max}$. Therefore, \begin{align} t_n &amp;=t_a+\frac{nL-d_a}{v_{\max}}\newline &amp;=\frac{nL}{v_{\max}}+\frac{v_{\max}}{2a}. \end{align} Combining the two regimes gives \begin{equation} t_n = \begin{cases} \sqrt{\dfrac{2nL}{a}}, &amp; nL \leq \dfrac{v_{\max}^2}{2a},\newline \dfrac{nL}{v_{\max}}+\dfrac{v_{\max}}{2a}, &amp; nL &gt; \dfrac{v_{\max}^2}{2a}. \end{cases} \end{equation} Since the accumulated reaction delay is $n\tau$, car $n$ clears the light precisely when \begin{equation} n\tau+t_n \leq T. \end{equation}</p> <p>We can now solve for the largest car index. Define \begin{equation} n_a = \frac{d_a}{L} = \frac{v_{\max}^2}{2aL}. \end{equation} Here $n_a$ is the continuous car index whose required travel distance $n_aL$ is exactly the acceleration distance $d_a$. It need not be an integer. The cutoff between the two regimes occurs when this car has exactly enough time to clear the light. Since it begins moving at time $n_a\tau$ and reaches $x_0$ after accelerating for $t_a$ seconds, the corresponding green-light duration is \begin{equation} T_c = n_a\tau+t_a = \frac{\tau v_{\max}^2}{2aL}+\frac{v_{\max}}{a}. \end{equation}</p> <p>Let $n^{\ast}(\tau)$ denote the largest continuous car index that satisfies the crossing condition, before applying the floor function. We obtain \begin{equation} n^{\ast}(\tau)= \begin{cases} \left(\dfrac{\sqrt{\frac{2L}{a}+4\tau T}-\sqrt{\frac{2L}{a}}}{2\tau}\right)^2, &amp; T \leq T_c,\newline \dfrac{T-\frac{v_{\max}}{2a}}{\tau+\frac{L}{v_{\max}}}, &amp; T&gt;T_c. \end{cases} \end{equation} When $\tau=0$ and the first branch applies, its expression is understood through its limit. The maximum speed throughput is \begin{equation} N_{\mathrm{cap}}(\tau)=\left\lfloor n^{\ast}(\tau)\right\rfloor. \end{equation}</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-throughput-vs-reaction-time.png?v=1" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Speed-capped traffic throughput versus driver reaction time for three green-light durations"> </div> </div> <div class="caption"> <span>$N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span> </div> <p>The first branch is exactly our original answer. In this regime, the final car to clear the light reaches $x_0$ before reaching $v_{\max}$, so the speed cap never affects the motion relevant to the count. In the second regime, car $n$ reaches $x_0$ at time \begin{equation} C_n=n\tau+t_n =n\left(\tau+\frac{L}{v_{\max}}\right)+\frac{v_{\max}}{2a}. \end{equation} The crossing times of two consecutive cars therefore differ by \begin{equation} C_{n+1}-C_n=\tau+\frac{L}{v_{\max}}. \end{equation} The next car begins moving $\tau$ seconds later and starts one additional car length from $x_0$, requiring another $L/v_{\max}$ seconds of cruising. The acceleration term is the same for both cars and cancels in the difference.</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-vs-uncapped-throughput.png?v=2" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped and uncapped traffic throughput versus driver reaction time"> </div> </div> <div class="caption"> <span>The integer-valued capped and uncapped throughputs for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$. Once the curves coincide, the final car through the light never reaches the speed cap, so the original model applies unchanged.</span> </div> <p>The corresponding train count is simply the distance traveled in $T$ seconds divided by $L$: \begin{equation} N_{\mathrm{train,cap}} = \begin{cases} \left\lfloor\dfrac{aT^2}{2L}\right\rfloor, &amp; T \leq \dfrac{v_{\max}}{a},\newline \left\lfloor\dfrac{v_{\max}T-\frac{v_{\max}^2}{2a}}{L}\right\rfloor, &amp; T&gt;\dfrac{v_{\max}}{a}. \end{cases} \end{equation} Setting $\tau=0$ in the car model therefore reproduces the capped-speed train result, just as it did in the original model.</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-train-advantage.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped-speed train advantage versus driver reaction time for three green-light durations"> </div> </div> <div class="caption"> <span>The capped-speed train advantage $N_{\mathrm{train,cap}}-N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$. The corresponding capped train throughputs are $48$, $78$, and $108$ cars.</span> </div> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-relative-efficiency.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped traffic throughput relative to capped train throughput versus driver reaction time"> </div> </div> <div class="caption"> <span>The relative efficiency $N_{\mathrm{cap}}(\tau)/N_{\mathrm{train,cap}}$ for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$.</span> </div> <p>Here too, only the $T=20\,\mathrm{s}$ efficiency curve is shown because the curves for $T=30$ and $40\,\mathrm{s}$ nearly overlap it. In the capped model, this overlap has a direct explanation. Once the cars and train spend most of the green light at $v_{\max}$, both throughputs grow linearly with $T$. Increasing the green-light duration can then add many cars to the absolute count without changing their relative efficiency very much.</p> <p>For example, when $T=20\,\mathrm{s}$ and $\tau=1\,\mathrm{s}$, $12$ cars clear the light compared with $48$ train cars. The speed cap lowers the ideal train benchmark from $80$ cars in the uncapped model to $48$, but the accumulated reaction delays still reduce the line to one quarter of that benchmark.</p> <p>Finally, for a sufficiently long green light, both the car line and the train spend most of their time traveling at $v_{\max}$. Ignoring the negligible effect of the floor function on the leading-order behavior, their throughputs satisfy \begin{align} n^{\ast}(\tau) &amp;\sim \frac{T}{\tau+L/v_{\max}},\newline N_{\mathrm{train,cap}} &amp;\sim \frac{v_{\max}T}{L}. \end{align} Consequently, their relative efficiency approaches the finite limit \begin{equation} \frac{n^{\ast}(\tau)}{v_{\max}T/L} \longrightarrow \frac{L}{L+v_{\max}\tau}, \quad T\to\infty. \end{equation} Unlike the unlimited-acceleration model, both throughputs now grow linearly with $T$.</p> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-throughput-heatmap.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Heat map of capped traffic throughput across reaction time and green-light duration"> </div> </div> <div class="caption"> <span>The integer-valued capped throughput across reaction time $\tau$ and green-light duration $T$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span> </div> <div class="row mt-3 justify-content-center"> <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;"> <img src="/assets/img/traffic-reaction-time/capped-space-time-diagram.png?v=2" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Space-time trajectories of speed-capped cars approaching the crossing line"> </div> </div> <div class="caption"> <span>A capped-speed space-time diagram for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, $T=30\,\mathrm{s}$, and $\tau=1\,\mathrm{s}$. Each trajectory is initially curved while the car accelerates and becomes straight after it reaches $v_{\max}$. Car $19$ is the last to pass, while car $20$ is the first to miss.</span> </div> <p>The heat map shows that longer green lights produce much larger absolute gains when reaction times are small. As $\tau$ increases, accumulated reaction delay becomes the dominant bottleneck, so adding the same number of seconds to $T$ allows fewer additional cars through. The space-time diagram makes the transition to cruising visible car by car: unlike the parabolic trajectories in the uncapped model, each path eventually straightens once its slope reaches $v_{\max}$. The maximum speed extension therefore preserves the clean zero reaction time correspondence while giving the long green light behavior a more realistic interpretation.</p> <h2 id="conclusion">Conclusion</h2> <p>Reaction time accumulates down the queue, so the $n$th car loses $n\tau$ seconds before it begins moving. Treating the cars as a train removes this backward propagating delay, which explains both the train’s throughput advantage and the exact correspondence obtained when $\tau=0$. The uncapped speed model makes this mechanism especially transparent, while the capped speed extension gives the long green light behavior a more realistic structure. In its cruising regime, each additional car effectively costs $\tau+L/v_{\max}$ seconds, and the relative efficiency approaches the finite limit $L/(L+v_{\max}\tau)$.</p> <p>We have assumed that every driver has the same deterministic reaction time $\tau$. A natural stochastic extension would assign driver $k$ a random reaction time $R_k$, making the accumulated delay through car $n$ the random sum $S_n=\sum_{k=1}^n R_k$. The number of cars that clear the light would then be a random first-passage quantity rather than a single deterministic count. Its distribution could reveal the variability and tail risk in traffic throughput and show how correlations between drivers change the likelihood of an unusually good or bad cycle.</p> </d-article> <d-appendix> <d-footnote-list></d-footnote-list> <d-citation-list></d-citation-list> </d-appendix> <d-bibliography src="/assets/bibliography/"></d-bibliography> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Amrit Singh. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script type="text/javascript">
+    /*
+     * This JavaScript code has been adapted from the article
+     * https://css-tricks.com/reading-position-indicator/ authored by Pankaj Parashar,
+     * published on the website https://css-tricks.com on the 7th of May, 2014.
+     * Couple of changes were made to the original code to make it compatible
+     * with the `al-foio` theme.
+     */
+    const progressBar = $('#progress');
+    /*
+     * We set up the bar after all elements are done loading.
+     * In some cases, if the images in the page are larger than the intended
+     * size they'll have on the page, they'll be resized via CSS to accomodate
+     * the desired size. This mistake, however, breaks the computations as the
+     * scroll size is computed as soon as the elements finish loading.
+     * To account for this, a minimal delay was introduced before computing the
+     * values.
+     */
+    window.onload = function () {
+      setTimeout(progressBarSetup, 50);
+    };
+    /*
+     * We set up the bar according to the browser.
+     * If the browser supports the progress element we use that.
+     * Otherwise, we resize the bar thru CSS styling
+     */
+    function progressBarSetup() {
+      if ('max' in document.createElement('progress')) {
+        initializeProgressElement();
+        $(document).on('scroll', function () {
+          progressBar.attr({ value: getCurrentScrollPosition() });
+        });
+        $(window).on('resize', initializeProgressElement);
+      } else {
+        resizeProgressBar();
+        $(document).on('scroll', resizeProgressBar);
+        $(window).on('resize', resizeProgressBar);
+      }
+    }
+    /*
+     * The vertical scroll position is the same as the number of pixels that
+     * are hidden from view above the scrollable area. Thus, a value > 0 is
+     * how much the user has scrolled from the top
+     */
+    function getCurrentScrollPosition() {
+      return $(window).scrollTop();
+    }
+
+    function initializeProgressElement() {
+      let navbarHeight = $('#navbar').outerHeight(true);
+      $('body').css({ 'padding-top': navbarHeight });
+      $('progress-container').css({ 'padding-top': navbarHeight });
+      progressBar.css({ top: navbarHeight });
+      progressBar.attr({
+        max: getDistanceToScroll(),
+        value: getCurrentScrollPosition(),
+      });
+    }
+    /*
+     * The offset between the html document height and the browser viewport
+     * height will be greater than zero if vertical scroll is possible.
+     * This is the distance the user can scroll
+     */
+    function getDistanceToScroll() {
+      return $(document).height() - $(window).height();
+    }
+
+    function resizeProgressBar() {
+      progressBar.css({ width: getWidthPercentage() + '%' });
+    }
+    // The scroll ratio equals the percentage to resize the bar
+    function getWidthPercentage() {
+      return (getCurrentScrollPosition() / getDistanceToScroll()) * 100;
+    }
+  </script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script>
+    let searchTheme = determineComputedTheme();
+    const ninjaKeys = document.querySelector('ninja-keys');
+
+    if (searchTheme === 'dark') {
+      ninjaKeys.classList.add('dark');
+    } else {
+      ninjaKeys.classList.remove('dark');
+    }
+
+    const openSearchModal = () => {
+      // collapse navbarNav if expanded on mobile
+      const $navbarNav = $('#navbarNav');
+      if ($navbarNav.hasClass('show')) {
+        $navbarNav.collapse('hide');
+      }
+      ninjaKeys.open();
+    };
+  </script> <script>
+    // get the ninja-keys element
+    const ninja = document.querySelector('ninja-keys');
+
+    // add the home and posts menu items
+    ninja.data = [{
+        id: "nav-about",
+        title: "About",
+        section: "Navigation",
+        handler: () => {
+          window.location.href = "/";
+        },
+      },{id: "nav-blog",
+              title: "Blog",
+              description: "",
+              section: "Navigation",
+              handler: () => {
+                window.location.href = "/blog/";
+              },
+            },{id: "nav-publications",
+              title: "Publications",
+              description: "",
+              section: "Navigation",
+              handler: () => {
+                window.location.href = "/publications/";
+              },
+            },{id: "post-traffic-reaction-time-and-green-lights",
+          
+            title: "Traffic, Reaction Time, and Green Lights",
+          
+          description: "",
+          section: "Posts",
+          handler: () => {
+            
+              window.location.href = "/blog/2026/traffic-reaction-time/";
+            
+          },
+        },{id: "post-my-favorite-derivation-of-the-cauchy-schwarz-inequality",
+          
+            title: "My Favorite Derivation of the Cauchy-Schwarz Inequality",
+          
+          description: "",
+          section: "Posts",
+          handler: () => {
+            
+              window.location.href = "/blog/2026/cauchy-schwarz/";
+            
+          },
+        },{id: "post-point-mass-on-a-curve",
+          
+            title: "Point Mass on a Curve",
+          
+          description: "A classical mechanics problem",
+          section: "Posts",
+          handler: () => {
+            
+              window.location.href = "/blog/2026/mass-on-curve/";
+            
+          },
+        },{id: "post-what-this-is-and-what-this-isn-39-t",
+          
+            title: "What this is and what this isn&#39;t",
+          
+          description: "About this blog",
+          section: "Posts",
+          handler: () => {
+            
+              window.location.href = "/blog/2026/what-this-is/";
+            
+          },
+        },{id: "post-the-three-body-problem",
+          
+            title: "The Three-Body Problem",
+          
+          description: "",
+          section: "Posts",
+          handler: () => {
+            
+              window.location.href = "/blog/2026/three-body-problem/";
+            
+          },
+        },{
+            id: 'socials-email',
+            title: 'Send email',
+            section: 'Socials',
+            handler: () => {
+              window.open("mailto:%79%6F%75@%65%78%61%6D%70%6C%65.%63%6F%6D", "_blank");
+            },
+          },{
+            id: 'socials-google-scholar',
+            title: 'Google Scholar',
+            section: 'Socials',
+            handler: () => {
+              window.open("https://scholar.google.com/citations?user=qc6CJjYAAAAJ", "_blank");
+            },
+          },{
+            id: 'socials-github',
+            title: 'GitHub',
+            section: 'Socials',
+            handler: () => {
+              window.open("https://github.com/WallfacerProject# your GitHub user name", "_blank");
+            },
+          },{
+            id: 'socials-linkedin',
+            title: 'LinkedIn',
+            section: 'Socials',
+            handler: () => {
+              window.open("https://www.linkedin.com/in/amritpalsingh25", "_blank");
+            },
+          },{
+            id: 'socials-rss',
+            title: 'RSS Feed',
+            section: 'Socials',
+            handler: () => {
+              window.open("/feed.xml", "_blank");
+            },
+          },{
+          id: 'light-theme',
+          title: 'Change theme to light',
+          description: 'Change the theme of the site to Light',
+          section: 'Theme',
+          handler: () => {
+            setThemeSetting("light");
+          },
+        },
+        {
+          id: 'dark-theme',
+          title: 'Change theme to dark',
+          description: 'Change the theme of the site to Dark',
+          section: 'Theme',
+          handler: () => {
+            setThemeSetting("dark");
+          },
+        },
+        {
+          id: 'system-theme',
+          title: 'Use system default theme',
+          description: 'Change the theme of the site to System Default',
+          section: 'Theme',
+          handler: () => {
+            setThemeSetting("system");
+          },
+        },];
+  </script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
