@@ -16,7 +16,7 @@ On one of my trips back to San Jose from New York, while sitting at a traffic li
     How does reaction time affect the number of cars that get through during a green light?
 </div>
 
-At some point (while not driving) I got around to formulating this mathematically and got a clean, simple formula, which is what this post is about. Here is the setup to our problem:
+At some point (while not driving) I got around to formulating this mathematically and found a clean, simple formula, which is what this post is about. Here is the setup to our problem:
 
 1. We observe one lane of traffic with an indefinite number of cars waiting in line.
 1. Each car is identical and of length $L$ meters.
@@ -28,7 +28,7 @@ At some point (while not driving) I got around to formulating this mathematicall
 
 We want to derive $N(\tau)$, the number of cars that pass through the intersection as a function of reaction time.
 
-## Unlimited acceleration
+## Baseline model
 
 ### The train benchmark
 
