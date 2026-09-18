@@ -5,9 +5,11 @@
   const SVG_NS = "http://www.w3.org/2000/svg";
   const TAU_MAX = 2;
   const SAMPLE_COUNT = 1001;
+  const TRAJECTORY_SAMPLES = 240;
   const COLORS = {
     uncapped: "#0077c8",
     capped: "#b509ac",
+    missed: "#d95f02",
   };
 
   function continuousUncapped(tau, greenTime, acceleration, carLength) {
@@ -31,17 +33,11 @@
     return Math.max(0, Math.floor(value + 1e-10));
   }
 
-  function uncappedTrainCount(greenTime, acceleration, carLength) {
-    return integerCount((acceleration * greenTime * greenTime) / (2 * carLength));
-  }
-
-  function cappedTrainCount(greenTime, acceleration, carLength, maximumSpeed) {
+  function cappedDistance(elapsed, acceleration, maximumSpeed) {
+    if (elapsed <= 0) return 0;
     const accelerationTime = maximumSpeed / acceleration;
-    const distance =
-      greenTime <= accelerationTime
-        ? 0.5 * acceleration * greenTime * greenTime
-        : maximumSpeed * greenTime - (maximumSpeed * maximumSpeed) / (2 * acceleration);
-    return integerCount(distance / carLength);
+    if (elapsed <= accelerationTime) return 0.5 * acceleration * elapsed * elapsed;
+    return maximumSpeed * elapsed - (maximumSpeed * maximumSpeed) / (2 * acceleration);
   }
 
   function svgElement(name, attributes = {}, text = "") {
@@ -52,7 +48,7 @@
   }
 
   function niceTickStep(maximum, targetTicks = 5) {
-    const roughStep = maximum / targetTicks;
+    const roughStep = Math.max(maximum, 1) / targetTicks;
     const power = Math.pow(10, Math.floor(Math.log10(roughStep)));
     const normalized = roughStep / power;
     let multiplier = 1;
@@ -70,13 +66,28 @@
     return path;
   }
 
+  function linePath(points, xScale, yScale) {
+    return points.map((point, index) => `${index === 0 ? "M" : "L"}${xScale(point.time)},${yScale(point.position)}`).join("");
+  }
+
   function init() {
     const root = document.getElementById(ROOT_ID);
     if (!root || root.dataset.initialized === "true") return;
     root.dataset.initialized = "true";
 
-    const chart = root.querySelector("[data-traffic-chart]");
-    const readout = root.querySelector("[data-traffic-readout]");
+    const charts = {
+      throughput: root.querySelector("[data-traffic-chart='throughput']"),
+      spaceTime: root.querySelector("[data-traffic-chart='space-time']"),
+    };
+    const readouts = {
+      throughput: root.querySelector("[data-traffic-readout='throughput']"),
+      spaceTime: root.querySelector("[data-traffic-readout='space-time']"),
+    };
+    const panels = {
+      throughput: root.querySelector("[data-traffic-panel='throughput']"),
+      spaceTime: root.querySelector("[data-traffic-panel='space-time']"),
+    };
+    const viewButtons = Array.from(root.querySelectorAll("[data-traffic-view]"));
     const controls = {
       greenTime: root.querySelector("[data-parameter='green-time']"),
       acceleration: root.querySelector("[data-parameter='acceleration']"),
@@ -84,7 +95,6 @@
       maximumSpeed: root.querySelector("[data-parameter='maximum-speed']"),
       selectedTau: root.querySelector("[data-parameter='selected-tau']"),
     };
-
     const outputs = {
       greenTime: root.querySelector("[data-value='green-time']"),
       acceleration: root.querySelector("[data-value='acceleration']"),
@@ -92,6 +102,10 @@
       maximumSpeed: root.querySelector("[data-value='maximum-speed']"),
       selectedTau: root.querySelector("[data-value='selected-tau']"),
     };
+
+    let activeView = "throughput";
+    let throughputGeometry = null;
+    let tauDragPointer = null;
 
     function parameters() {
       return {
@@ -116,10 +130,14 @@
       outputs.selectedTau.textContent = outputs.selectedTau.value;
     }
 
-    function draw() {
-      const values = parameters();
-      updateControlLabels(values);
+    function chartDimensions(chart, aspectRatio) {
+      const width = Math.max(320, Math.round(chart.getBoundingClientRect().width || 520));
+      const height = Math.round(Math.max(300, Math.min(420, width * aspectRatio)));
+      return { width, height, compact: width < 520 };
+    }
 
+    function drawThroughput(values) {
+      const chart = charts.throughput;
       const uncapped = [];
       const capped = [];
       let maximumCount = 0;
@@ -133,22 +151,16 @@
         maximumCount = Math.max(maximumCount, uncappedCount, cappedCount);
       }
 
-      const width = Math.max(320, Math.round(chart.getBoundingClientRect().width || 760));
-      const height = Math.round(Math.max(320, Math.min(500, width * 0.62)));
-      const compact = width < 520;
-      const margin = {
-        top: 20,
-        right: compact ? 14 : 24,
-        bottom: 58,
-        left: compact ? 58 : 72,
-      };
+      const { width, height, compact } = chartDimensions(chart, 0.64);
+      const margin = { top: 20, right: compact ? 12 : 18, bottom: 54, left: compact ? 58 : 68 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
-
       const tickStep = niceTickStep(Math.max(1, maximumCount), compact ? 4 : 5);
       const yMaximum = Math.max(tickStep, Math.ceil(maximumCount / tickStep) * tickStep);
       const xScale = (tau) => margin.left + (tau / TAU_MAX) * plotWidth;
       const yScale = (count) => margin.top + plotHeight - (count / yMaximum) * plotHeight;
+
+      throughputGeometry = { width, margin, plotWidth };
 
       const svg = svgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
@@ -158,7 +170,11 @@
         "aria-label": "Interactive capped and uncapped traffic throughput curves",
       });
       svg.appendChild(
-        svgElement("desc", {}, "Two integer-valued step curves show cars through the green light as reaction time varies from zero to two seconds.")
+        svgElement(
+          "desc",
+          {},
+          "Two integer-valued step curves show cars through the green light as reaction time varies from zero to two seconds. The dashed reaction-time guide can be dragged."
+        )
       );
 
       const axes = svgElement("g");
@@ -198,7 +214,7 @@
             "text",
             {
               x,
-              y: margin.top + plotHeight + 22,
+              y: margin.top + plotHeight + 20,
               "text-anchor": "middle",
               "font-size": compact ? 11 : 12,
             },
@@ -237,7 +253,7 @@
           "text",
           {
             x: margin.left + plotWidth / 2,
-            y: height - 12,
+            y: height - 10,
             "text-anchor": "middle",
             "font-size": compact ? 12 : 14,
           },
@@ -248,9 +264,9 @@
         svgElement(
           "text",
           {
-            x: 16,
+            x: 15,
             y: margin.top + plotHeight / 2,
-            transform: `rotate(-90 16 ${margin.top + plotHeight / 2})`,
+            transform: `rotate(-90 15 ${margin.top + plotHeight / 2})`,
             "text-anchor": "middle",
             "font-size": compact ? 12 : 14,
           },
@@ -295,18 +311,29 @@
           class: "traffic-selected-guide",
         })
       );
-      const labelOnRight = values.selectedTau > TAU_MAX * 0.78;
+      svg.appendChild(
+        svgElement("line", {
+          x1: selectedX,
+          y1: margin.top,
+          x2: selectedX,
+          y2: margin.top + plotHeight,
+          class: "traffic-tau-drag-target",
+          "data-tau-drag": "true",
+        })
+      );
+
+      const labelOnRight = values.selectedTau > TAU_MAX * 0.7;
       svg.appendChild(
         svgElement(
           "text",
           {
-            x: selectedX + (labelOnRight ? -6 : 6),
+            x: selectedX + (labelOnRight ? -7 : 7),
             y: margin.top + 14,
             "text-anchor": labelOnRight ? "end" : "start",
             "font-size": compact ? 11 : 12,
             class: "traffic-selected-label",
           },
-          `τ = ${values.selectedTau.toFixed(2)} s`
+          `drag τ = ${values.selectedTau.toFixed(2)} s`
         )
       );
       svg.appendChild(
@@ -318,6 +345,7 @@
           stroke: "var(--global-bg-color)",
           "stroke-width": 1.5,
           "vector-effect": "non-scaling-stroke",
+          "pointer-events": "none",
         })
       );
       const cappedY = yScale(selectedCapped);
@@ -331,40 +359,343 @@
           stroke: "var(--global-bg-color)",
           "stroke-width": 1.5,
           "vector-effect": "non-scaling-stroke",
+          "pointer-events": "none",
         })
       );
 
       chart.replaceChildren(svg);
 
-      const uncappedTrain = uncappedTrainCount(values.greenTime, values.acceleration, values.carLength);
-      const cappedTrain = cappedTrainCount(values.greenTime, values.acceleration, values.carLength, values.maximumSpeed);
-      const efficiency = cappedTrain > 0 ? (100 * selectedCapped) / cappedTrain : 0;
       const accelerationDistanceInCars = (values.maximumSpeed * values.maximumSpeed) / (2 * values.acceleration * values.carLength);
       const transitionTime = values.maximumSpeed / values.acceleration + accelerationDistanceInCars * values.selectedTau;
       const branch = values.greenTime <= transitionTime ? "accelerating" : "cruising";
+      const reduction = Math.max(0, selectedUncapped - selectedCapped);
+      const reductionText =
+        reduction === 0
+          ? "The speed cap does not change the selected throughput."
+          : `The speed cap reduces the selected throughput by <strong>${reduction}</strong> ${reduction === 1 ? "car" : "cars"} (<strong>${(
+              (100 * reduction) /
+              selectedUncapped
+            ).toFixed(1)}%</strong> relative to the uncapped count).`;
 
-      readout.innerHTML =
+      readouts.throughput.innerHTML =
         `At <strong>τ = ${values.selectedTau.toFixed(2)} s</strong>, ` +
         `<strong>${selectedUncapped}</strong> cars clear without a speed cap and ` +
-        `<strong>${selectedCapped}</strong> clear with the cap. ` +
-        `The corresponding train throughputs are <strong>${uncappedTrain}</strong> and ` +
-        `<strong>${cappedTrain}</strong>, and the capped relative efficiency is ` +
-        `<strong>${efficiency.toFixed(1)}%</strong>. The capped count is in the ${branch} branch.`;
+        `<strong>${selectedCapped}</strong> clear with the cap. ${reductionText} ` +
+        `The capped count is in the ${branch} branch.`;
     }
 
-    Object.values(controls).forEach((control) => control.addEventListener("input", draw));
+    function drawSpaceTime(values) {
+      const chart = charts.spaceTime;
+      const lastCar = integerCount(
+        continuousCapped(values.selectedTau, values.greenTime, values.acceleration, values.carLength, values.maximumSpeed)
+      );
+      const firstMiss = lastCar + 1;
+      const earlierCars = Array.from({ length: Math.max(0, lastCar - 1) }, (_, index) => index + 1);
+      const trajectorySamples = Math.max(48, Math.min(TRAJECTORY_SAMPLES, Math.floor(24000 / firstMiss)));
+      const { width, height, compact } = chartDimensions(chart, 0.68);
+      const margin = { top: 22, right: compact ? 18 : 24, bottom: 56, left: compact ? 68 : 78 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      const yMinimum = -1.03 * firstMiss * values.carLength;
+      const yMaximum = Math.max(2, 0.025 * firstMiss * values.carLength);
+      const xScale = (time) => margin.left + (time / values.greenTime) * plotWidth;
+      const yScale = (position) => margin.top + ((yMaximum - position) / (yMaximum - yMinimum)) * plotHeight;
+
+      function trajectory(carNumber) {
+        const points = [];
+        let previous = null;
+        for (let index = 0; index <= trajectorySamples; index += 1) {
+          const time = (values.greenTime * index) / trajectorySamples;
+          const elapsed = Math.max(0, time - carNumber * values.selectedTau);
+          const position = -carNumber * values.carLength + cappedDistance(elapsed, values.acceleration, values.maximumSpeed);
+          const point = { time, position };
+
+          if (position > 0 && previous) {
+            const fraction = -previous.position / (position - previous.position);
+            points.push({
+              time: previous.time + fraction * (time - previous.time),
+              position: 0,
+            });
+            break;
+          }
+
+          points.push(point);
+          previous = point;
+        }
+        return points;
+      }
+
+      const svg = svgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        width,
+        height,
+        role: "img",
+        "aria-label": "Interactive capped-speed space-time diagram",
+      });
+      svg.appendChild(
+        svgElement(
+          "desc",
+          {},
+          `Rear-bumper trajectories for a speed-capped traffic queue. Car ${lastCar} is the last to pass and car ${firstMiss} is the first to miss.`
+        )
+      );
+
+      const axes = svgElement("g");
+      const bottom = margin.top + plotHeight;
+      axes.appendChild(
+        svgElement("line", {
+          x1: margin.left,
+          y1: bottom,
+          x2: margin.left + plotWidth,
+          y2: bottom,
+          class: "traffic-axis",
+        })
+      );
+      axes.appendChild(
+        svgElement("line", {
+          x1: margin.left,
+          y1: margin.top,
+          x2: margin.left,
+          y2: bottom,
+          class: "traffic-axis",
+        })
+      );
+
+      const xTickCount = compact ? 4 : 5;
+      for (let index = 0; index <= xTickCount; index += 1) {
+        const tick = (values.greenTime * index) / xTickCount;
+        const x = xScale(tick);
+        axes.appendChild(
+          svgElement("line", {
+            x1: x,
+            y1: bottom,
+            x2: x,
+            y2: bottom + 5,
+            class: "traffic-tick",
+          })
+        );
+        axes.appendChild(
+          svgElement(
+            "text",
+            {
+              x,
+              y: bottom + 20,
+              "text-anchor": "middle",
+              "font-size": compact ? 11 : 12,
+            },
+            Number.isInteger(tick) ? tick.toFixed(0) : tick.toFixed(1)
+          )
+        );
+      }
+
+      const yTickStep = niceTickStep(Math.abs(yMinimum), compact ? 4 : 5);
+      for (let tick = 0; tick >= yMinimum; tick -= yTickStep) {
+        const y = yScale(tick);
+        axes.appendChild(
+          svgElement("line", {
+            x1: margin.left - 5,
+            y1: y,
+            x2: margin.left,
+            y2: y,
+            class: "traffic-tick",
+          })
+        );
+        axes.appendChild(
+          svgElement(
+            "text",
+            {
+              x: margin.left - 9,
+              y: y + 4,
+              "text-anchor": "end",
+              "font-size": compact ? 11 : 12,
+            },
+            String(tick)
+          )
+        );
+      }
+
+      axes.appendChild(
+        svgElement(
+          "text",
+          {
+            x: margin.left + plotWidth / 2,
+            y: height - 10,
+            "text-anchor": "middle",
+            "font-size": compact ? 12 : 14,
+          },
+          "Time since the light turns green, t [s]"
+        )
+      );
+      axes.appendChild(
+        svgElement(
+          "text",
+          {
+            x: 15,
+            y: margin.top + plotHeight / 2,
+            transform: `rotate(-90 15 ${margin.top + plotHeight / 2})`,
+            "text-anchor": "middle",
+            "font-size": compact ? 11 : 13,
+          },
+          "Rear-bumper position relative to x₀ [m]"
+        )
+      );
+      svg.appendChild(axes);
+
+      earlierCars.forEach((carNumber) => {
+        svg.appendChild(
+          svgElement("path", {
+            d: linePath(trajectory(carNumber), xScale, yScale),
+            fill: "none",
+            stroke: COLORS.uncapped,
+            "stroke-width": 1.15,
+            "stroke-opacity": 0.52,
+            "vector-effect": "non-scaling-stroke",
+          })
+        );
+      });
+      svg.appendChild(
+        svgElement("path", {
+          d: linePath(trajectory(lastCar), xScale, yScale),
+          fill: "none",
+          stroke: COLORS.capped,
+          "stroke-width": 2.5,
+          "vector-effect": "non-scaling-stroke",
+        })
+      );
+      svg.appendChild(
+        svgElement("path", {
+          d: linePath(trajectory(firstMiss), xScale, yScale),
+          fill: "none",
+          stroke: COLORS.missed,
+          "stroke-width": 2.4,
+          "stroke-dasharray": "7 5",
+          "vector-effect": "non-scaling-stroke",
+        })
+      );
+
+      const crossingY = yScale(0);
+      svg.appendChild(
+        svgElement("line", {
+          x1: margin.left,
+          y1: crossingY,
+          x2: margin.left + plotWidth,
+          y2: crossingY,
+          class: "traffic-crossing-line",
+        })
+      );
+      svg.appendChild(
+        svgElement(
+          "text",
+          {
+            x: margin.left + 6,
+            y: crossingY - 6,
+            "font-size": compact ? 11 : 12,
+          },
+          "crossing line x = x₀"
+        )
+      );
+
+      const greenX = xScale(values.greenTime);
+      svg.appendChild(
+        svgElement("line", {
+          x1: greenX,
+          y1: bottom,
+          x2: greenX,
+          y2: crossingY,
+          class: "traffic-green-end",
+        })
+      );
+      svg.appendChild(
+        svgElement(
+          "text",
+          {
+            x: greenX - 6,
+            y: bottom - 6,
+            transform: `rotate(-90 ${greenX - 6} ${bottom - 6})`,
+            "text-anchor": "start",
+            "font-size": compact ? 11 : 12,
+            class: "traffic-green-label",
+          },
+          "green ends"
+        )
+      );
+
+      chart.replaceChildren(svg);
+
+      readouts.spaceTime.innerHTML =
+        `At <strong>τ = ${values.selectedTau.toFixed(2)} s</strong>, car ` +
+        `<strong>${lastCar}</strong> is the last to pass and car ` +
+        `<strong>${firstMiss}</strong> is the first to miss.`;
+    }
+
+    function drawActiveView() {
+      const values = parameters();
+      updateControlLabels(values);
+      if (activeView === "throughput") drawThroughput(values);
+      else drawSpaceTime(values);
+    }
+
+    function selectView(view) {
+      activeView = view;
+      panels.throughput.hidden = view !== "throughput";
+      panels.spaceTime.hidden = view !== "space-time";
+      viewButtons.forEach((button) => {
+        const selected = button.dataset.trafficView === view;
+        button.classList.toggle("is-active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
+      drawActiveView();
+    }
+
+    function setTauFromPointer(event) {
+      if (!throughputGeometry) return;
+      const bounds = charts.throughput.getBoundingClientRect();
+      const svgX = ((event.clientX - bounds.left) / bounds.width) * throughputGeometry.width;
+      const rawTau = ((svgX - throughputGeometry.margin.left) / throughputGeometry.plotWidth) * TAU_MAX;
+      const step = Number(controls.selectedTau.step) || 0.05;
+      const clamped = Math.max(0, Math.min(TAU_MAX, rawTau));
+      const snapped = Math.round(clamped / step) * step;
+      controls.selectedTau.value = snapped.toFixed(2);
+      drawActiveView();
+    }
+
+    charts.throughput.addEventListener("pointerdown", (event) => {
+      if (!event.target.closest("[data-tau-drag]")) return;
+      event.preventDefault();
+      tauDragPointer = event.pointerId;
+      charts.throughput.setPointerCapture(event.pointerId);
+      setTauFromPointer(event);
+    });
+    charts.throughput.addEventListener("pointermove", (event) => {
+      if (tauDragPointer !== event.pointerId) return;
+      event.preventDefault();
+      setTauFromPointer(event);
+    });
+    const finishTauDrag = (event) => {
+      if (tauDragPointer !== event.pointerId) return;
+      if (charts.throughput.hasPointerCapture(event.pointerId)) {
+        charts.throughput.releasePointerCapture(event.pointerId);
+      }
+      tauDragPointer = null;
+    };
+    charts.throughput.addEventListener("pointerup", finishTauDrag);
+    charts.throughput.addEventListener("pointercancel", finishTauDrag);
+
+    Object.values(controls).forEach((control) => control.addEventListener("input", drawActiveView));
+    viewButtons.forEach((button) => button.addEventListener("click", () => selectView(button.dataset.trafficView)));
 
     let resizeFrame = null;
     const resizeObserver = new ResizeObserver(() => {
       if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
       resizeFrame = requestAnimationFrame(() => {
         resizeFrame = null;
-        draw();
+        drawActiveView();
       });
     });
-    resizeObserver.observe(chart);
+    resizeObserver.observe(charts.throughput);
+    resizeObserver.observe(charts.spaceTime);
 
-    draw();
+    drawActiveView();
   }
 
   if (document.readyState === "loading") {
