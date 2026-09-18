@@ -2,6 +2,16 @@
  * Style overrides for distill blog posts.
  ******************************************************************************/
 
+// Keep every Distill article title in the normal document flow. This explicit
+// override also prevents browser-specific sticky positioning from making a
+// long title follow the reader down the page.
+d-title,
+d-title h1 {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
 // The vendored distill template gives d-title a top padding of 2rem below the
 // 768px breakpoint (4rem above it). At the mobile root font size that 2rem is
 // only ~28px, which is less than the ~50px fixed navbar, so the post title

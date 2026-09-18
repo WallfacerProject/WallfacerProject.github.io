@@ -7,13 +7,6 @@ description:
 tags: math
 categories: 
 related_posts: false
-_styles: |
-  d-title,
-  d-title h1 {
-    position: static !important;
-    inset: auto !important;
-    transform: none !important;
-  }
 ---
 <!-- > We do not grow absolutely, chronologically. We grow sometimes in one dimension, and not in another, unevenly. We grow partially. We are relative. We are mature in one realm, childish in another.
 > —Anais Nin -->
