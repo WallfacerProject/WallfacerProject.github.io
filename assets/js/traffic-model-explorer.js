@@ -17,8 +17,7 @@
   }
 
   function continuousCapped(tau, greenTime, acceleration, carLength, maximumSpeed) {
-    const accelerationDistanceInCars =
-      (maximumSpeed * maximumSpeed) / (2 * acceleration * carLength);
+    const accelerationDistanceInCars = (maximumSpeed * maximumSpeed) / (2 * acceleration * carLength);
     const transitionTime = maximumSpeed / acceleration + accelerationDistanceInCars * tau;
 
     if (greenTime <= transitionTime) {
@@ -127,18 +126,8 @@
 
       for (let index = 0; index < SAMPLE_COUNT; index += 1) {
         const tau = (TAU_MAX * index) / (SAMPLE_COUNT - 1);
-        const uncappedCount = integerCount(
-          continuousUncapped(tau, values.greenTime, values.acceleration, values.carLength),
-        );
-        const cappedCount = integerCount(
-          continuousCapped(
-            tau,
-            values.greenTime,
-            values.acceleration,
-            values.carLength,
-            values.maximumSpeed,
-          ),
-        );
+        const uncappedCount = integerCount(continuousUncapped(tau, values.greenTime, values.acceleration, values.carLength));
+        const cappedCount = integerCount(continuousCapped(tau, values.greenTime, values.acceleration, values.carLength, values.maximumSpeed));
         uncapped.push({ tau, count: uncappedCount });
         capped.push({ tau, count: cappedCount });
         maximumCount = Math.max(maximumCount, uncappedCount, cappedCount);
@@ -169,11 +158,7 @@
         "aria-label": "Interactive capped and uncapped traffic throughput curves",
       });
       svg.appendChild(
-        svgElement(
-          "desc",
-          {},
-          "Two integer-valued step curves show cars through the green light as reaction time varies from zero to two seconds.",
-        ),
+        svgElement("desc", {}, "Two integer-valued step curves show cars through the green light as reaction time varies from zero to two seconds.")
       );
 
       const axes = svgElement("g");
@@ -184,7 +169,7 @@
           x2: margin.left + plotWidth,
           y2: margin.top + plotHeight,
           class: "traffic-axis",
-        }),
+        })
       );
       axes.appendChild(
         svgElement("line", {
@@ -193,7 +178,7 @@
           x2: margin.left,
           y2: margin.top + plotHeight,
           class: "traffic-axis",
-        }),
+        })
       );
 
       const xTicks = compact ? [0, 0.5, 1, 1.5, 2] : [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -206,7 +191,7 @@
             x2: x,
             y2: margin.top + plotHeight + 5,
             class: "traffic-tick",
-          }),
+          })
         );
         axes.appendChild(
           svgElement(
@@ -217,8 +202,8 @@
               "text-anchor": "middle",
               "font-size": compact ? 11 : 12,
             },
-            tick.toFixed(tick % 1 === 0 ? 1 : 2),
-          ),
+            tick.toFixed(tick % 1 === 0 ? 1 : 2)
+          )
         );
       });
 
@@ -231,7 +216,7 @@
             x2: margin.left,
             y2: y,
             class: "traffic-tick",
-          }),
+          })
         );
         axes.appendChild(
           svgElement(
@@ -242,8 +227,8 @@
               "text-anchor": "end",
               "font-size": compact ? 11 : 12,
             },
-            String(tick),
-          ),
+            String(tick)
+          )
         );
       }
 
@@ -256,8 +241,8 @@
             "text-anchor": "middle",
             "font-size": compact ? 12 : 14,
           },
-          "Reaction time τ [s]",
-        ),
+          "Reaction time τ [s]"
+        )
       );
       axes.appendChild(
         svgElement(
@@ -269,8 +254,8 @@
             "text-anchor": "middle",
             "font-size": compact ? 12 : 14,
           },
-          "Cars through the green light",
-        ),
+          "Cars through the green light"
+        )
       );
       svg.appendChild(axes);
 
@@ -282,7 +267,7 @@
           "stroke-width": 2.2,
           "vector-effect": "non-scaling-stroke",
           "stroke-linejoin": "round",
-        }),
+        })
       );
       svg.appendChild(
         svgElement("path", {
@@ -292,25 +277,12 @@
           "stroke-width": 2.6,
           "vector-effect": "non-scaling-stroke",
           "stroke-linejoin": "round",
-        }),
+        })
       );
 
-      const selectedUncapped = integerCount(
-        continuousUncapped(
-          values.selectedTau,
-          values.greenTime,
-          values.acceleration,
-          values.carLength,
-        ),
-      );
+      const selectedUncapped = integerCount(continuousUncapped(values.selectedTau, values.greenTime, values.acceleration, values.carLength));
       const selectedCapped = integerCount(
-        continuousCapped(
-          values.selectedTau,
-          values.greenTime,
-          values.acceleration,
-          values.carLength,
-          values.maximumSpeed,
-        ),
+        continuousCapped(values.selectedTau, values.greenTime, values.acceleration, values.carLength, values.maximumSpeed)
       );
       const selectedX = xScale(values.selectedTau);
 
@@ -321,7 +293,7 @@
           x2: selectedX,
           y2: margin.top + plotHeight,
           class: "traffic-selected-guide",
-        }),
+        })
       );
       const labelOnRight = values.selectedTau > TAU_MAX * 0.78;
       svg.appendChild(
@@ -334,8 +306,8 @@
             "font-size": compact ? 11 : 12,
             class: "traffic-selected-label",
           },
-          `τ = ${values.selectedTau.toFixed(2)} s`,
-        ),
+          `τ = ${values.selectedTau.toFixed(2)} s`
+        )
       );
       svg.appendChild(
         svgElement("circle", {
@@ -346,36 +318,29 @@
           stroke: "var(--global-bg-color)",
           "stroke-width": 1.5,
           "vector-effect": "non-scaling-stroke",
-        }),
+        })
       );
       const cappedY = yScale(selectedCapped);
       const diamondRadius = compact ? 5 : 6;
       svg.appendChild(
         svgElement("path", {
-          d: `M${selectedX},${cappedY - diamondRadius}L${selectedX + diamondRadius},${cappedY}L${selectedX},${cappedY + diamondRadius}L${selectedX - diamondRadius},${cappedY}Z`,
+          d: `M${selectedX},${cappedY - diamondRadius}L${selectedX + diamondRadius},${cappedY}L${selectedX},${cappedY + diamondRadius}L${
+            selectedX - diamondRadius
+          },${cappedY}Z`,
           fill: COLORS.capped,
           stroke: "var(--global-bg-color)",
           "stroke-width": 1.5,
           "vector-effect": "non-scaling-stroke",
-        }),
+        })
       );
 
       chart.replaceChildren(svg);
 
       const uncappedTrain = uncappedTrainCount(values.greenTime, values.acceleration, values.carLength);
-      const cappedTrain = cappedTrainCount(
-        values.greenTime,
-        values.acceleration,
-        values.carLength,
-        values.maximumSpeed,
-      );
+      const cappedTrain = cappedTrainCount(values.greenTime, values.acceleration, values.carLength, values.maximumSpeed);
       const efficiency = cappedTrain > 0 ? (100 * selectedCapped) / cappedTrain : 0;
-      const accelerationDistanceInCars =
-        (values.maximumSpeed * values.maximumSpeed) /
-        (2 * values.acceleration * values.carLength);
-      const transitionTime =
-        values.maximumSpeed / values.acceleration +
-        accelerationDistanceInCars * values.selectedTau;
+      const accelerationDistanceInCars = (values.maximumSpeed * values.maximumSpeed) / (2 * values.acceleration * values.carLength);
+      const transitionTime = values.maximumSpeed / values.acceleration + accelerationDistanceInCars * values.selectedTau;
       const branch = values.greenTime <= transitionTime ? "accelerating" : "cruising";
 
       readout.innerHTML =
