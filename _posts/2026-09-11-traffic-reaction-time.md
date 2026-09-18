@@ -32,9 +32,11 @@ Throughout this post, by throughput we mean the maximum number of cars that can 
 ### The train benchmark
 
 Let's first consider the idealized scenario where each driver has a perfect reaction time, i.e., $\tau = 0$. Then the cars essentially form a train, accelerating synchronously as soon as the light turns green. How many cars will pass through in this case? It will simply be how far the train travels in $T$ seconds at constant acceleration $a$ divided by the length of each car, rounded down to the nearest integer:
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
 \begin{equation}
-    N_{\mathrm{train}} = \left\lfloor \frac{a T^2}{2L}\right\rfloor,
+    N_{\mathrm{train}} = \left\lfloor \frac{a T^2}{2L}\right\rfloor
 \end{equation}
+</div>
 where we obtained the distance traveled via kinematics. This gives us the upper bound on how many cars will pass through and it will be interesting to compare with the nonzero $\tau$ case which we derive now.
 
 ### Including reaction time
@@ -56,15 +58,16 @@ We want to find the maximal $m$ that satisfies this inequality because its squar
 \begin{align}
     M(\tau) &= \frac{\sqrt{\frac{2L}{a} +4\tau T} - \sqrt{\frac{2L}{a}}}{2\tau}.
 \end{align}
-Squaring $M(\tau)$ gives the continuous throughput threshold. Let
+Squaring $M(\tau)$ gives the continuous throughput threshold. The first two lines below define this continuous quantity, and the final line rounds it down to obtain the actual integer throughput:
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
 \begin{equation}
-    \widetilde{N}(\tau) = M(\tau)^2
-    = \left(\frac{\sqrt{\frac{2L}{a} +4\tau T} - \sqrt{\frac{2L}{a}}}{2\tau}\right)^2.
+\begin{aligned}
+    \widetilde{N}(\tau) &= M(\tau)^2\newline
+    &= \left(\frac{\sqrt{\frac{2L}{a} +4\tau T} - \sqrt{\frac{2L}{a}}}{2\tau}\right)^2,\newline
+    N(\tau) &= \left\lfloor \widetilde{N}(\tau) \right\rfloor.
+\end{aligned}
 \end{equation}
-The actual number of cars must be an integer, so we round this threshold down:
-\begin{equation}
-    N(\tau) = \left\lfloor \widetilde{N}(\tau) \right\rfloor.
-\end{equation}
+</div>
 As a sanity check, we would want to verify that the expression before rounding reduces to the train result when $\tau \to 0$. By using L'Hôpital's rule, we do indeed find that
 \begin{equation}
 \lim_{\tau\to 0} \widetilde{N}(\tau) = \frac{a T^2}{2L}.
@@ -224,20 +227,23 @@ T_c = n_a\tau+t_a
 
 Let $\widetilde{N}_{\mathrm{cap}}(\tau)$ denote the continuous throughput threshold that satisfies the crossing condition, before applying the floor function. We obtain
 
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
 \begin{equation}
-\widetilde{N}\_{\mathrm{cap}}(\tau)=
+\begin{aligned}
+\widetilde{N}_{\mathrm{cap}}(\tau)&=
 \begin{cases}
 \left(\dfrac{\sqrt{\frac{2L}{a}+4\tau T}-\sqrt{\frac{2L}{a}}}{2\tau}\right)^2,
-& T \leq T\_c,\newline
-\dfrac{T-\frac{v\_{\max}}{2a}}{\tau+\frac{L}{v\_{\max}}},
-& T>T\_c.
-\end{cases}
+& T \leq T_c,\newline
+\dfrac{T-\frac{v_{\max}}{2a}}{\tau+\frac{L}{v_{\max}}},
+& T>T_c.
+\end{cases}\newline
+N_{\mathrm{cap}}(\tau)
+&=\left\lfloor \widetilde{N}_{\mathrm{cap}}(\tau)\right\rfloor.
+\end{aligned}
 \end{equation}
+</div>
 
-When $\tau=0$ and the first branch applies, its expression is understood through its limit. The maximum speed throughput is
-\begin{equation}
-N_{\mathrm{cap}}(\tau)=\left\lfloor \widetilde{N}_{\mathrm{cap}}(\tau)\right\rfloor.
-\end{equation}
+When $\tau=0$ and the first branch applies, its expression is understood through its limit. The final line applies the floor function to obtain the maximum speed throughput.
 
 The first branch is exactly our original answer. In this regime, the final car to clear the light reaches $x_0$ before reaching $v_{\max}$, so the speed cap never affects the motion relevant to the count. In the second regime, car $n$ reaches $x_0$ at time
 \begin{equation}
@@ -265,6 +271,7 @@ d_{\mathrm{train}}(T)
 &=v_{\max}T-\frac{v_{\max}^2}{2a}.
 \end{align}
 Dividing the distance traveled by $L$ and rounding down gives
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
 \begin{equation}
 N_{\mathrm{train,cap}}
 =
@@ -275,6 +282,7 @@ N_{\mathrm{train,cap}}
 & T>\dfrac{v_{\max}}{a}.
 \end{cases}
 \end{equation}
+</div>
 Setting $\tau=0$ in the car model therefore reproduces the capped-speed train result, just as it did in the original model.
 
 ### Visualizing the capped model
@@ -333,11 +341,13 @@ Finally, for a sufficiently long green light, both the car line and the train sp
 N\_{\mathrm{train,cap}} &\sim \frac{v\_{\max}T}{L}.
 \end{align}
 Since the floor function changes each continuous count by less than one, it does not affect the limiting ratio. Consequently, the relative efficiency of the actual integer throughputs satisfies
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
 \begin{equation}
 \lim_{T\to\infty}
 \frac{N_{\mathrm{cap}}(\tau)}{N_{\mathrm{train,cap}}}
-=\frac{L}{L+v_{\max}\tau}.
+=\frac{L}{L+v_{\max}\tau}
 \end{equation}
+</div>
 Unlike the unlimited-acceleration model, both throughputs now grow linearly with $T$.
 
 ### Heat map and space-time diagram
@@ -363,6 +373,69 @@ Unlike the unlimited-acceleration model, both throughputs now grow linearly with
 </div>
 
 The heat map in [Figure 10](#fig-capped-heatmap) shows that longer green lights produce much larger absolute gains when reaction times are small. As $\tau$ increases, accumulated reaction delay becomes the dominant bottleneck, so adding the same number of seconds to $T$ allows fewer additional cars through. The space-time diagram in [Figure 11](#fig-capped-spacetime) makes the transition to cruising visible car by car: unlike the parabolic trajectories in the uncapped model, each path eventually straightens once its slope reaches $v_{\max}$. The maximum speed extension therefore preserves the clean zero reaction time correspondence while giving the long green light behavior a more realistic interpretation.
+
+## Explore the model
+
+The controls below update the uncapped and capped throughput curves in real time. The reaction time slider marks a particular point on the curves and reports the corresponding throughputs, train benchmarks, and capped relative efficiency.
+
+<link rel="stylesheet" href="/assets/css/traffic-model-explorer.css">
+<div id="traffic-model-explorer">
+    <div class="traffic-controls" aria-label="Traffic model parameters">
+        <label class="traffic-control" for="traffic-green-time">
+            <span class="traffic-control-heading">
+                <span>Green light duration <em>T</em></span>
+                <output data-value="green-time" for="traffic-green-time">20 s</output>
+            </span>
+            <input id="traffic-green-time" data-parameter="green-time" type="range" min="10" max="60" step="1" value="20">
+        </label>
+        <label class="traffic-control" for="traffic-acceleration">
+            <span class="traffic-control-heading">
+                <span>Acceleration <em>a</em></span>
+                <output data-value="acceleration" for="traffic-acceleration">2.0 m/s²</output>
+            </span>
+            <input id="traffic-acceleration" data-parameter="acceleration" type="range" min="0.5" max="4" step="0.1" value="2">
+        </label>
+        <label class="traffic-control" for="traffic-car-length">
+            <span class="traffic-control-heading">
+                <span>Car length <em>L</em></span>
+                <output data-value="car-length" for="traffic-car-length">5.0 m</output>
+            </span>
+            <input id="traffic-car-length" data-parameter="car-length" type="range" min="3" max="8" step="0.1" value="5">
+        </label>
+        <label class="traffic-control" for="traffic-maximum-speed">
+            <span class="traffic-control-heading">
+                <span>Maximum speed <em>v</em><sub>max</sub></span>
+                <output data-value="maximum-speed" for="traffic-maximum-speed">15 m/s</output>
+            </span>
+            <input id="traffic-maximum-speed" data-parameter="maximum-speed" type="range" min="5" max="35" step="1" value="15">
+        </label>
+        <label class="traffic-control" for="traffic-selected-tau">
+            <span class="traffic-control-heading">
+                <span>Selected reaction time <em>τ</em></span>
+                <output data-value="selected-tau" for="traffic-selected-tau">1.00 s</output>
+            </span>
+            <input id="traffic-selected-tau" data-parameter="selected-tau" type="range" min="0" max="2" step="0.05" value="1">
+        </label>
+    </div>
+
+    <div class="traffic-chart-title">Capped and uncapped throughput</div>
+    <div class="traffic-legend" aria-label="Curve legend">
+        <span class="traffic-legend-item traffic-legend-uncapped">
+            <span class="traffic-legend-line" aria-hidden="true"></span>
+            <span class="traffic-legend-text">No speed cap: <em>N</em>(<em>τ</em>)</span>
+        </span>
+        <span class="traffic-legend-item traffic-legend-capped">
+            <span class="traffic-legend-line" aria-hidden="true"></span>
+            <span class="traffic-legend-text">With speed cap: <em>N</em><sub>cap</sub>(<em>τ</em>)</span>
+        </span>
+    </div>
+    <div class="traffic-chart" data-traffic-chart></div>
+    <p class="traffic-readout" data-traffic-readout aria-live="polite">
+        At <strong>τ = 1.00 s</strong>, <strong>12</strong> cars clear without a speed cap and <strong>12</strong> clear with the cap. The corresponding train throughputs are <strong>80</strong> and <strong>48</strong>, and the capped relative efficiency is <strong>25.0%</strong>. The capped count is in the cruising branch.
+    </p>
+    <noscript>This interactive figure requires JavaScript.</noscript>
+</div>
+<script src="/assets/js/traffic-model-explorer.js" defer></script>
 
 ## Conclusion
 
