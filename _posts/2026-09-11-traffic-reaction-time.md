@@ -376,63 +376,96 @@ The heat map in [Figure 10](#fig-capped-heatmap) shows that longer green lights 
 
 ## Explore the model
 
-The controls below update the uncapped and capped throughput curves in real time. The reaction time slider marks a particular point on the curves and reports the corresponding throughputs, train benchmarks, and capped relative efficiency.
+The controls below update both interactive views in real time. In the throughput view, the reaction time slider and the dashed $\tau$ guide control the same value; switch to the space-time view to follow individual cars.
 
 <link rel="stylesheet" href="/assets/css/traffic-model-explorer.css">
 <div id="traffic-model-explorer">
-    <div class="traffic-controls" aria-label="Traffic model parameters">
-        <label class="traffic-control" for="traffic-green-time">
-            <span class="traffic-control-heading">
-                <span>Green light duration <em>T</em></span>
-                <output data-value="green-time" for="traffic-green-time">20 s</output>
-            </span>
-            <input id="traffic-green-time" data-parameter="green-time" type="range" min="10" max="60" step="1" value="20">
-        </label>
-        <label class="traffic-control" for="traffic-acceleration">
-            <span class="traffic-control-heading">
-                <span>Acceleration <em>a</em></span>
-                <output data-value="acceleration" for="traffic-acceleration">2.0 m/s²</output>
-            </span>
-            <input id="traffic-acceleration" data-parameter="acceleration" type="range" min="0.5" max="4" step="0.1" value="2">
-        </label>
-        <label class="traffic-control" for="traffic-car-length">
-            <span class="traffic-control-heading">
-                <span>Car length <em>L</em></span>
-                <output data-value="car-length" for="traffic-car-length">5.0 m</output>
-            </span>
-            <input id="traffic-car-length" data-parameter="car-length" type="range" min="3" max="8" step="0.1" value="5">
-        </label>
-        <label class="traffic-control" for="traffic-maximum-speed">
-            <span class="traffic-control-heading">
-                <span>Maximum speed <em>v</em><sub>max</sub></span>
-                <output data-value="maximum-speed" for="traffic-maximum-speed">15 m/s</output>
-            </span>
-            <input id="traffic-maximum-speed" data-parameter="maximum-speed" type="range" min="5" max="35" step="1" value="15">
-        </label>
-        <label class="traffic-control" for="traffic-selected-tau">
-            <span class="traffic-control-heading">
-                <span>Selected reaction time <em>τ</em></span>
-                <output data-value="selected-tau" for="traffic-selected-tau">1.00 s</output>
-            </span>
-            <input id="traffic-selected-tau" data-parameter="selected-tau" type="range" min="0" max="2" step="0.05" value="1">
-        </label>
-    </div>
+    <div class="traffic-explorer-layout">
+        <div class="traffic-controls" aria-label="Traffic model parameters">
+            <label class="traffic-control" for="traffic-green-time">
+                <span class="traffic-control-heading">
+                    <span>Green light duration <em>T</em></span>
+                    <output data-value="green-time" for="traffic-green-time">20 s</output>
+                </span>
+                <input id="traffic-green-time" data-parameter="green-time" type="range" min="10" max="60" step="1" value="20">
+            </label>
+            <label class="traffic-control" for="traffic-acceleration">
+                <span class="traffic-control-heading">
+                    <span>Acceleration <em>a</em></span>
+                    <output data-value="acceleration" for="traffic-acceleration">2.0 m/s²</output>
+                </span>
+                <input id="traffic-acceleration" data-parameter="acceleration" type="range" min="0.5" max="4" step="0.1" value="2">
+            </label>
+            <label class="traffic-control" for="traffic-car-length">
+                <span class="traffic-control-heading">
+                    <span>Car length <em>L</em></span>
+                    <output data-value="car-length" for="traffic-car-length">5.0 m</output>
+                </span>
+                <input id="traffic-car-length" data-parameter="car-length" type="range" min="3" max="8" step="0.1" value="5">
+            </label>
+            <label class="traffic-control" for="traffic-maximum-speed">
+                <span class="traffic-control-heading">
+                    <span>Maximum speed <em>v</em><sub>max</sub></span>
+                    <output data-value="maximum-speed" for="traffic-maximum-speed">15 m/s</output>
+                </span>
+                <input id="traffic-maximum-speed" data-parameter="maximum-speed" type="range" min="5" max="35" step="1" value="15">
+            </label>
+            <label class="traffic-control" for="traffic-selected-tau">
+                <span class="traffic-control-heading">
+                    <span>Selected reaction time <em>τ</em></span>
+                    <output data-value="selected-tau" for="traffic-selected-tau">1.00 s</output>
+                </span>
+                <input id="traffic-selected-tau" data-parameter="selected-tau" type="range" min="0" max="2" step="0.05" value="1">
+            </label>
+        </div>
 
-    <div class="traffic-chart-title">Capped and uncapped throughput</div>
-    <div class="traffic-legend" aria-label="Curve legend">
-        <span class="traffic-legend-item traffic-legend-uncapped">
-            <span class="traffic-legend-line" aria-hidden="true"></span>
-            <span class="traffic-legend-text">No speed cap: <em>N</em>(<em>τ</em>)</span>
-        </span>
-        <span class="traffic-legend-item traffic-legend-capped">
-            <span class="traffic-legend-line" aria-hidden="true"></span>
-            <span class="traffic-legend-text">With speed cap: <em>N</em><sub>cap</sub>(<em>τ</em>)</span>
-        </span>
+        <div class="traffic-visual-column">
+            <div class="traffic-view-switch" role="group" aria-label="Interactive figure view">
+                <button type="button" class="traffic-view-button is-active" data-traffic-view="throughput" aria-pressed="true">Throughput</button>
+                <button type="button" class="traffic-view-button" data-traffic-view="space-time" aria-pressed="false">Space-time</button>
+            </div>
+
+            <div data-traffic-panel="throughput">
+                <div class="traffic-chart-title">Capped and uncapped throughput</div>
+                <div class="traffic-legend" aria-label="Throughput curve legend">
+                    <span class="traffic-legend-item traffic-legend-uncapped">
+                        <span class="traffic-legend-line" aria-hidden="true"></span>
+                        <span class="traffic-legend-text">No speed cap: <em>N</em>(<em>τ</em>)</span>
+                    </span>
+                    <span class="traffic-legend-item traffic-legend-capped">
+                        <span class="traffic-legend-line" aria-hidden="true"></span>
+                        <span class="traffic-legend-text">With speed cap: <em>N</em><sub>cap</sub>(<em>τ</em>)</span>
+                    </span>
+                </div>
+                <div class="traffic-chart" data-traffic-chart="throughput"></div>
+                <p class="traffic-readout" data-traffic-readout="throughput" aria-live="polite">
+                    At <strong>τ = 1.00 s</strong>, <strong>12</strong> cars clear without a speed cap and <strong>12</strong> clear with the cap. The speed cap does not change the selected throughput. The capped count is in the cruising branch.
+                </p>
+            </div>
+
+            <div data-traffic-panel="space-time" hidden>
+                <div class="traffic-chart-title">Capped-speed space-time diagram</div>
+                <div class="traffic-legend" aria-label="Space-time trajectory legend">
+                    <span class="traffic-legend-item traffic-legend-earlier">
+                        <span class="traffic-legend-line" aria-hidden="true"></span>
+                        <span class="traffic-legend-text">Earlier cars</span>
+                    </span>
+                    <span class="traffic-legend-item traffic-legend-last">
+                        <span class="traffic-legend-line" aria-hidden="true"></span>
+                        <span class="traffic-legend-text">Last to pass</span>
+                    </span>
+                    <span class="traffic-legend-item traffic-legend-miss">
+                        <span class="traffic-legend-line" aria-hidden="true"></span>
+                        <span class="traffic-legend-text">First to miss</span>
+                    </span>
+                </div>
+                <div class="traffic-chart traffic-space-time-chart" data-traffic-chart="space-time"></div>
+                <p class="traffic-readout" data-traffic-readout="space-time" aria-live="polite">
+                    Car <strong>12</strong> is the last to pass, and car <strong>13</strong> is the first to miss.
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="traffic-chart" data-traffic-chart></div>
-    <p class="traffic-readout" data-traffic-readout aria-live="polite">
-        At <strong>τ = 1.00 s</strong>, <strong>12</strong> cars clear without a speed cap and <strong>12</strong> clear with the cap. The corresponding train throughputs are <strong>80</strong> and <strong>48</strong>, and the capped relative efficiency is <strong>25.0%</strong>. The capped count is in the cruising branch.
-    </p>
     <noscript>This interactive figure requires JavaScript.</noscript>
 </div>
 <script src="/assets/js/traffic-model-explorer.js" defer></script>
