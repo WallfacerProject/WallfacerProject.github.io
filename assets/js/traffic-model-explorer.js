@@ -88,6 +88,7 @@
       spaceTime: root.querySelector("[data-traffic-panel='space-time']"),
     };
     const viewButtons = Array.from(root.querySelectorAll("[data-traffic-view]"));
+    const presetButtons = Array.from(root.querySelectorAll("[data-traffic-preset]"));
     const controls = {
       greenTime: root.querySelector("[data-parameter='green-time']"),
       acceleration: root.querySelector("[data-parameter='acceleration']"),
@@ -106,6 +107,23 @@
     let activeView = "throughput";
     let throughputGeometry = null;
     let tauDragPointer = null;
+
+    const presets = {
+      "reaction-dominated": {
+        greenTime: 40,
+        acceleration: 2,
+        carLength: 5,
+        maximumSpeed: 15,
+        selectedTau: 1,
+      },
+      "speed-cap-dominated": {
+        greenTime: 40,
+        acceleration: 2,
+        carLength: 5,
+        maximumSpeed: 15,
+        selectedTau: 0.25,
+      },
+    };
 
     function parameters() {
       return {
@@ -128,6 +146,26 @@
       outputs.maximumSpeed.textContent = outputs.maximumSpeed.value;
       outputs.selectedTau.value = `${values.selectedTau.toFixed(2)} s`;
       outputs.selectedTau.textContent = outputs.selectedTau.value;
+    }
+
+    function updatePresetState(activePreset = null) {
+      presetButtons.forEach((button) => {
+        const selected = button.dataset.trafficPreset === activePreset;
+        button.classList.toggle("is-active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
+    }
+
+    function applyPreset(name) {
+      const preset = presets[name];
+      if (!preset) return;
+      controls.greenTime.value = String(preset.greenTime);
+      controls.acceleration.value = String(preset.acceleration);
+      controls.carLength.value = String(preset.carLength);
+      controls.maximumSpeed.value = String(preset.maximumSpeed);
+      controls.selectedTau.value = String(preset.selectedTau);
+      updatePresetState(name);
+      drawActiveView();
     }
 
     function chartDimensions(chart, aspectRatio) {
@@ -369,19 +407,27 @@
       const transitionTime = values.maximumSpeed / values.acceleration + accelerationDistanceInCars * values.selectedTau;
       const branch = values.greenTime <= transitionTime ? "accelerating" : "cruising";
       const reduction = Math.max(0, selectedUncapped - selectedCapped);
-      const reductionText =
-        reduction === 0
-          ? "The speed cap does not change the selected throughput."
-          : `The speed cap reduces the selected throughput by <strong>${reduction}</strong> ${reduction === 1 ? "car" : "cars"} (<strong>${(
-              (100 * reduction) /
-              selectedUncapped
-            ).toFixed(1)}%</strong> relative to the uncapped count).`;
+      let branchText;
+
+      if (branch === "accelerating") {
+        branchText =
+          "The unrounded throughput threshold is in the <strong>accelerating</strong> branch, so the speed cap does not affect the count.";
+      } else if (reduction === 0) {
+        branchText =
+          "The unrounded throughput threshold is in the <strong>cruising</strong> branch; the speed cap lowers that threshold, but both values still round down to the same car count.";
+      } else {
+        branchText =
+          `The unrounded throughput threshold is in the <strong>cruising</strong> branch; the speed cap reduces the selected throughput by ` +
+          `<strong>${reduction}</strong> ${reduction === 1 ? "car" : "cars"} (<strong>${(
+            (100 * reduction) /
+            selectedUncapped
+          ).toFixed(1)}%</strong> relative to the uncapped count).`;
+      }
 
       readouts.throughput.innerHTML =
         `At <strong>τ = ${values.selectedTau.toFixed(2)} s</strong>, ` +
         `<strong>${selectedUncapped}</strong> cars clear without a speed cap and ` +
-        `<strong>${selectedCapped}</strong> clear with the cap. ${reductionText} ` +
-        `The capped count is in the ${branch} branch.`;
+        `<strong>${selectedCapped}</strong> clear with the cap. ${branchText}`;
     }
 
     function drawSpaceTime(values) {
@@ -656,6 +702,7 @@
       const clamped = Math.max(0, Math.min(TAU_MAX, rawTau));
       const snapped = Math.round(clamped / step) * step;
       controls.selectedTau.value = snapped.toFixed(2);
+      updatePresetState();
       drawActiveView();
     }
 
@@ -681,8 +728,14 @@
     charts.throughput.addEventListener("pointerup", finishTauDrag);
     charts.throughput.addEventListener("pointercancel", finishTauDrag);
 
-    Object.values(controls).forEach((control) => control.addEventListener("input", drawActiveView));
+    Object.values(controls).forEach((control) =>
+      control.addEventListener("input", () => {
+        updatePresetState();
+        drawActiveView();
+      })
+    );
     viewButtons.forEach((button) => button.addEventListener("click", () => selectView(button.dataset.trafficView)));
+    presetButtons.forEach((button) => button.addEventListener("click", () => applyPreset(button.dataset.trafficPreset)));
 
     let resizeFrame = null;
     const resizeObserver = new ResizeObserver(() => {
