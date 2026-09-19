@@ -23,9 +23,9 @@ related_posts: false
 
 In short, this is what it is and it's not what it's not. In other words, I don't want to pigeonhole this into a specific category, although it may end up following some common theme(s). I don't know. We'll have to wait and see.
 
-For now, I can tell you what I currently want to write about. I would like to share things from physics and math which I find interesting and/or useful. This will probably end up being a mix of elementary and advanced topics, but of course the difficulty level is subjective.
+For now, I can tell you what I currently want to write about. I would like to share topics/problems from physics and math which I find interesting and/or useful. This will probably end up being a mix of elementary and advanced topics, but of course the difficulty level is subjective.
 
-I would be really happy if someone found some entertainment and/or learned something new here but I also have selfish reasons for writing: this will help me organize my thoughts, force me to be clear and correct, clear up my own confusions, and leave me with references I can return to in the future. Terence Tao has a great [post](https://terrytao.wordpress.com/career-advice/write-down-what-youve-done/) on this that resonates with me.
+I would be really happy if someone found some entertainment and/or learned something new here but I also have selfish reasons for writing: this will help me organize my thoughts, force me to be clear and correct, clear up my own confusions, and leave me with references I can return to in the future. Terence Tao has a great [post](https://terrytao.wordpress.com/career-advice/write-down-what-youve-done/) on writing that resonates with me.
 
 I expect that some posts will be more useful as references and others will prioritize pedagogy.
 
