@@ -378,16 +378,23 @@ The heat map in [Figure 10](#fig-capped-heatmap) shows that longer green lights 
 
 The controls below update both interactive views in real time. In the throughput view, the reaction time slider and the dashed $\tau$ guide control the same value; switch to the space-time view to follow individual cars.
 
-<link rel="stylesheet" href="/assets/css/traffic-model-explorer.css">
+<link rel="stylesheet" href="/assets/css/traffic-model-explorer.css?v={{ site.time | date: '%s' }}">
 <div id="traffic-model-explorer">
     <div class="traffic-explorer-layout">
         <div class="traffic-controls" aria-label="Traffic model parameters">
+            <div class="traffic-presets" aria-label="Preset parameter sets">
+                <span class="traffic-presets-label">Presets</span>
+                <div class="traffic-preset-buttons">
+                    <button type="button" class="traffic-preset-button is-active" data-traffic-preset="reaction-dominated" aria-pressed="true">Reaction dominated</button>
+                    <button type="button" class="traffic-preset-button" data-traffic-preset="speed-cap-dominated" aria-pressed="false">Speed cap dominated</button>
+                </div>
+            </div>
             <label class="traffic-control" for="traffic-green-time">
                 <span class="traffic-control-heading">
                     <span>Green light duration <em>T</em></span>
-                    <output data-value="green-time" for="traffic-green-time">20 s</output>
+                    <output data-value="green-time" for="traffic-green-time">40 s</output>
                 </span>
-                <input id="traffic-green-time" data-parameter="green-time" type="range" min="10" max="60" step="1" value="20">
+                <input id="traffic-green-time" data-parameter="green-time" type="range" min="10" max="60" step="1" value="40">
             </label>
             <label class="traffic-control" for="traffic-acceleration">
                 <span class="traffic-control-heading">
@@ -439,7 +446,7 @@ The controls below update both interactive views in real time. In the throughput
                 </div>
                 <div class="traffic-chart" data-traffic-chart="throughput"></div>
                 <p class="traffic-readout" data-traffic-readout="throughput" aria-live="polite">
-                    At <strong>τ = 1.00 s</strong>, <strong>12</strong> cars clear without a speed cap and <strong>12</strong> clear with the cap. The speed cap does not change the selected throughput. The capped count is in the cruising branch.
+                    At <strong>τ = 1.00 s</strong>, <strong>28</strong> cars clear without a speed cap and <strong>27</strong> clear with the cap. The unrounded throughput threshold is in the <strong>cruising</strong> branch; the speed cap reduces the selected throughput by <strong>1</strong> car (<strong>3.6%</strong> relative to the uncapped count).
                 </p>
             </div>
 
@@ -461,14 +468,23 @@ The controls below update both interactive views in real time. In the throughput
                 </div>
                 <div class="traffic-chart traffic-space-time-chart" data-traffic-chart="space-time"></div>
                 <p class="traffic-readout" data-traffic-readout="space-time" aria-live="polite">
-                    Car <strong>12</strong> is the last to pass, and car <strong>13</strong> is the first to miss.
+                    Car <strong>27</strong> is the last to pass, and car <strong>28</strong> is the first to miss.
                 </p>
             </div>
         </div>
     </div>
+    <p class="traffic-preset-explanation">Once the cars are cruising at the maximum speed, one car crosses the line every $\tau+L/v_{\max}$ seconds: $\tau$ seconds because the next driver starts later, plus $L/v_{\max}$ seconds because that car begins one car length farther back. Both presets use $T=40\,\mathrm{s}$, $a=2\,\mathrm{m/s^2}$, $L=5\,\mathrm{m}$, and $v_{\max}=15\,\mathrm{m/s}$, so only $\tau$ changes. Since $L/v_{\max}=1/3\,\mathrm{s}$, the reaction time is larger when $\tau=1\,\mathrm{s}$ in the <em>Reaction dominated</em> preset, while the one-car-length travel time is larger when $\tau=0.25\,\mathrm{s}$ in the <em>Speed cap dominated</em> preset.</p>
+    <div class="traffic-things-to-try">
+        <p><strong>Things to try</strong></p>
+        <ul>
+            <li>Choose <em>Reaction dominated</em> and sweep $T$ across its range. Once cruising begins, each additional car costs $\tau+L/v_{\max}$ seconds. Here $\tau=1\,\mathrm{s}$ is three times as large as $L/v_{\max}=1/3\,\mathrm{s}$, so reaction delay accounts for most of that time. Since both models include the same reaction delay, imposing the speed cap changes only the smaller part of the calculation, and the two throughput curves remain close.</li>
+            <li>Choose <em>Speed cap dominated</em>. Changing only the reaction time to $0.25\,\mathrm{s}$ increases the uncapped and capped throughputs to $80$ and $62$ cars, respectively, producing a much clearer separation between the curves.</li>
+            <li>Switch to the space-time view and compare the two presets. Notice how the shorter reaction time allows many more trajectories to reach the crossing line before the green light ends.</li>
+        </ul>
+    </div>
     <noscript>This interactive figure requires JavaScript.</noscript>
 </div>
-<script src="/assets/js/traffic-model-explorer.js" defer></script>
+<script src="/assets/js/traffic-model-explorer.js?v={{ site.time | date: '%s' }}" defer></script>
 
 ## Conclusion
 
