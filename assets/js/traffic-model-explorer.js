@@ -10,6 +10,8 @@
     uncapped: "#0077c8",
     capped: "#b509ac",
     missed: "#d95f02",
+    reacted: "#f0a202",
+    passed: "#27823b",
   };
 
   function continuousUncapped(tau, greenTime, acceleration, carLength) {
@@ -76,37 +78,56 @@
     root.dataset.initialized = "true";
 
     const charts = {
-      throughput: root.querySelector("[data-traffic-chart='throughput']"),
-      spaceTime: root.querySelector("[data-traffic-chart='space-time']"),
+      throughput: document.querySelector("[data-traffic-chart='throughput']"),
+      spaceTime: document.querySelector("[data-traffic-chart='space-time']"),
+      animation: document.querySelector("[data-traffic-chart='animation']"),
     };
     const readouts = {
-      throughput: root.querySelector("[data-traffic-readout='throughput']"),
-      spaceTime: root.querySelector("[data-traffic-readout='space-time']"),
+      throughput: document.querySelector("[data-traffic-readout='throughput']"),
+      spaceTime: document.querySelector("[data-traffic-readout='space-time']"),
+      animation: document.querySelector("[data-traffic-readout='animation']"),
     };
     const panels = {
-      throughput: root.querySelector("[data-traffic-panel='throughput']"),
-      spaceTime: root.querySelector("[data-traffic-panel='space-time']"),
+      throughput: document.querySelector("[data-traffic-panel='throughput']"),
+      "space-time": document.querySelector("[data-traffic-panel='space-time']"),
     };
-    const viewButtons = Array.from(root.querySelectorAll("[data-traffic-view]"));
-    const presetButtons = Array.from(root.querySelectorAll("[data-traffic-preset]"));
-    const controls = {
-      greenTime: root.querySelector("[data-parameter='green-time']"),
-      acceleration: root.querySelector("[data-parameter='acceleration']"),
-      carLength: root.querySelector("[data-parameter='car-length']"),
-      maximumSpeed: root.querySelector("[data-parameter='maximum-speed']"),
-      selectedTau: root.querySelector("[data-parameter='selected-tau']"),
+    const viewButtons = Array.from(document.querySelectorAll("[data-traffic-view]"));
+    const presetButtons = Array.from(document.querySelectorAll("[data-traffic-preset]"));
+    const animationViewButtons = Array.from(document.querySelectorAll("[data-traffic-animation-view]"));
+    const linkedControls = {
+      greenTime: Array.from(document.querySelectorAll("[data-parameter='green-time'], [data-animation-parameter='green-time']")),
+      acceleration: Array.from(document.querySelectorAll("[data-parameter='acceleration'], [data-animation-parameter='acceleration']")),
+      carLength: Array.from(document.querySelectorAll("[data-parameter='car-length'], [data-animation-parameter='car-length']")),
+      maximumSpeed: Array.from(document.querySelectorAll("[data-parameter='maximum-speed'], [data-animation-parameter='maximum-speed']")),
+      selectedTau: Array.from(document.querySelectorAll("[data-parameter='selected-tau'], [data-animation-parameter='selected-tau']")),
     };
-    const outputs = {
-      greenTime: root.querySelector("[data-value='green-time']"),
-      acceleration: root.querySelector("[data-value='acceleration']"),
-      carLength: root.querySelector("[data-value='car-length']"),
-      maximumSpeed: root.querySelector("[data-value='maximum-speed']"),
-      selectedTau: root.querySelector("[data-value='selected-tau']"),
+    const controls = Object.fromEntries(
+      Object.entries(linkedControls).map(([name, elements]) => [name, elements[0]])
+    );
+    const outputGroups = {
+      greenTime: Array.from(document.querySelectorAll("[data-value='green-time'], [data-animation-value='green-time']")),
+      acceleration: Array.from(document.querySelectorAll("[data-value='acceleration'], [data-animation-value='acceleration']")),
+      carLength: Array.from(document.querySelectorAll("[data-value='car-length'], [data-animation-value='car-length']")),
+      maximumSpeed: Array.from(document.querySelectorAll("[data-value='maximum-speed'], [data-animation-value='maximum-speed']")),
+      selectedTau: Array.from(document.querySelectorAll("[data-value='selected-tau'], [data-animation-value='selected-tau']")),
+    };
+    const animationControls = {
+      play: document.querySelector("[data-traffic-animation-play]"),
+      restart: document.querySelector("[data-traffic-animation-restart]"),
+      speed: document.querySelector("[data-traffic-animation-speed]"),
+      scrubber: document.querySelector("[data-traffic-animation-scrubber]"),
+      time: document.querySelector("[data-traffic-animation-time]"),
     };
 
     let activeView = "throughput";
     let throughputGeometry = null;
     let tauDragPointer = null;
+    let animationFrame = null;
+    let animationPlaying = false;
+    let animationPreviousTimestamp = null;
+    let animationTime = 0;
+    let animationScene = null;
+    let animationCamera = "close";
 
     const presets = {
       "reaction-dominated": {
@@ -135,17 +156,32 @@
       };
     }
 
+    function setLinkedValue(name, value) {
+      linkedControls[name].forEach((control) => {
+        control.value = String(value);
+      });
+    }
+
+    function synchronizeLinkedControl(name, source) {
+      linkedControls[name].forEach((control) => {
+        if (control !== source) control.value = source.value;
+      });
+    }
+
     function updateControlLabels(values) {
-      outputs.greenTime.value = `${values.greenTime.toFixed(0)} s`;
-      outputs.greenTime.textContent = outputs.greenTime.value;
-      outputs.acceleration.value = `${values.acceleration.toFixed(1)} m/s²`;
-      outputs.acceleration.textContent = outputs.acceleration.value;
-      outputs.carLength.value = `${values.carLength.toFixed(1)} m`;
-      outputs.carLength.textContent = outputs.carLength.value;
-      outputs.maximumSpeed.value = `${values.maximumSpeed.toFixed(0)} m/s`;
-      outputs.maximumSpeed.textContent = outputs.maximumSpeed.value;
-      outputs.selectedTau.value = `${values.selectedTau.toFixed(2)} s`;
-      outputs.selectedTau.textContent = outputs.selectedTau.value;
+      const labels = {
+        greenTime: `${values.greenTime.toFixed(0)} s`,
+        acceleration: `${values.acceleration.toFixed(1)} m/s²`,
+        carLength: `${values.carLength.toFixed(1)} m`,
+        maximumSpeed: `${values.maximumSpeed.toFixed(0)} m/s`,
+        selectedTau: `${values.selectedTau.toFixed(2)} s`,
+      };
+      Object.entries(labels).forEach(([name, label]) => {
+        outputGroups[name].forEach((output) => {
+          output.value = label;
+          output.textContent = label;
+        });
+      });
     }
 
     function updatePresetState(activePreset = null) {
@@ -159,13 +195,13 @@
     function applyPreset(name) {
       const preset = presets[name];
       if (!preset) return;
-      controls.greenTime.value = String(preset.greenTime);
-      controls.acceleration.value = String(preset.acceleration);
-      controls.carLength.value = String(preset.carLength);
-      controls.maximumSpeed.value = String(preset.maximumSpeed);
-      controls.selectedTau.value = String(preset.selectedTau);
+      setLinkedValue("greenTime", preset.greenTime);
+      setLinkedValue("acceleration", preset.acceleration);
+      setLinkedValue("carLength", preset.carLength);
+      setLinkedValue("maximumSpeed", preset.maximumSpeed);
+      setLinkedValue("selectedTau", preset.selectedTau);
       updatePresetState(name);
-      drawActiveView();
+      refreshModel();
     }
 
     function chartDimensions(chart, aspectRatio) {
@@ -674,17 +710,353 @@
         `<strong>${firstMiss}</strong> is the first to miss.`;
     }
 
-    function drawActiveView() {
-      const values = parameters();
+    function stopAnimation() {
+      if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+      animationPlaying = false;
+      animationPreviousTimestamp = null;
+      animationControls.play.textContent = "Play";
+      animationControls.play.setAttribute("aria-pressed", "false");
+    }
+
+    function animationCar(carWidth, carHeight) {
+      const group = svgElement("g", {
+        class: "traffic-animation-car is-waiting",
+      });
+      const sprite = svgElement("g", {
+        transform: `translate(${carWidth} 0) scale(-1 1)`,
+      });
+      const wheelRadius = carHeight * 0.13;
+      const wheelY = carHeight * 0.83;
+
+      sprite.appendChild(
+        svgElement("rect", {
+          x: 0,
+          y: carHeight * 0.39,
+          width: carWidth,
+          height: carHeight * 0.39,
+          rx: carHeight * 0.08,
+          class: "traffic-animation-car-body",
+        })
+      );
+      sprite.appendChild(
+        svgElement("path", {
+          d:
+            `M${carWidth * 0.16},${carHeight * 0.41}` +
+            `L${carWidth * 0.31},${carHeight * 0.13}` +
+            `Q${carWidth * 0.35},${carHeight * 0.07} ${carWidth * 0.43},${carHeight * 0.07}` +
+            `H${carWidth * 0.7}` +
+            `Q${carWidth * 0.77},${carHeight * 0.08} ${carWidth * 0.82},${carHeight * 0.18}` +
+            `L${carWidth * 0.92},${carHeight * 0.41}Z`,
+          class: "traffic-animation-car-roof",
+        })
+      );
+      sprite.appendChild(
+        svgElement("path", {
+          d:
+            `M${carWidth * 0.35},${carHeight * 0.17}` +
+            `H${carWidth * 0.48}V${carHeight * 0.37}H${carWidth * 0.25}Z` +
+            `M${carWidth * 0.53},${carHeight * 0.17}` +
+            `H${carWidth * 0.68}Q${carWidth * 0.73},${carHeight * 0.18} ${carWidth * 0.77},${carHeight * 0.27}` +
+            `L${carWidth * 0.81},${carHeight * 0.37}H${carWidth * 0.53}Z`,
+          class: "traffic-animation-car-window",
+        })
+      );
+      [carWidth * 0.22, carWidth * 0.78].forEach((wheelX) => {
+        sprite.appendChild(
+          svgElement("circle", {
+            cx: wheelX,
+            cy: wheelY,
+            r: wheelRadius,
+            class: "traffic-animation-wheel",
+          })
+        );
+        sprite.appendChild(
+          svgElement("circle", {
+            cx: wheelX,
+            cy: wheelY,
+            r: wheelRadius * 0.42,
+            class: "traffic-animation-hubcap",
+          })
+        );
+      });
+      group.appendChild(sprite);
+      const numberLabel = svgElement("text", {
+        x: carWidth * 0.5,
+        y: -4,
+        "text-anchor": "middle",
+        class: "traffic-animation-car-number",
+      });
+      if (carWidth < 18) numberLabel.style.display = "none";
+      group.appendChild(numberLabel);
+      return { element: group, numberLabel };
+    }
+
+    function carAnimationState(carNumber, time, values, xZero, positionScale, carWidth) {
+      const reactionTime = carNumber * values.selectedTau;
+      const elapsed = Math.max(0, time - reactionTime);
+      const position = -carNumber * values.carLength + cappedDistance(elapsed, values.acceleration, values.maximumSpeed);
+      return {
+        number: carNumber,
+        reactionTime,
+        position,
+        pixelX: xZero + position * positionScale,
+        carWidth,
+      };
+    }
+
+    function visibleAnimationCars(time) {
+      const { values, xZero, positionScale, carWidth, maximumCarNumber, width } = animationScene;
+      const visible = [];
+
+      for (let carNumber = 1; carNumber <= maximumCarNumber; carNumber += 1) {
+        const state = carAnimationState(carNumber, time, values, xZero, positionScale, carWidth);
+        if (state.pixelX > width + 2) continue;
+        if (state.pixelX + carWidth < -2) break;
+        visible.push(state);
+      }
+      return visible;
+    }
+
+    function renderAnimationFrame(time) {
+      if (!animationScene) return;
+      const { values, carPool, greenLight, redLight, passedLabel } = animationScene;
+      const boundedTime = Math.max(0, Math.min(values.greenTime, time));
+      const reactionFlashDuration = Math.max(0.22, Math.min(0.55, values.selectedTau * 0.55));
+      const visibleCars = visibleAnimationCars(boundedTime);
+
+      carPool.forEach(({ element, numberLabel }, index) => {
+        const state = visibleCars[index];
+        if (!state) {
+          element.style.display = "none";
+          return;
+        }
+        const hasReacted = boundedTime + 1e-9 >= state.reactionTime;
+        const isReacting = hasReacted && boundedTime < state.reactionTime + reactionFlashDuration;
+        const hasPassed = state.position >= -1e-9;
+
+        element.style.display = "";
+        element.dataset.carNumber = String(state.number);
+        numberLabel.textContent = String(state.number);
+        element.setAttribute("transform", `translate(${state.pixelX} ${animationScene.carY})`);
+        element.setAttribute(
+          "class",
+          `traffic-animation-car ${
+            hasPassed ? "is-passed" : isReacting ? "is-reacting" : hasReacted ? "is-moving" : "is-waiting"
+          }`
+        );
+      });
+
+      const passed = integerCount(
+        continuousCapped(
+          values.selectedTau,
+          boundedTime,
+          values.acceleration,
+          values.carLength,
+          values.maximumSpeed
+        )
+      );
+      passedLabel.textContent = `Cars passed: ${passed}`;
+      const greenIsOn = boundedTime < values.greenTime - 1e-9;
+      greenLight.classList.toggle("is-on", greenIsOn);
+      redLight.classList.toggle("is-on", !greenIsOn);
+      animationTime = boundedTime;
+      animationControls.scrubber.value = boundedTime.toFixed(2);
+      animationControls.time.value = `t = ${boundedTime.toFixed(2)} s`;
+      animationControls.time.textContent = animationControls.time.value;
+
+      if (!greenIsOn) {
+        readouts.animation.innerHTML =
+          `The green light has ended. <strong>${passed}</strong> ${passed === 1 ? "car has" : "cars have"} cleared ` +
+          `<strong>x = x<sub>0</sub></strong>.`;
+      } else if (values.selectedTau === 0) {
+        readouts.animation.innerHTML =
+          `<strong>t = ${boundedTime.toFixed(2)} s:</strong> every driver reacted immediately, and ` +
+          `<strong>${passed}</strong> ${passed === 1 ? "car has" : "cars have"} cleared <strong>x = x<sub>0</sub></strong>.`;
+      } else {
+        const nextCar = Math.floor((boundedTime + 1e-9) / values.selectedTau) + 1;
+        const nextReactionTime = nextCar * values.selectedTau;
+        readouts.animation.innerHTML =
+          `<strong>t = ${boundedTime.toFixed(2)} s:</strong> <strong>${passed}</strong> ${
+            passed === 1 ? "car has" : "cars have"
+          } cleared <strong>x = x<sub>0</sub></strong>. Car <strong>${nextCar}</strong> reacts at ` +
+          `<strong>t = ${nextReactionTime.toFixed(2)} s</strong>.`;
+      }
+    }
+
+    function drawAnimation(values, startingTime = 0) {
+      stopAnimation();
+      const chart = charts.animation;
+      const { width, height, compact } = chartDimensions(chart, 0.48);
+      const positionScale =
+        animationCamera === "wide" ? Math.max(2.2, width / 220) : Math.max(7, width / 72);
+      const carWidth = values.carLength * positionScale;
+      const carHeight = Math.max(8, carWidth * 0.55);
+      const roadY = height * 0.69;
+      const carY = roadY - carHeight * 0.93;
+      const xZero = width * (compact ? 0.78 : 0.74);
+      const finalCount = integerCount(
+        continuousCapped(values.selectedTau, values.greenTime, values.acceleration, values.carLength, values.maximumSpeed)
+      );
+      const initialVisibleCars = Math.ceil(xZero / carWidth) + 3;
+      const maximumCarNumber = finalCount + initialVisibleCars + 8;
+      const poolSize = Math.ceil(width / Math.max(carWidth, 1)) + 10;
+      const clipId = "traffic-animation-road-clip";
+      const svg = svgElement("svg", {
+        viewBox: `0 0 ${width} ${height}`,
+        width,
+        height,
+        role: "img",
+        "aria-label": "Animated side view of cars reacting and crossing the intersection",
+      });
+      svg.appendChild(
+        svgElement(
+          "desc",
+          {},
+          "Cars begin bumper-to-bumper and start moving one reaction-time interval apart. Their motion follows the capped-speed displacement model."
+        )
+      );
+
+      const defs = svgElement("defs");
+      const clipPath = svgElement("clipPath", { id: clipId });
+      clipPath.appendChild(svgElement("rect", { x: 0, y: 40, width, height: roadY - 40 }));
+      defs.appendChild(clipPath);
+      svg.appendChild(defs);
+      svg.appendChild(svgElement("rect", { x: 0, y: 0, width, height: roadY, class: "traffic-animation-sky" }));
+      svg.appendChild(
+        svgElement("rect", {
+          x: 0,
+          y: roadY,
+          width,
+          height: height - roadY,
+          class: "traffic-animation-road",
+        })
+      );
+      svg.appendChild(
+        svgElement("line", {
+          x1: xZero,
+          y1: 52,
+          x2: xZero,
+          y2: roadY,
+          class: "traffic-animation-crossing-line",
+        })
+      );
+      svg.appendChild(
+        svgElement(
+          "text",
+          {
+            x: xZero - 7,
+            y: 67,
+            "text-anchor": "end",
+            class: "traffic-animation-crossing-label",
+          },
+          "x = x₀"
+        )
+      );
+
+      const passedLabel = svgElement(
+        "text",
+        {
+          x: 14,
+          y: 27,
+          class: "traffic-animation-passed-label",
+        },
+        "Cars passed: 0"
+      );
+      svg.appendChild(passedLabel);
+
+      const signalX = xZero + (width - xZero) / 2 - 12;
+      const signal = svgElement("g", { transform: `translate(${signalX} 12)` });
+      signal.appendChild(svgElement("rect", { x: 0, y: 0, width: 24, height: 54, rx: 6, class: "traffic-animation-signal" }));
+      const redLight = svgElement("circle", { cx: 12, cy: 14, r: 7, class: "traffic-animation-light traffic-animation-red" });
+      const greenLight = svgElement("circle", {
+        cx: 12,
+        cy: 40,
+        r: 7,
+        class: "traffic-animation-light traffic-animation-green is-on",
+      });
+      signal.appendChild(redLight);
+      signal.appendChild(greenLight);
+      svg.appendChild(signal);
+
+      const carsLayer = svgElement("g", { "clip-path": `url(#${clipId})` });
+      const carPool = [];
+      for (let slot = 0; slot < poolSize; slot += 1) {
+        const car = animationCar(carWidth, carHeight);
+        carsLayer.appendChild(car.element);
+        carPool.push(car);
+      }
+      svg.appendChild(carsLayer);
+      chart.replaceChildren(svg);
+
+      animationScene = {
+        values: { ...values },
+        carPool,
+        width,
+        carWidth,
+        carY,
+        xZero,
+        positionScale,
+        maximumCarNumber,
+        greenLight,
+        redLight,
+        passedLabel,
+      };
+      animationControls.scrubber.max = String(values.greenTime);
+      renderAnimationFrame(Math.max(0, Math.min(values.greenTime, startingTime)));
+    }
+
+    function animationStep(timestamp) {
+      if (!animationPlaying || !animationScene) return;
+      if (animationPreviousTimestamp === null) animationPreviousTimestamp = timestamp;
+      const elapsedRealTime = Math.min(0.1, (timestamp - animationPreviousTimestamp) / 1000);
+      animationPreviousTimestamp = timestamp;
+      const playbackSpeed = Number(animationControls.speed.value) || 1;
+      const nextTime = animationTime + elapsedRealTime * playbackSpeed;
+      renderAnimationFrame(nextTime);
+
+      if (animationTime >= animationScene.values.greenTime - 1e-9) {
+        animationPlaying = false;
+        animationFrame = null;
+        animationPreviousTimestamp = null;
+        animationControls.play.textContent = "Replay";
+        animationControls.play.setAttribute("aria-pressed", "false");
+        return;
+      }
+      animationFrame = requestAnimationFrame(animationStep);
+    }
+
+    function toggleAnimation() {
+      if (!animationScene) drawAnimation(parameters());
+      if (animationPlaying) {
+        stopAnimation();
+        return;
+      }
+      if (animationTime >= animationScene.values.greenTime - 1e-9) renderAnimationFrame(0);
+      animationPlaying = true;
+      animationPreviousTimestamp = null;
+      animationControls.play.textContent = "Pause";
+      animationControls.play.setAttribute("aria-pressed", "true");
+      animationFrame = requestAnimationFrame(animationStep);
+    }
+
+    function drawActiveView(values = parameters()) {
       updateControlLabels(values);
       if (activeView === "throughput") drawThroughput(values);
       else drawSpaceTime(values);
     }
 
+    function refreshModel() {
+      const values = parameters();
+      drawActiveView(values);
+      drawAnimation(values);
+    }
+
     function selectView(view) {
       activeView = view;
-      panels.throughput.hidden = view !== "throughput";
-      panels.spaceTime.hidden = view !== "space-time";
+      Object.entries(panels).forEach(([name, panel]) => {
+        panel.hidden = view !== name;
+      });
       viewButtons.forEach((button) => {
         const selected = button.dataset.trafficView === view;
         button.classList.toggle("is-active", selected);
@@ -702,8 +1074,9 @@
       const clamped = Math.max(0, Math.min(TAU_MAX, rawTau));
       const snapped = Math.round(clamped / step) * step;
       controls.selectedTau.value = snapped.toFixed(2);
+      synchronizeLinkedControl("selectedTau", controls.selectedTau);
       updatePresetState();
-      drawActiveView();
+      refreshModel();
     }
 
     charts.throughput.addEventListener("pointerdown", (event) => {
@@ -728,27 +1101,62 @@
     charts.throughput.addEventListener("pointerup", finishTauDrag);
     charts.throughput.addEventListener("pointercancel", finishTauDrag);
 
-    Object.values(controls).forEach((control) =>
-      control.addEventListener("input", () => {
-        updatePresetState();
-        drawActiveView();
-      })
-    );
+    Object.entries(linkedControls).forEach(([name, group]) => {
+      group.forEach((control) =>
+        control.addEventListener("input", () => {
+          synchronizeLinkedControl(name, control);
+          updatePresetState();
+          refreshModel();
+        })
+      );
+    });
     viewButtons.forEach((button) => button.addEventListener("click", () => selectView(button.dataset.trafficView)));
     presetButtons.forEach((button) => button.addEventListener("click", () => applyPreset(button.dataset.trafficPreset)));
+    animationViewButtons.forEach((button) =>
+      button.addEventListener("click", () => {
+        const wasPlaying = animationPlaying;
+        const preservedTime = animationTime;
+        animationCamera = button.dataset.trafficAnimationView;
+        animationViewButtons.forEach((candidate) => {
+          const selected = candidate === button;
+          candidate.classList.toggle("is-active", selected);
+          candidate.setAttribute("aria-pressed", String(selected));
+        });
+        drawAnimation(parameters(), preservedTime);
+        if (wasPlaying) toggleAnimation();
+      })
+    );
+    animationControls.play.addEventListener("click", toggleAnimation);
+    animationControls.restart.addEventListener("click", () => {
+      stopAnimation();
+      if (!animationScene) drawAnimation(parameters());
+      else renderAnimationFrame(0);
+    });
+    animationControls.scrubber.addEventListener("input", () => {
+      stopAnimation();
+      renderAnimationFrame(Number(animationControls.scrubber.value));
+    });
 
     let resizeFrame = null;
-    const resizeObserver = new ResizeObserver(() => {
+    let observedWidth = Math.round(root.getBoundingClientRect().width);
+    const resizeObserver = new ResizeObserver((entries) => {
+      const nextWidth = Math.round(entries[0]?.contentRect.width || root.getBoundingClientRect().width);
+      if (nextWidth === observedWidth) return;
+      observedWidth = nextWidth;
       if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
       resizeFrame = requestAnimationFrame(() => {
         resizeFrame = null;
-        drawActiveView();
+        const values = parameters();
+        const preservedTime = animationTime;
+        const wasPlaying = animationPlaying;
+        drawActiveView(values);
+        drawAnimation(values, preservedTime);
+        if (wasPlaying) toggleAnimation();
       });
     });
-    resizeObserver.observe(charts.throughput);
-    resizeObserver.observe(charts.spaceTime);
+    resizeObserver.observe(root);
 
-    drawActiveView();
+    refreshModel();
   }
 
   if (document.readyState === "loading") {
