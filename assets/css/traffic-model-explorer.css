@@ -1,4 +1,4 @@
-#traffic-model-explorer {
+.traffic-model-widget {
   --traffic-blue: #0077c8;
   --traffic-magenta: #b509ac;
   --traffic-orange: #d95f02;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-#traffic-model-explorer .traffic-explorer-layout {
+.traffic-model-widget .traffic-explorer-layout {
   display: grid;
   grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.55fr);
   gap: 1.35rem;
@@ -17,30 +17,30 @@
   border-bottom: 1px solid var(--global-divider-color);
 }
 
-#traffic-model-explorer .traffic-controls {
+.traffic-model-widget .traffic-controls {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.85rem;
   padding-top: 0.15rem;
 }
 
-#traffic-model-explorer .traffic-presets {
+.traffic-model-widget .traffic-presets {
   margin-bottom: 0.1rem;
 }
 
-#traffic-model-explorer .traffic-presets-label {
+.traffic-model-widget .traffic-presets-label {
   display: block;
   margin-bottom: 0.35rem;
   color: var(--global-text-color);
 }
 
-#traffic-model-explorer .traffic-preset-buttons {
+.traffic-model-widget .traffic-preset-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
 }
 
-#traffic-model-explorer .traffic-preset-button {
+.traffic-model-widget .traffic-preset-button {
   padding: 0.35rem 0.6rem;
   border: 1px solid var(--global-divider-color);
   border-radius: 0.25rem;
@@ -50,22 +50,22 @@
   font: inherit;
 }
 
-#traffic-model-explorer .traffic-preset-button.is-active {
+.traffic-model-widget .traffic-preset-button.is-active {
   border-color: var(--traffic-magenta);
   color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-preset-explanation {
+.traffic-model-widget .traffic-preset-explanation {
   margin: 0.55rem 0 0;
   color: var(--global-text-color-light);
 }
 
-#traffic-model-explorer .traffic-control {
+.traffic-model-widget .traffic-control {
   display: block;
   margin: 0;
 }
 
-#traffic-model-explorer .traffic-control-heading {
+.traffic-model-widget .traffic-control-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -73,30 +73,30 @@
   margin-bottom: 0.35rem;
 }
 
-#traffic-model-explorer .traffic-control output {
+.traffic-model-widget .traffic-control output {
   color: var(--global-text-color);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-#traffic-model-explorer input[type="range"] {
+.traffic-model-widget input[type="range"] {
   display: block;
   width: 100%;
   accent-color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-visual-column {
+.traffic-model-widget .traffic-visual-column {
   min-width: 0;
 }
 
-#traffic-model-explorer .traffic-view-switch {
+.traffic-model-widget .traffic-view-switch {
   display: flex;
   justify-content: center;
   gap: 1.2rem;
   margin-bottom: 0.25rem;
 }
 
-#traffic-model-explorer .traffic-view-button {
+.traffic-model-widget .traffic-view-button {
   padding: 0.15rem 0;
   border: 0;
   border-bottom: 2px solid transparent;
@@ -106,12 +106,12 @@
   font: inherit;
 }
 
-#traffic-model-explorer .traffic-view-button.is-active {
+.traffic-model-widget .traffic-view-button.is-active {
   border-bottom-color: var(--traffic-magenta);
   color: var(--global-text-color);
 }
 
-#traffic-model-explorer .traffic-chart-title {
+.traffic-model-widget .traffic-chart-title {
   margin: 0.45rem 0 0.45rem;
   color: var(--global-text-color);
   font-family: MJXTEX, "Latin Modern Roman", "CMU Serif", "Times New Roman", serif;
@@ -119,7 +119,7 @@
   text-align: center;
 }
 
-#traffic-model-explorer .traffic-legend {
+.traffic-model-widget .traffic-legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -129,88 +129,88 @@
   font-family: MJXTEX, "Latin Modern Roman", "CMU Serif", "Times New Roman", serif;
 }
 
-#traffic-model-explorer .traffic-legend-item {
+.traffic-model-widget .traffic-legend-item {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
 }
 
-#traffic-model-explorer .traffic-legend-line {
+.traffic-model-widget .traffic-legend-line {
   width: 1.8rem;
   height: 0;
   border-top: 3px solid currentColor;
   transform: translateY(-0.32em);
 }
 
-#traffic-model-explorer .traffic-legend-uncapped {
+.traffic-model-widget .traffic-legend-uncapped {
   color: var(--traffic-blue);
 }
 
-#traffic-model-explorer .traffic-legend-uncapped .traffic-legend-line {
+.traffic-model-widget .traffic-legend-uncapped .traffic-legend-line {
   border-top-color: var(--traffic-blue);
 }
 
-#traffic-model-explorer .traffic-legend-capped {
+.traffic-model-widget .traffic-legend-capped {
   color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-legend-capped .traffic-legend-line {
+.traffic-model-widget .traffic-legend-capped .traffic-legend-line {
   border-top-color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-legend-earlier {
+.traffic-model-widget .traffic-legend-earlier {
   color: var(--traffic-blue);
 }
 
-#traffic-model-explorer .traffic-legend-earlier .traffic-legend-line {
+.traffic-model-widget .traffic-legend-earlier .traffic-legend-line {
   border-top-color: var(--traffic-blue);
 }
 
-#traffic-model-explorer .traffic-legend-last {
+.traffic-model-widget .traffic-legend-last {
   color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-legend-last .traffic-legend-line {
+.traffic-model-widget .traffic-legend-last .traffic-legend-line {
   border-top-color: var(--traffic-magenta);
 }
 
-#traffic-model-explorer .traffic-legend-miss {
+.traffic-model-widget .traffic-legend-miss {
   color: var(--traffic-orange);
 }
 
-#traffic-model-explorer .traffic-legend-miss .traffic-legend-line {
+.traffic-model-widget .traffic-legend-miss .traffic-legend-line {
   border-top: 3px dashed var(--traffic-orange);
 }
 
-#traffic-model-explorer .traffic-legend-text {
+.traffic-model-widget .traffic-legend-text {
   color: var(--global-text-color);
 }
 
-#traffic-model-explorer .traffic-chart {
+.traffic-model-widget .traffic-chart {
   width: 100%;
   min-height: 300px;
 }
 
-#traffic-model-explorer svg {
+.traffic-model-widget svg {
   display: block;
   width: 100%;
   height: auto;
   overflow: visible;
 }
 
-#traffic-model-explorer .traffic-chart text {
+.traffic-model-widget .traffic-chart text {
   fill: var(--global-text-color);
   font-family: MJXTEX, "Latin Modern Roman", "CMU Serif", "Times New Roman", serif;
 }
 
-#traffic-model-explorer .traffic-axis,
-#traffic-model-explorer .traffic-tick {
+.traffic-model-widget .traffic-axis,
+.traffic-model-widget .traffic-tick {
   stroke: var(--global-text-color);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 
-#traffic-model-explorer .traffic-selected-guide {
+.traffic-model-widget .traffic-selected-guide {
   stroke: var(--global-text-color-light);
   stroke-width: 1.2;
   stroke-dasharray: 4 5;
@@ -218,7 +218,7 @@
   pointer-events: none;
 }
 
-#traffic-model-explorer .traffic-tau-drag-target {
+.traffic-model-widget .traffic-tau-drag-target {
   stroke: transparent;
   stroke-width: 28;
   pointer-events: stroke;
@@ -226,76 +226,310 @@
   touch-action: none;
 }
 
-#traffic-model-explorer .traffic-crossing-line {
+.traffic-model-widget .traffic-crossing-line {
   stroke: var(--global-text-color);
   stroke-width: 1.3;
   vector-effect: non-scaling-stroke;
 }
 
-#traffic-model-explorer .traffic-green-end {
+.traffic-model-widget .traffic-green-end {
   stroke: var(--traffic-green);
   stroke-width: 1.7;
   stroke-dasharray: 3 4;
   vector-effect: non-scaling-stroke;
 }
 
-#traffic-model-explorer .traffic-green-label {
+.traffic-model-widget .traffic-green-label {
   fill: var(--traffic-green);
 }
 
-#traffic-model-explorer .traffic-selected-label {
+.traffic-model-widget .traffic-selected-label {
   fill: var(--global-text-color-light);
 }
 
-#traffic-model-explorer .traffic-readout {
+.traffic-model-widget .traffic-animation-chart {
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.35rem;
+  background: var(--global-bg-color);
+}
+
+.traffic-model-widget .traffic-animation-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--global-divider-color);
+}
+
+.traffic-model-widget .traffic-animation-local-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.55fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.traffic-model-widget .traffic-animation-parameter-controls {
+  padding-top: 2.05rem;
+}
+
+.traffic-model-widget .traffic-animation-visual-column {
+  min-width: 0;
+}
+
+.traffic-model-widget .traffic-animation-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 1rem;
+  margin-bottom: 0.55rem;
+}
+
+.traffic-model-widget .traffic-animation-heading-row .traffic-chart-title {
+  margin: 0;
+  text-align: left;
+}
+
+.traffic-model-widget .traffic-animation-view-switch {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.traffic-model-widget .traffic-animation-view-button {
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--global-text-color-light);
+  cursor: pointer;
+  font: inherit;
+}
+
+.traffic-model-widget .traffic-animation-view-button.is-active {
+  border-color: var(--traffic-magenta);
+  color: var(--traffic-magenta);
+}
+
+.traffic-model-widget .traffic-animation-sky {
+  fill: color-mix(in srgb, var(--traffic-blue) 7%, var(--global-bg-color));
+}
+
+.traffic-model-widget .traffic-animation-road {
+  fill: color-mix(in srgb, var(--global-text-color) 72%, var(--global-bg-color));
+}
+
+.traffic-model-widget .traffic-animation-crossing-line {
+  stroke: var(--global-text-color);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.traffic-model-widget .traffic-animation-crossing-label {
+  fill: var(--global-text-color);
+  font-size: 16px;
+}
+
+.traffic-model-widget .traffic-animation-passed-label {
+  fill: var(--global-text-color);
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.traffic-model-widget .traffic-animation-signal {
+  fill: #24272b;
+  stroke: #08090a;
+  stroke-width: 1;
+}
+
+.traffic-model-widget .traffic-animation-light {
+  fill: #64676b;
+  stroke: #111;
+  stroke-width: 1;
+}
+
+.traffic-model-widget .traffic-animation-red.is-on {
+  fill: #dc3545;
+}
+
+.traffic-model-widget .traffic-animation-green.is-on {
+  fill: #31a354;
+}
+
+.traffic-model-widget .traffic-animation-car {
+  transition: opacity 120ms linear;
+}
+
+.traffic-model-widget .traffic-animation-car-body,
+.traffic-model-widget .traffic-animation-car-roof {
+  fill: var(--traffic-blue);
+  stroke: color-mix(in srgb, var(--traffic-blue) 65%, black);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.traffic-model-widget .traffic-animation-car-window {
+  fill: color-mix(in srgb, var(--traffic-blue) 15%, white);
+  opacity: 0.9;
+}
+
+.traffic-model-widget .traffic-animation-wheel {
+  fill: #202327;
+  stroke: #050505;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.traffic-model-widget .traffic-animation-hubcap {
+  fill: #aeb3b8;
+}
+
+.traffic-model-widget .traffic-animation-car-number {
+  fill: var(--global-text-color);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.traffic-model-widget .traffic-animation-car.is-waiting {
+  opacity: 0.48;
+}
+
+.traffic-model-widget .traffic-animation-car.is-reacting .traffic-animation-car-body,
+.traffic-model-widget .traffic-animation-car.is-reacting .traffic-animation-car-roof {
+  fill: var(--traffic-orange);
+  stroke: color-mix(in srgb, var(--traffic-orange) 65%, black);
+}
+
+.traffic-model-widget .traffic-animation-car.is-reacting {
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--traffic-orange) 75%, transparent));
+}
+
+.traffic-model-widget .traffic-animation-car.is-passed .traffic-animation-car-body,
+.traffic-model-widget .traffic-animation-car.is-passed .traffic-animation-car-roof {
+  fill: var(--traffic-green);
+  stroke: color-mix(in srgb, var(--traffic-green) 65%, black);
+}
+
+.traffic-model-widget .traffic-animation-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.7rem;
+}
+
+.traffic-model-widget .traffic-animation-button,
+.traffic-model-widget .traffic-animation-speed select {
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--global-text-color);
+  font: inherit;
+}
+
+.traffic-model-widget .traffic-animation-button {
+  cursor: pointer;
+}
+
+.traffic-model-widget .traffic-animation-play {
+  min-width: 4.4rem;
+  border-color: var(--traffic-magenta);
+  color: var(--traffic-magenta);
+}
+
+.traffic-model-widget .traffic-animation-speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--global-text-color);
+}
+
+.traffic-model-widget .traffic-animation-time {
+  min-width: 6.4rem;
+  color: var(--global-text-color);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.traffic-model-widget .traffic-animation-scrubber-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.traffic-model-widget .traffic-animation-scrubber {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  accent-color: var(--traffic-magenta);
+}
+
+.traffic-model-widget .traffic-readout {
   margin: 0.45rem auto 0;
   max-width: 760px;
   color: var(--global-text-color);
   text-align: center;
 }
 
-#traffic-model-explorer .traffic-readout strong {
+.traffic-model-widget .traffic-readout strong {
   font-variant-numeric: tabular-nums;
 }
 
-#traffic-model-explorer .traffic-things-to-try {
+.traffic-model-widget .traffic-things-to-try {
   padding: 0.85rem 0 0;
 }
 
-#traffic-model-explorer .traffic-things-to-try p {
+.traffic-model-widget .traffic-things-to-try p {
   margin: 0 0 0.35rem;
 }
 
-#traffic-model-explorer .traffic-things-to-try ul {
+.traffic-model-widget .traffic-things-to-try ul {
   margin-bottom: 0;
   padding-left: 1.25rem;
 }
 
-#traffic-model-explorer .traffic-things-to-try li + li {
+.traffic-model-widget .traffic-things-to-try li + li {
   margin-top: 0.3rem;
 }
 
 @media (max-width: 680px) {
-  #traffic-model-explorer .traffic-explorer-layout {
+  .traffic-model-widget .traffic-explorer-layout {
     grid-template-columns: 1fr;
   }
 
-  #traffic-model-explorer .traffic-controls {
+  .traffic-model-widget .traffic-animation-local-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .traffic-model-widget .traffic-animation-parameter-controls {
+    padding-top: 0;
+  }
+
+  .traffic-model-widget .traffic-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.8rem 1.25rem;
   }
 
-  #traffic-model-explorer .traffic-chart {
+  .traffic-model-widget .traffic-chart {
     min-height: 310px;
   }
 
-  #traffic-model-explorer .traffic-legend {
+  .traffic-model-widget .traffic-legend {
     justify-content: flex-start;
   }
 }
 
 @media (max-width: 500px) {
-  #traffic-model-explorer .traffic-controls {
+  .traffic-model-widget .traffic-controls {
     grid-template-columns: 1fr;
   }
 }

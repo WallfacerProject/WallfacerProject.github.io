@@ -23,9 +23,88 @@ At some point (while not driving) I got around to formulating this mathematicall
 1. There is no space between cars.
 1. Each driver has a reaction time of $\tau$ seconds. The driver at the front reacts to the light turning green and each subsequent driver reacts to the car in front of them starting to move.
 1. Each car moves at constant acceleration $a$ meters/second^2.
-1. Let $x_0$ denote the initial position of the first car's front bumper. We say that car $n$ has made the light if its back bumper reaches $x_0$. Since there are no gaps between cars, this requires the car in the $n$th position to travel a distance of $nL$ meters within the $T$ seconds that the light is green.
+1. Let $x_0$ denote the initial position of the first car's front bumper. We say that car $n$ has made the light if its rear bumper reaches $x_0$. Since there are no gaps between cars, this requires the car in the $n$th position to travel a distance of $nL$ meters within the $T$ seconds that the light is green.
 
 Throughout this post, by throughput we mean the maximum number of cars that can pass through the intersection during one green light interval under the assumptions above. We want to derive $N(\tau)$, this throughput as a function of reaction time.
+
+## The model in motion
+
+Before deriving anything, here is the full speed-capped model in motion, where $v_{\max}$ denotes the maximum speed of each car. We will first solve a simpler version in which the cars continue accelerating, then introduce the speed cap and derive the equations governing the animation below.
+
+<link rel="stylesheet" href="/assets/css/traffic-model-explorer.css?v={{ site.time | date: '%s' }}">
+<div id="traffic-animation-preview" class="traffic-model-widget">
+<div class="traffic-animation-section">
+    <div class="traffic-animation-local-layout">
+        <div class="traffic-controls traffic-animation-parameter-controls" aria-label="Animation parameters">
+            <label class="traffic-control" for="traffic-animation-green-time">
+                <span class="traffic-control-heading">
+                    <span>Green light duration <em>T</em></span>
+                    <output data-animation-value="green-time" for="traffic-animation-green-time">40 s</output>
+                </span>
+                <input id="traffic-animation-green-time" data-animation-parameter="green-time" type="range" min="10" max="60" step="1" value="40">
+            </label>
+            <label class="traffic-control" for="traffic-animation-acceleration">
+                <span class="traffic-control-heading">
+                    <span>Acceleration <em>a</em></span>
+                    <output data-animation-value="acceleration" for="traffic-animation-acceleration">2.0 m/s²</output>
+                </span>
+                <input id="traffic-animation-acceleration" data-animation-parameter="acceleration" type="range" min="0.5" max="4" step="0.1" value="2">
+            </label>
+            <label class="traffic-control" for="traffic-animation-car-length">
+                <span class="traffic-control-heading">
+                    <span>Car length <em>L</em></span>
+                    <output data-animation-value="car-length" for="traffic-animation-car-length">5.0 m</output>
+                </span>
+                <input id="traffic-animation-car-length" data-animation-parameter="car-length" type="range" min="3" max="8" step="0.1" value="5">
+            </label>
+            <label class="traffic-control" for="traffic-animation-maximum-speed">
+                <span class="traffic-control-heading">
+                    <span>Maximum speed <em>v</em><sub>max</sub></span>
+                    <output data-animation-value="maximum-speed" for="traffic-animation-maximum-speed">15 m/s</output>
+                </span>
+                <input id="traffic-animation-maximum-speed" data-animation-parameter="maximum-speed" type="range" min="5" max="35" step="1" value="15">
+            </label>
+            <label class="traffic-control" for="traffic-animation-selected-tau">
+                <span class="traffic-control-heading">
+                    <span>Selected reaction time <em>τ</em></span>
+                    <output data-animation-value="selected-tau" for="traffic-animation-selected-tau">1.00 s</output>
+                </span>
+                <input id="traffic-animation-selected-tau" data-animation-parameter="selected-tau" type="range" min="0" max="2" step="0.05" value="1">
+            </label>
+        </div>
+        <div class="traffic-animation-visual-column">
+            <div class="traffic-animation-heading-row">
+                <div class="traffic-chart-title">Capped-speed traffic animation</div>
+                <div class="traffic-animation-view-switch" role="group" aria-label="Animation camera view">
+                    <button type="button" class="traffic-animation-view-button is-active" data-traffic-animation-view="close" aria-pressed="true">Close view</button>
+                    <button type="button" class="traffic-animation-view-button" data-traffic-animation-view="wide" aria-pressed="false">Wide view</button>
+                </div>
+            </div>
+            <div class="traffic-chart traffic-animation-chart" data-traffic-chart="animation"></div>
+            <div class="traffic-animation-controls" aria-label="Animation controls">
+                <button type="button" class="traffic-animation-button traffic-animation-play" data-traffic-animation-play>Play</button>
+                <button type="button" class="traffic-animation-button" data-traffic-animation-restart>Restart</button>
+                <label class="traffic-animation-speed">
+                    <span>Playback speed</span>
+                    <select data-traffic-animation-speed>
+                        <option value="0.5">0.5×</option>
+                        <option value="1">1×</option>
+                        <option value="2" selected>2×</option>
+                        <option value="4">4×</option>
+                    </select>
+                </label>
+                <output class="traffic-animation-time" data-traffic-animation-time>t = 0.00 s</output>
+            </div>
+            <label class="traffic-animation-scrubber-label" for="traffic-animation-time-slider">Animation time</label>
+            <input id="traffic-animation-time-slider" class="traffic-animation-scrubber" data-traffic-animation-scrubber type="range" min="0" max="40" step="0.01" value="0">
+            <p class="traffic-readout" data-traffic-readout="animation" aria-live="polite">
+                The cars begin bumper-to-bumper. Car <strong>1</strong> will react at <strong>t = 1.00 s</strong>.
+            </p>
+        </div>
+    </div>
+</div>
+    <noscript>This interactive figure requires JavaScript.</noscript>
+</div>
 
 ## Baseline model
 
@@ -285,101 +364,13 @@ N_{\mathrm{train,cap}}
 </div>
 Setting $\tau=0$ in the car model therefore reproduces the capped-speed train result, just as it did in the original model.
 
-### Visualizing the capped model
+<a id="explore-the-model"></a>
 
-The resulting capped throughput is shown in [Figure 6](#fig-capped-throughput) for three green light durations.
+### Interactive throughput and space-time diagrams
 
-<div id="fig-capped-throughput" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-throughput-vs-reaction-time.png?v=2" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Speed-capped traffic throughput versus driver reaction time for three green light durations">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 6.</strong> $N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span>
-</div>
+The controls below update both interactive views in real time. In the throughput view, the reaction time slider and the dashed $\tau$ guide control the same value. Use the tabs to move between the throughput and space-time views.
 
-[Figure 7](#fig-capped-comparison) compares the capped result with the original unlimited-acceleration model.
-
-<div id="fig-capped-comparison" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-vs-uncapped-throughput.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped and uncapped traffic throughput versus driver reaction time">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 7.</strong> The integer-valued capped and uncapped throughputs for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$. Once the curves coincide, the final car through the light never reaches the speed cap, so the original model applies unchanged.</span>
-</div>
-
-Subtracting the capped car count from the capped train benchmark gives the train advantage in [Figure 8](#fig-capped-advantage).
-
-<div id="fig-capped-advantage" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-train-advantage.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped-speed train advantage versus driver reaction time for three green light durations">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 8.</strong> The capped-speed train advantage $N_{\mathrm{train,cap}}-N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$. The corresponding capped train throughputs are $48$, $78$, and $108$ cars.</span>
-</div>
-
-[Figure 9](#fig-capped-efficiency) divides the car count by the capped train count to show the relative efficiency.
-
-<div id="fig-capped-efficiency" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-relative-efficiency.png?v=5" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped traffic throughput relative to capped train throughput versus driver reaction time">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 9.</strong> The relative efficiency $N_{\mathrm{cap}}(\tau)/N_{\mathrm{train,cap}}$ for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$.</span>
-</div>
-
-Here too, only the $T=20\,\mathrm{s}$ efficiency curve is shown because the curves for $T=30$ and $40\,\mathrm{s}$ nearly overlap it. In the capped model, this overlap has a direct explanation. Once the cars and train spend most of the green light at $v_{\max}$, both throughputs grow linearly with $T$. Increasing the green light duration can then add many cars to the absolute count without changing their relative efficiency very much.
-
-For example, when $T=20\,\mathrm{s}$ and $\tau=1\,\mathrm{s}$, $12$ cars clear the light compared with $48$ train cars. The speed cap lowers the ideal train benchmark from $80$ cars in the uncapped model to $48$, but the accumulated reaction delays still reduce the line to one quarter of that benchmark.
-
-Finally, for a sufficiently long green light, both the car line and the train spend most of their time traveling at $v_{\max}$. Ignoring the negligible effect of the floor function on the leading-order behavior, their throughputs satisfy
-\begin{align}
-\widetilde{N}\_{\mathrm{cap}}(\tau) &\sim \frac{T}{\tau+L/v\_{\max}},\newline
-N\_{\mathrm{train,cap}} &\sim \frac{v\_{\max}T}{L}.
-\end{align}
-Since the floor function changes each continuous count by less than one, it does not affect the limiting ratio. Consequently, the relative efficiency of the actual integer throughputs satisfies
-<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
-\begin{equation}
-\lim_{T\to\infty}
-\frac{N_{\mathrm{cap}}(\tau)}{N_{\mathrm{train,cap}}}
-=\frac{L}{L+v_{\max}\tau}
-\end{equation}
-</div>
-Unlike the unlimited-acceleration model, both throughputs now grow linearly with $T$.
-
-### Heat map and space-time diagram
-
-[Figures 10](#fig-capped-heatmap) and [11](#fig-capped-spacetime) show how the capped model changes across parameter values and along individual vehicle trajectories.
-
-<div id="fig-capped-heatmap" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-throughput-heatmap.png?v=5" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Heat map of capped traffic throughput across reaction time and green light duration">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 10.</strong> The integer-valued capped throughput across reaction time $\tau$ and green light duration $T$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span>
-</div>
-
-<div id="fig-capped-spacetime" class="row mt-3 justify-content-center">
-    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
-        <img src="/assets/img/traffic-reaction-time/capped-space-time-diagram.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Space-time trajectories of speed-capped cars approaching the crossing line">
-    </div>
-</div>
-<div class="caption">
-    <span><strong>Figure 11.</strong> A capped-speed space-time diagram for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, $T=30\,\mathrm{s}$, and $\tau=1\,\mathrm{s}$. Each trajectory is initially curved while the car accelerates and becomes straight after it reaches $v_{\max}$. Car $19$ is the last to pass, while car $20$ is the first to miss.</span>
-</div>
-
-The heat map in [Figure 10](#fig-capped-heatmap) shows that longer green lights produce much larger absolute gains when reaction times are small. As $\tau$ increases, accumulated reaction delay becomes the dominant bottleneck, so adding the same number of seconds to $T$ allows fewer additional cars through. The space-time diagram in [Figure 11](#fig-capped-spacetime) makes the transition to cruising visible car by car: unlike the parabolic trajectories in the uncapped model, each path eventually straightens once its slope reaches $v_{\max}$. The maximum speed extension therefore preserves the clean zero reaction time correspondence while giving the long green light behavior a more realistic interpretation.
-
-## Explore the model
-
-The controls below update both interactive views in real time. In the throughput view, the reaction time slider and the dashed $\tau$ guide control the same value; switch to the space-time view to follow individual cars.
-
-<link rel="stylesheet" href="/assets/css/traffic-model-explorer.css?v={{ site.time | date: '%s' }}">
-<div id="traffic-model-explorer">
+<div id="traffic-model-explorer" class="traffic-model-widget">
     <div class="traffic-explorer-layout">
         <div class="traffic-controls" aria-label="Traffic model parameters">
             <div class="traffic-presets" aria-label="Preset parameter sets">
@@ -471,6 +462,7 @@ The controls below update both interactive views in real time. In the throughput
                     Car <strong>27</strong> is the last to pass, and car <strong>28</strong> is the first to miss.
                 </p>
             </div>
+
         </div>
     </div>
     <p class="traffic-preset-explanation">Once the cars are cruising at the maximum speed, one car crosses the line every $\tau+L/v_{\max}$ seconds: $\tau$ seconds because the next driver starts later, plus $L/v_{\max}$ seconds because that car begins one car length farther back. Both presets use $T=40\,\mathrm{s}$, $a=2\,\mathrm{m/s^2}$, $L=5\,\mathrm{m}$, and $v_{\max}=15\,\mathrm{m/s}$, so only $\tau$ changes. Since $L/v_{\max}=1/3\,\mathrm{s}$, the reaction time is larger when $\tau=1\,\mathrm{s}$ in the <em>Reaction dominated</em> preset, while the one-car-length travel time is larger when $\tau=0.25\,\mathrm{s}$ in the <em>Speed cap dominated</em> preset.</p>
@@ -485,6 +477,95 @@ The controls below update both interactive views in real time. In the throughput
     <noscript>This interactive figure requires JavaScript.</noscript>
 </div>
 <script src="/assets/js/traffic-model-explorer.js?v={{ site.time | date: '%s' }}" defer></script>
+
+### Throughput comparisons
+
+The resulting capped throughput is shown in [Figure 6](#fig-capped-throughput) for three green light durations.
+
+<div id="fig-capped-throughput" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-throughput-vs-reaction-time.png?v=2" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Speed-capped traffic throughput versus driver reaction time for three green light durations">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 6.</strong> $N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span>
+</div>
+
+[Figure 7](#fig-capped-comparison) compares the capped result with the original unlimited-acceleration model.
+
+<div id="fig-capped-comparison" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-vs-uncapped-throughput.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped and uncapped traffic throughput versus driver reaction time">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 7.</strong> The integer-valued capped and uncapped throughputs for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$. Once the curves coincide, the final car through the light never reaches the speed cap, so the original model applies unchanged.</span>
+</div>
+
+Subtracting the capped car count from the capped train benchmark gives the train advantage in [Figure 8](#fig-capped-advantage).
+
+<div id="fig-capped-advantage" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-train-advantage.png?v=4" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped-speed train advantage versus driver reaction time for three green light durations">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 8.</strong> The capped-speed train advantage $N_{\mathrm{train,cap}}-N_{\mathrm{cap}}(\tau)$ for $T=20,30,$ and $40\,\mathrm{s}$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$. The corresponding capped train throughputs are $48$, $78$, and $108$ cars.</span>
+</div>
+
+[Figure 9](#fig-capped-efficiency) divides the car count by the capped train count to show the relative efficiency.
+
+<div id="fig-capped-efficiency" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-relative-efficiency.png?v=5" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Capped traffic throughput relative to capped train throughput versus driver reaction time">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 9.</strong> The relative efficiency $N_{\mathrm{cap}}(\tau)/N_{\mathrm{train,cap}}$ for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, and $T=20\,\mathrm{s}$.</span>
+</div>
+
+Here too, only the $T=20\,\mathrm{s}$ efficiency curve is shown because the curves for $T=30$ and $40\,\mathrm{s}$ nearly overlap it. In the capped model, this overlap has a direct explanation. Once the cars and train spend most of the green light at $v_{\max}$, both throughputs grow linearly with $T$. Increasing the green light duration can then add many cars to the absolute count without changing their relative efficiency very much.
+
+For example, when $T=20\,\mathrm{s}$ and $\tau=1\,\mathrm{s}$, $12$ cars clear the light compared with $48$ train cars. The speed cap lowers the ideal train benchmark from $80$ cars in the uncapped model to $48$, but the accumulated reaction delays still reduce the line to one quarter of that benchmark.
+
+Finally, for a sufficiently long green light, both the car line and the train spend most of their time traveling at $v_{\max}$. Ignoring the negligible effect of the floor function on the leading-order behavior, their throughputs satisfy
+\begin{align}
+\widetilde{N}\_{\mathrm{cap}}(\tau) &\sim \frac{T}{\tau+L/v\_{\max}},\newline
+N\_{\mathrm{train,cap}} &\sim \frac{v\_{\max}T}{L}.
+\end{align}
+Since the floor function changes each continuous count by less than one, it does not affect the limiting ratio. Consequently, the relative efficiency of the actual integer throughputs satisfies
+<div style="border: 2px solid black; padding: 10px; width: fit-content; max-width: 100%; margin: 20px auto; text-align: center; box-sizing: border-box;">
+\begin{equation}
+\lim_{T\to\infty}
+\frac{N_{\mathrm{cap}}(\tau)}{N_{\mathrm{train,cap}}}
+=\frac{L}{L+v_{\max}\tau}
+\end{equation}
+</div>
+Unlike the unlimited-acceleration model, both throughputs now grow linearly with $T$.
+
+### Heat map and space-time diagram
+
+[Figures 10](#fig-capped-heatmap) and [11](#fig-capped-spacetime) show how the capped model changes across parameter values and along individual vehicle trajectories.
+
+<div id="fig-capped-heatmap" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-throughput-heatmap.png?v=5" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Heat map of capped traffic throughput across reaction time and green light duration">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 10.</strong> The integer-valued capped throughput across reaction time $\tau$ and green light duration $T$, with $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, and $v_{\max}=15\,\mathrm{m/s}$.</span>
+</div>
+
+<div id="fig-capped-spacetime" class="row mt-3 justify-content-center">
+    <div class="col-sm mt-3 mt-md-0 d-flex justify-content-center" style="max-width: 760px;">
+        <img src="/assets/img/traffic-reaction-time/capped-space-time-diagram.png?v=3" class="rounded z-depth-1" style="width: 100%; height: auto;" alt="Space-time trajectories of speed-capped cars approaching the crossing line">
+    </div>
+</div>
+<div class="caption">
+    <span><strong>Figure 11.</strong> A capped-speed space-time diagram for $L=5\,\mathrm{m}$, $a=2\,\mathrm{m/s^2}$, $v_{\max}=15\,\mathrm{m/s}$, $T=30\,\mathrm{s}$, and $\tau=1\,\mathrm{s}$. Each trajectory is initially curved while the car accelerates and becomes straight after it reaches $v_{\max}$. Car $19$ is the last to pass, while car $20$ is the first to miss.</span>
+</div>
+
+The heat map in [Figure 10](#fig-capped-heatmap) shows that longer green lights produce much larger absolute gains when reaction times are small. As $\tau$ increases, accumulated reaction delay becomes the dominant bottleneck, so adding the same number of seconds to $T$ allows fewer additional cars through. The space-time diagram in [Figure 11](#fig-capped-spacetime) makes the transition to cruising visible car by car: unlike the parabolic trajectories in the uncapped model, each path eventually straightens once its slope reaches $v_{\max}$. The maximum speed extension therefore preserves the clean zero reaction time correspondence while giving the long green light behavior a more realistic interpretation.
 
 ## Conclusion
 
