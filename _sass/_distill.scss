@@ -63,6 +63,10 @@ d-article d-byline a {
 }
 
 d-article {
+  // Distill sets overflow-x to hidden, which makes Chrome compute overflow-y
+  // as auto and can turn long articles into a second vertical scroll area.
+  overflow-x: clip !important;
+  overflow-y: visible !important;
   border-top-color: var(--global-divider-color) !important;
   > * {
     max-width: 100%;
