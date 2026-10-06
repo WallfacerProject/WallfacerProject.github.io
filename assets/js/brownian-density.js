@@ -4,6 +4,7 @@
   if (!root) return;
 
   const svg = root.querySelector('svg');
+  const count = root.querySelector('[data-count]');
   const duration = root.querySelector('[data-duration]');
   const start = root.querySelector('[data-start]');
   const pause = root.querySelector('[data-pause]');
@@ -15,8 +16,8 @@
   const ns = 'http://www.w3.org/2000/svg';
   const steps = 1200;
   const curvePoints = 96;
-  let path = null, coordinates, cumulative, total = 0, range = 3.2;
-  let project, trail, pathDot, densityFill, densityLine, connector, densityDot, pointMass;
+  let paths = [], cumulatives = [], totals = [], range = 3.2;
+  let project, trails = [], pathDots = [], densityFill, densityLine, pointMass;
   let progress = 0, running = false, frame = 0, last = null;
 
   function normal() {
@@ -100,19 +101,20 @@
     densityLine = node('path', {
       fill: 'none', stroke: '#764eab', 'stroke-width': 2.5, 'stroke-linejoin': 'round',
     }, densityGroup);
-    connector = node('line', {
-      stroke: '#9a78c3', 'stroke-width': 1.2, 'stroke-dasharray': '4 4',
-    }, densityGroup);
-    densityDot = node('circle', {r: 3.5, fill: '#764eab'}, densityGroup);
     pointMass = node('circle', {
       cx: origin[0], cy: origin[1], r: 6, fill: 'none',
       stroke: '#764eab', 'stroke-width': 2,
     });
 
-    coordinates = new Float32Array((steps + 1) * 2);
-    cumulative = new Float32Array(steps + 1);
-    const commands = [];
-    if (path) {
+    trails = [];
+    pathDots = [];
+    cumulatives = [];
+    totals = [];
+    const multiple = paths.length > 1;
+    paths.forEach(path => {
+      const coordinates = new Float32Array((steps + 1) * 2);
+      const cumulative = new Float32Array(steps + 1);
+      const commands = [];
       for (let i = 0; i <= steps; i++) {
         const [x, y] = project(i / steps, path[i]);
         coordinates[2 * i] = Number(x.toFixed(3));
@@ -125,13 +127,19 @@
         }
         commands.push(`${i ? 'L' : 'M'}${coordinates[2 * i]},${coordinates[2 * i + 1]}`);
       }
-    }
-    total = cumulative[steps];
-    trail = node('path', {
-      d: commands.join(' '), fill: 'none', stroke: '#205c93',
-      'stroke-width': 2.2, 'stroke-linejoin': 'round',
+      cumulatives.push(cumulative);
+      totals.push(cumulative[steps]);
+      trails.push(node('path', {
+        d: commands.join(' '), fill: 'none', stroke: '#205c93',
+        'stroke-width': multiple ? (paths.length > 10 ? 1.4 : 1.8) : 2.2,
+        'stroke-opacity': multiple ? (paths.length > 10 ? 0.52 : 0.72) : 1,
+        'stroke-linejoin': 'round',
+      }));
+      pathDots.push(node('circle', {
+        r: multiple ? (paths.length > 10 ? 2.4 : 3) : 4,
+        fill: '#205c93', 'fill-opacity': multiple ? 0.8 : 1,
+      }));
     });
-    pathDot = node('circle', {r: 4, fill: '#205c93'});
     draw();
   }
 
@@ -139,12 +147,9 @@
     const t = progress;
     const timeText = t > 0 && t < 0.01 ? t.toFixed(3) : t.toFixed(2);
     clock.textContent = `t = ${timeText}`;
-    if (!path) {
-      pathDot.setAttribute('visibility', 'hidden');
+    if (!paths.length) {
       densityFill.setAttribute('visibility', 'hidden');
       densityLine.setAttribute('visibility', 'hidden');
-      connector.setAttribute('visibility', 'hidden');
-      densityDot.setAttribute('visibility', 'hidden');
       pointMass.setAttribute('visibility', 'visible');
       distribution.textContent = 'B(0)=0.';
       return;
@@ -154,17 +159,19 @@
     const index = Math.min(steps, Math.floor(position));
     const next = Math.min(steps, index + 1);
     const fraction = position - index;
-    const value = path[index] + fraction * (path[next] - path[index]);
-    const visible = cumulative[index] + fraction * (cumulative[next] - cumulative[index]);
-    trail.setAttribute('stroke-dasharray', `${visible + (t === 1 ? 2 : 0)} ${total + 10}`);
-    const sample = project(t, value);
-    pathDot.setAttribute('cx', sample[0]);
-    pathDot.setAttribute('cy', sample[1]);
-    pathDot.setAttribute('visibility', 'visible');
+    paths.forEach((path, j) => {
+      const value = path[index] + fraction * (path[next] - path[index]);
+      const cumulative = cumulatives[j];
+      const visible = cumulative[index] + fraction * (cumulative[next] - cumulative[index]);
+      trails[j].setAttribute('stroke-dasharray', `${visible + (t === 1 ? 2 : 0)} ${totals[j] + 10}`);
+      const sample = project(t, value);
+      pathDots[j].setAttribute('cx', sample[0]);
+      pathDots[j].setAttribute('cy', sample[1]);
+    });
 
     const atZero = t === 0;
     pointMass.setAttribute('visibility', atZero ? 'visible' : 'hidden');
-    for (const element of [densityFill, densityLine, connector, densityDot]) {
+    for (const element of [densityFill, densityLine]) {
       element.setAttribute('visibility', atZero ? 'hidden' : 'visible');
     }
     if (atZero) {
@@ -183,13 +190,6 @@
     densityFill.setAttribute('d',
       `M${point(project(t, -range))} ${curvePath.replace(/^M/, 'L')} L${point(project(t, range))} Z`,
     );
-    const sampledDensity = project(t, value, density(value, t));
-    connector.setAttribute('x1', sample[0]);
-    connector.setAttribute('y1', sample[1]);
-    connector.setAttribute('x2', sampledDensity[0]);
-    connector.setAttribute('y2', sampledDensity[1]);
-    densityDot.setAttribute('cx', sampledDensity[0]);
-    densityDot.setAttribute('cy', sampledDensity[1]);
     distribution.innerHTML = `B(t) <span class="brownian-sim">∼</span> <span class="brownian-calN">N</span>(0, ${timeText}).`;
   }
 
@@ -203,7 +203,7 @@
       stop();
       pause.disabled = true;
       pause.textContent = 'Pause';
-      status.textContent = 'Complete. Replay this path or draw a new one.';
+      status.textContent = paths.length === 1 ? 'Complete. Replay this path or draw a new one.' : 'Complete. Replay these paths or draw new ones.';
     }
   }
 
@@ -212,16 +212,21 @@
     last = null;
     pause.disabled = false;
     pause.textContent = 'Pause';
-    status.textContent = 'Tracing Brownian path';
+    status.textContent = paths.length === 1 ? 'Tracing Brownian path' : `Tracing ${paths.length} Brownian paths`;
     frame = requestAnimationFrame(tick);
   }
 
   start.addEventListener('click', () => {
     stop();
-    path = new Float64Array(steps + 1);
-    for (let i = 1; i <= steps; i++) path[i] = path[i - 1] + normal() / Math.sqrt(steps);
+    const n = Math.max(1, Math.min(20, Math.round(Number(count.value) || 1)));
+    count.value = n;
+    paths = Array.from({length: n}, () => {
+      const path = new Float64Array(steps + 1);
+      for (let i = 1; i <= steps; i++) path[i] = path[i - 1] + normal() / Math.sqrt(steps);
+      return path;
+    });
     let maximum = 0;
-    path.forEach(value => { maximum = Math.max(maximum, Math.abs(value)); });
+    paths.forEach(path => path.forEach(value => { maximum = Math.max(maximum, Math.abs(value)); }));
     range = Math.max(3.2, Math.ceil(maximum * 1.1 * 2) / 2);
     progress = 0;
     replay.disabled = false;
@@ -244,7 +249,7 @@
   });
   clear.addEventListener('click', () => {
     stop();
-    path = null;
+    paths = [];
     range = 3.2;
     progress = 0;
     pause.disabled = true;

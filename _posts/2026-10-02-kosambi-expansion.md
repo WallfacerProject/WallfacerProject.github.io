@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: Kosambi–Karhunen–Loève Expansion
-date: 2026-10-02 00:00:00
+date: 2026-10-06 00:00:00
 description: A derivation of the Kosambi expansion, with Brownian motion as an example and a brief extension to complex vector fields.
 tags: math
 categories:
@@ -176,26 +176,27 @@ R_X(t,t)=\sum_{n=1}^{\infty}\lambda_n\phi_n(t)^2.
 </div>
 <script src="/assets/js/brownian-paths.js?v=3" defer></script>
 
-<p>The paths in <a href="#brownian-paths">Figure 3</a> show individual realizations. To see the distribution at each fixed time, <a href="#brownian-density">Figure 4</a> traces a Brownian path alongside its changing Gaussian marginal. For every fixed $t>0$, $B(t)\sim\mathcal{N}(0,t)$: $\mathbb{E}[B(t)]=0$, while $\mathrm{Var}(B(t))=t$. At $t=0$, $B(0)=0$ with certainty.</p>
+<p>The paths in <a href="#brownian-paths">Figure 3</a> show individual realizations. To see the distribution at each fixed time, <a href="#brownian-density">Figure 4</a> traces Brownian paths alongside their changing Gaussian marginal. For every fixed $t>0$, $B(t)\sim\mathcal{N}(0,t)$: $\mathbb{E}[B(t)]=0$, while $\mathrm{Var}(B(t))=t$. At $t=0$, $B(0)=0$ with certainty.</p>
 <div id="brownian-density">
-<p class="brownian-intro">Choose a playback time and press Draw.</p>
+<p class="brownian-intro">Choose a path count and playback time, then press Draw.</p>
 <div class="brownian-controls">
+<label>Paths <select data-count><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></label>
 <label>Playback time <select data-duration><option value="4">4 seconds</option><option value="8" selected>8 seconds</option><option value="16">16 seconds</option></select></label>
 <button type="button" data-start>Draw</button>
 <button type="button" data-pause disabled>Pause</button>
 <button type="button" data-replay disabled>Replay</button>
 <button type="button" data-clear disabled>Clear</button>
 </div>
-<svg role="img" aria-label="One Brownian path with its changing Gaussian density shown as a third dimension" viewBox="0 0 700 420"></svg>
+<svg role="img" aria-label="Independent Brownian paths with their changing Gaussian density shown as a third dimension" viewBox="0 0 700 420"></svg>
 <div class="brownian-readout"><span data-status role="status">Ready when you are.</span><span data-time>t = 0.00</span></div>
 <div class="brownian-distribution" data-distribution>B(0)=0.</div>
-<p class="caption"><strong>Figure 4.</strong> The blue line is the Brownian motion on the time and value plane; the purple curve is the marginal density of $B(t)$, lifted into a third dimension. The curve widens and its peak becomes lower as variance grows. Standard Brownian motion is defined with $B(0)=0$, so at $t=0$ its distribution is a point mass at $x=0$, represented formally by the Dirac delta $\delta(x)$. Playback stretches $t\in[0,1]$ over the selected number of seconds.</p>
+<p class="caption"><strong>Figure 4.</strong> The blue lines are independent Brownian paths on the time and value plane; the purple curve is their shared marginal density at each time, lifted into a third dimension. The curve widens and its peak becomes lower as variance grows. Standard Brownian motion is defined with $B(0)=0$, so at $t=0$ its distribution is a point mass at $x=0$, represented formally by the Dirac delta $\delta(x)$. Playback stretches $t\in[0,1]$ over the selected number of seconds.</p>
 <noscript>Enable JavaScript to draw and animate paths.</noscript>
 </div>
-<script src="/assets/js/brownian-density.js?v=16" defer></script>
+<script src="/assets/js/brownian-density.js?v=18" defer></script>
 
 <h2>Vector-valued processes</h2>
-<p>Let's quickly do the complex vector version of the Kosambi expansion, which may be useful for electromagnetics, and electromagnetic information theory in particular. Consider the stochastic process $\mathbf{X}(\mathbf{r}): \Omega \subseteq \mathbb{R}^3 \to \mathbb{C}^3$. Assume $\mathbb{E}\int_\Omega\|\mathbf{X}(\mathbf{r})\|^2\,\mathrm{d}^3\mathbf{r}<\infty$; the expansion below converges in expected squared $L^2(\Omega)$ norm, with only positive eigenvalue modes retained. The Kosambi expansion is</p>
+<p>Let's do the complex vector version of the Kosambi expansion, which may be useful for electromagnetics, and electromagnetic information theory in particular. Consider the stochastic process $\mathbf{X}(\mathbf{r}): \Omega \subseteq \mathbb{R}^3 \to \mathbb{C}^3$. Assume $\mathbb{E}\int_\Omega\|\mathbf{X}(\mathbf{r})\|^2\,\mathrm{d}^3\mathbf{r}<\infty$; the expansion below converges in expected squared $L^2(\Omega)$ norm, with only positive eigenvalue modes retained. The Kosambi expansion is</p>
 
 \begin{align}
     \mathbf{X}(\mathbf{r}) = \mu_{\mathbf{X}}(\mathbf{r}) + \sum_{n=1}^{\infty} X_n \mathbf{\Phi}_n(\mathbf{r})
