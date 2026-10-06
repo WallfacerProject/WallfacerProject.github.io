@@ -50,7 +50,7 @@ pagination:
 <p class="card-text">{{ post.description }}</p>
 
                     <p class="post-meta">
-                      {{ post.date | date: '%B %d, %Y' }}
+                      {{ post.date | date: '%B %-d, %Y' }}
                     </p>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ pagination:
       </h3>
       <p>{{ post.description }}</p>
       <p class="post-meta">
-        {{ post.date | date: '%B %d, %Y' }}
+        {{ post.date | date: '%B %-d, %Y' }}
       </p>
 
 {% if post.thumbnail %}
