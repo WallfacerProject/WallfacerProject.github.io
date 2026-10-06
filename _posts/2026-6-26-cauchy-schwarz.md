@@ -3,7 +3,7 @@ layout: distill
 title: My Favorite Derivation of the Cauchy-Schwarz Inequality
 date: 2026-9-4 05:40:16
 # date: 2026-6-26 05:40:16
-description: 
+description: Short and sweet.
 tags: math
 categories: 
 related_posts: false
