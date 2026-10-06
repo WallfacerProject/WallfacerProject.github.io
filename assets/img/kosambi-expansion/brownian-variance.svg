@@ -1635,15 +1635,15 @@ z
    </g>
    <g id="text_12">
     <g id="patch_5">
-     <path d="M 130.172395 270.646107
-L 170.630208 270.646107
-L 170.630208 253.341342
-L 130.172395 253.341342
+     <path d="M 138.172395 270.646107
+L 178.630208 270.646107
+L 178.630208 253.341342
+L 138.172395 253.341342
 z
 " style="fill: #ffffff"/>
     </g>
     <!-- 81.1% -->
-    <g style="fill: #d95f02" transform="translate(132.132395 265.801342) scale(0.14 -0.14)">
+    <g style="fill: #d95f02" transform="translate(140.132395 265.801342) scale(0.14 -0.14)">
      <defs>
       <path id="Cmr10-1e" d="M 538 353
 Q 538 497 644 600
@@ -1814,15 +1814,15 @@ z
    </g>
    <g id="text_15">
     <g id="patch_8">
-     <path d="M 526.740736 93.660942
-L 567.198548 93.660942
-L 567.198548 76.356176
-L 526.740736 76.356176
+     <path d="M 529.740736 93.660942
+L 570.198548 93.660942
+L 570.198548 76.356176
+L 529.740736 76.356176
 z
 " style="fill: #ffffff"/>
     </g>
     <!-- 99.8% -->
-    <g style="fill: #0076c8" transform="translate(528.700736 88.816176) scale(0.14 -0.14)">
+    <g style="fill: #0076c8" transform="translate(531.700736 88.816176) scale(0.14 -0.14)">
      <use xlink:href="#Cmr10-16"/>
      <use xlink:href="#Cmr10-16" transform="translate(50 0)"/>
      <use xlink:href="#Cmr10-1e" transform="translate(100 0)"/>

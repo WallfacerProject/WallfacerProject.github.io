@@ -153,11 +153,11 @@ R_X(t,t)=\sum_{n=1}^{\infty}\lambda_n\phi_n(t)^2.
 </div>
 <p><a href="#fig-brownian-variance">Figure 2</a> shows this fraction as $N$ grows. With just the first mode, it is already $8/\pi^2\approx 81.1\%$.</p>
 <figure id="fig-brownian-variance" class="kosambi-figure">
-  <img src="/assets/img/kosambi-expansion/brownian-variance.svg?v=4" class="rounded z-depth-1" alt="Variance captured rises from 81.1 percent with one mode to 99.8 percent with 100 modes.">
+  <img src="/assets/img/kosambi-expansion/brownian-variance.svg?v=5" class="rounded z-depth-1" alt="Variance captured rises from 81.1 percent with one mode to 99.8 percent with 100 modes.">
   <figcaption class="caption"><strong>Figure 2.</strong> Fraction of variance captured by the first $N$ modes, using the total $1/2$ in equation (33). This is an ensemble measure, not the fraction of a particular path's squared norm captured.</figcaption>
 </figure>
 
-<p>The variance curve summarizes the contribution of the modes across realizations. <a href="#brownian-paths">Figure 3</a> draws individual Brownian paths, tracing each one over time using Gaussian increments.</p>
+<p>The variance curve summarizes the contribution of the modes across realizations. It is satisfying to watch Brownian motion unfold, so <a href="#brownian-paths">Figure 3</a> and <a href="#brownian-density">Figure 4</a> step away from the expansion to visualize the process itself.</p>
 <link rel="stylesheet" href="/assets/css/brownian-paths.css?v=8">
 <div id="brownian-paths">
 <p class="brownian-intro">Choose a path count and press Draw.</p>

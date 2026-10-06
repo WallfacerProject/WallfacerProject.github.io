@@ -63,7 +63,7 @@ ax.axhline(1, color='#a6a6a6', linewidth=1, linestyle='--')
 for k in (1, 5, 20, 100):
     value = captured[k - 1]
     ax.scatter(k, value, color=colors[k], s=40, zorder=3)
-    offset = {1: (12, 5), 5: (18, -28), 20: (10, -30), 100: (-5, -30)}[k]
+    offset = {1: (20, 5), 5: (18, -28), 20: (10, -30), 100: (-2, -30)}[k]
     ax.annotate(f'{value:.1%}', (k, value), xytext=offset,
                 textcoords='offset points', ha='right' if k == 100 else 'left',
                 color=colors[k], fontsize=14,
