@@ -2,7 +2,7 @@
 layout: distill
 title: Traffic, Reaction Time, and Green Lights
 date: 2026-9-11 05:40:16
-description:
+description: How driver reaction time changes the number of cars that clear a green light.
 tags: math physics
 categories:
 related_posts: false
