@@ -193,7 +193,7 @@ R_X(t,t)=\sum_{n=1}^{\infty}\lambda_n\phi_n(t)^2.
 <p class="caption"><strong>Figure 4.</strong> The blue lines are independent Brownian paths on the time and value plane; the purple curve is their shared marginal density at each time, lifted into a third dimension. The curve widens and its peak becomes lower as variance grows. Standard Brownian motion is defined with $B(0)=0$, so at $t=0$ its distribution is a point mass at $x=0$, represented formally by the Dirac delta $\delta(x)$. Playback stretches $t\in[0,1]$ over the selected number of seconds.</p>
 <noscript>Enable JavaScript to draw and animate paths.</noscript>
 </div>
-<script src="/assets/js/brownian-density.js?v=18" defer></script>
+<script src="/assets/js/brownian-density.js?v=19" defer></script>
 
 <h2>Vector-valued processes</h2>
 <p>Let's do the complex vector version of the Kosambi expansion, which may be useful for electromagnetics, and electromagnetic information theory in particular. Consider the stochastic process $\mathbf{X}(\mathbf{r}): \Omega \subseteq \mathbb{R}^3 \to \mathbb{C}^3$. Assume $\mathbb{E}\int_\Omega\|\mathbf{X}(\mathbf{r})\|^2\,\mathrm{d}^3\mathbf{r}<\infty$; the expansion below converges in expected squared $L^2(\Omega)$ norm, with only positive eigenvalue modes retained. The Kosambi expansion is</p>

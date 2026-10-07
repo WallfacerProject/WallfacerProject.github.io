@@ -17,7 +17,7 @@
   const steps = 1200;
   const curvePoints = 96;
   let paths = [], cumulatives = [], totals = [], range = 3.2;
-  let project, trails = [], pathDots = [], densityFill, densityLine, pointMass;
+  let project, trails = [], pathDots = [], densityFill, densityLine, pointMass, trailReveal, trailGroup;
   let progress = 0, running = false, frame = 0, last = null;
 
   function normal() {
@@ -96,6 +96,12 @@
 
     const clip = node('clipPath', {id: 'brownian-density-clip'}, defs);
     node('rect', {x: 2, y: 2, width: w - 4, height: h - 4}, clip);
+    trailReveal = null;
+    trailGroup = svg;
+    if (w < 450) {
+      const trailClip = node('clipPath', {id: 'brownian-density-trail-reveal'}, defs);
+      trailReveal = node('polygon', {points: ''}, trailClip);
+    }
     const densityGroup = node('g', {'clip-path': 'url(#brownian-density-clip)'});
     densityFill = node('path', {fill: '#8561b5', 'fill-opacity': 0.19, stroke: 'none'}, densityGroup);
     densityLine = node('path', {
@@ -105,6 +111,7 @@
       cx: origin[0], cy: origin[1], r: 6, fill: 'none',
       stroke: '#764eab', 'stroke-width': 2,
     });
+    if (trailReveal) trailGroup = node('g', {'clip-path': 'url(#brownian-density-trail-reveal)'});
 
     trails = [];
     pathDots = [];
@@ -134,7 +141,7 @@
         'stroke-width': multiple ? (paths.length > 10 ? 1.4 : 1.8) : 2.2,
         'stroke-opacity': multiple ? (paths.length > 10 ? 0.52 : 0.72) : 1,
         'stroke-linejoin': 'round',
-      }));
+      }, trailGroup));
       pathDots.push(node('circle', {
         r: multiple ? (paths.length > 10 ? 2.4 : 3) : 4,
         fill: '#205c93', 'fill-opacity': multiple ? 0.8 : 1,
@@ -159,11 +166,24 @@
     const index = Math.min(steps, Math.floor(position));
     const next = Math.min(steps, index + 1);
     const fraction = position - index;
+    if (trailReveal) {
+      const revealBoundary = Math.max(0, t);
+      const revealPoints = [
+        project(0, -range),
+        project(revealBoundary, -range),
+        project(revealBoundary, range),
+        project(0, range),
+      ];
+      trailReveal.setAttribute('points', revealPoints.map(point => point.join(',')).join(' '));
+      trailGroup.setAttribute('visibility', t === 0 ? 'hidden' : 'visible');
+    }
     paths.forEach((path, j) => {
       const value = path[index] + fraction * (path[next] - path[index]);
       const cumulative = cumulatives[j];
       const visible = cumulative[index] + fraction * (cumulative[next] - cumulative[index]);
-      trails[j].setAttribute('stroke-dasharray', `${visible + (t === 1 ? 2 : 0)} ${totals[j] + 10}`);
+      if (!trailReveal) {
+        trails[j].setAttribute('stroke-dasharray', `${visible + (t === 1 ? 2 : 0)} ${totals[j] + 10}`);
+      }
       const sample = project(t, value);
       pathDots[j].setAttribute('cx', sample[0]);
       pathDots[j].setAttribute('cy', sample[1]);
