@@ -13,33 +13,6 @@ function _patchDistillMathColors() {
   });
 }
 
-function _finishDistillMathRendering() {
-  var article = document.querySelector("d-article");
-  if (!article) return;
-
-  // Distill loads KaTeX asynchronously. Run its normal callback once more
-  // after the full page has loaded so inline math added during the initial
-  // DOM pass cannot be missed.
-  if (window.DMath && typeof window.katex !== "undefined") {
-    DMath.katexLoadedCallback();
-  }
-
-  // MathJax handles the equation/align environments used by these posts.
-  // Retry only if raw TeX remains; re-typesetting completed MathJax output
-  // nests duplicate accessibility markup inside the rendered equations.
-  if (window.MathJax && MathJax.startup && MathJax.startup.promise && MathJax.typesetPromise) {
-    MathJax.startup.promise
-      .then(function () {
-        if (!/\\begin\{(?:equation|align|gather|multline)\*?\}/.test(article.textContent)) return;
-        return MathJax.typesetPromise([article]);
-      })
-      .then(_patchDistillMathColors)
-      .catch(function (error) {
-        console.error("Final Distill math rendering failed:", error);
-      });
-  }
-}
-
 if (window.DMath) {
   var _originalKatexCallback = DMath.katexLoadedCallback;
   DMath.katexLoadedCallback = function () {
@@ -82,9 +55,4 @@ $(document).ready(function () {
     childList: true,
     subtree: true,
   });
-});
-
-window.addEventListener("load", function () {
-  _finishDistillMathRendering();
-  window.setTimeout(_finishDistillMathRendering, 250);
 });
