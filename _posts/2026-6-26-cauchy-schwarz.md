@@ -21,13 +21,13 @@ related_posts: false
   }
 </style>
 
-Let $\mathbf{v,w} \in V$, a real inner product space. Consider the quadratic polynomial $p(t)$ defined as the inner product of the vector $\mathbf{v} + t\mathbf{w}$ with itself over $t \in \mathbb{R}$:
+Let <d-math>\mathbf{v,w} \in V</d-math>, a real inner product space. Consider the quadratic polynomial <d-math>p(t)</d-math> defined as the inner product of the vector <d-math>\mathbf{v} + t\mathbf{w}</d-math> with itself over <d-math>t \in \mathbb{R}</d-math>:
 
 \begin{equation}
 p(t) = \braket{\mathbf{v} + t\mathbf{w}, \mathbf{v} + t\mathbf{w}}.
 \end{equation}
 
-Since $p(t) \geq 0$, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality:
+Since <d-math>p(t) \geq 0</d-math>, its discriminant must be nonpositive. This yields the Cauchy-Schwarz inequality:
 \begin{align}
 p(t) &= t^2 \lVert \mathbf{w} \rVert^2 + 2t \braket{\mathbf{v}, \mathbf{w}} + \lVert \mathbf{v}\rVert^2 \newline
 \implies \Delta(p(t)) &= 4\braket{\mathbf{v}, \mathbf{w}}^2 - 4 \lVert \mathbf{v} \rVert^2\lVert \mathbf{w} \rVert^2 \leq 0 \newline
