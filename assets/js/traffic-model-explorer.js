@@ -879,8 +879,9 @@
         readouts.animation.innerHTML =
           `<strong>t = ${boundedTime.toFixed(2)} s:</strong> <strong>${passed}</strong> ${
             passed === 1 ? "car has" : "cars have"
-          } cleared <strong>x = x<sub>0</sub></strong>. Car <strong>${nextCar}</strong> reacts at ` +
-          `<strong>t = ${nextReactionTime.toFixed(2)} s</strong>.`;
+          } cleared <strong>x = x<sub>0</sub></strong>.<br>` +
+          `<span class="traffic-animation-next-reaction">Car <strong>${nextCar}</strong> reacts at ` +
+          `<strong>t = ${nextReactionTime.toFixed(2)} s</strong>.</span>`;
       }
     }
 

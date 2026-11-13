@@ -2,14 +2,14 @@
 layout: distill
 title: Kosambi–Karhunen–Loève Expansion
 date: 2026-10-06 00:00:00
-description: A derivation of the Kosambi expansion, with Brownian motion as an example and a brief extension to complex vector fields.
+description: A derivation of the Kosambi expansion, the continuous analogue of principal components analysis (PCA).
 tags: math
 categories:
 related_posts: false
 ---
 
 <div class="kosambi-notes">
-<p>The Kosambi expansion is the continuous analogue of principal components analysis (PCA). Eigenfunctions replace covariance matrix eigenvectors, and retaining the modes with the largest eigenvalues gives the smallest integrated mean-square reconstruction error for a fixed number of modes.</p>
+<p>The Kosambi expansion is the continuous analogue of principal components analysis (PCA). Eigenfunctions replace covariance matrix eigenvectors, and retaining the modes corresponding to the largest eigenvalues gives the smallest integrated mean-square reconstruction error for a fixed number of modes.</p>
 <p>Consider a second order mean-square continuous<d-footnote>Second order means that $\mathbb{E}[X(t)^2] < \infty\quad\forall t$. We need this in order to define the variance of the coefficients. The process $X(t)$ is mean-square continuous if $\mathbb{E}[|X(t+h)-X(t)|^2]\to 0$ as $h\to 0$. Together with the finite second moments assumed above, this ensures continuity of its covariance kernel, which we define below, and is sufficient for the expansion used here.</d-footnote> real-valued zero-mean stochastic process $X(t)$, $t\in[a,b]$. We want to express it in terms of an orthonormal basis of deterministic functions with zero-mean uncorrelated random coefficients:</p>
 
 \begin{align}
@@ -46,7 +46,7 @@ related_posts: false
 \begin{align}
     X(t) = \sum_{n=1}^{\infty} \sqrt{\lambda_n}Z_n\phi_n(t)
 \end{align}
-<p>where now the random coefficients are zero-mean and unit-variance, scaled by the square roots of the eigenvalues of the covariance operator with kernel $R_X(t,s)$. Suppose $X(t)$ met the assumptions above except it had non-zero mean $\mu_X(t)$. Then we could simply subtract off $\mu_X(t)$ and apply equation (11) to the “zero-meaned” process, then add in the mean again at the end. We write this slightly more general version of the Kosambi expansion:</p>
+<p>where now the random coefficients are zero-mean and unit-variance, scaled by the square roots of the eigenvalues of the covariance operator with kernel $R_X(t,s)$. Suppose $X(t)$ met the assumptions above except it had non-zero mean $\mu_X(t)$. Then we could simply subtract $\mu_X(t)$ from $X(t)$ and apply equation (11) to the “zero-meaned” process, then add in the mean again at the end. We write this slightly more general version of the Kosambi expansion:</p>
 <div style="border: 1px solid currentColor; padding: 1rem; margin: 1.5rem 0;">
 <p>Suppose $X(t)$ is a second-order mean-square continuous real-valued stochastic process defined over $t\in[a,b]$ with mean $\mu_X(t)$ and covariance function $R_X(t,s)$. Then we can write it as the Kosambi expansion</p>
 

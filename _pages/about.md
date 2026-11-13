@@ -26,7 +26,7 @@ Engineering from New York University in May 2023.
 
 Outside of research, I enjoy trying new restaurants and cocktail bars. Hit me up with your recs. Among other things, I also enjoy chess, lifting, basketball, poker, card magic, and photography. 
 
-Feel free to reach out! My email is amritpal[surname][at]nyu[dot]edu.
+Feel free to reach out! My email is amritpal [surname] [at] nyu [dot] edu.
 
 {% comment %}
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.

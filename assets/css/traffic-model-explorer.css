@@ -484,6 +484,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+.traffic-model-widget .traffic-animation-next-reaction {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .traffic-model-widget .traffic-things-to-try {
   padding: 0.85rem 0 0;
 }
